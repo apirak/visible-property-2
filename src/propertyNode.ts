@@ -1,10 +1,16 @@
 import { VisibleNode } from './visibleNode';
 import { ReferenceNode } from './referenceNode';
+import { setText } from './textUtility';
 
 export interface PropertyNode extends VisibleNode{
   tryReferencePath(referenceNode: ReferenceNode):any;
   updateValue():any;
 }
+
+async function loadFont(text:TextNode) {
+  let font = <FontName>text.fontName;
+  await figma.loadFontAsync({family:font.family, style:font.style});
+};
 
 export class PropertyNode extends VisibleNode {
   referenceNode?: ReferenceNode;
@@ -27,8 +33,10 @@ export class PropertyNode extends VisibleNode {
   }
 
   updateValue(){
-    if(this.referenceNode) {
-      console.log("Color "+ this.referenceNode.getFill());
+    if(this.referenceNode && this.node.type == "TEXT") {
+      loadFont(this.node).then(() => {
+        this.node.characters = this.referenceNode?.getFill();
+      }) ;
     }
   }
 

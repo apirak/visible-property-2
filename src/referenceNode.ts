@@ -6,27 +6,22 @@ export interface ReferenceNode extends VisibleNode{
 }
 
 export class ReferenceNode extends VisibleNode {
-  basicNode: ComponentNode | RectangleNode | any;
 
-
+  isSolidPaints(fills: readonly Paint[] | PluginAPI['mixed']): fills is SolidPaint[] {
+    if (fills as Paint[] != undefined){
+      if ((fills as Paint[]).length != 0){
+        return (fills as SolidPaint[])[0].color != undefined;
+      }
+    }
+    return false;
+  }
 
   getFill():string{
-
-    console.log(this.node.type)
-
-    this.basicNode = <RectangleNode>this.node;
-    let x = this.basicNode.fills[0];
-
-    // console.log(this.node as ComponentNode);
-
-    console.log(x.color);
-
-    // if ((this.node as ComponentNode).fills){
-    //   return colorToHex((this.node as ComponentNode).fills?[0].color).toUpperCase();
-    // } else {
-    //   return "";
-    // }
-    return "a";
+    if(this.isSolidPaints(this.node.fills)){
+      return colorToHex(this.node.fills[0].color).toUpperCase();
+    } else {
+      return "";
+    }
   }
 
   debug(){

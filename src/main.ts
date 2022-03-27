@@ -45,6 +45,7 @@ function updateAllTextProperty() {
 
 
 export default function () {
-  updateAllTextProperty();
-  figma.closePlugin('Hello, World!')
+  // updateAllTextProperty().then(n => figma.closePlugin('Updated 👍'));
+  updateAllTextProperty()
+  figma.notify('Updated 👍')
 }

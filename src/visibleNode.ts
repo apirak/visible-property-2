@@ -5,7 +5,7 @@ export interface VisibleNode {
 }
 
 export class VisibleNode implements VisibleNode{
-  node: SceneNode;
+  node: RectangleNode | ComponentNode | TextNode | any;
   scopeNodeID: string = "";
   type: string = "";
   referenceName: string = "";
@@ -13,11 +13,27 @@ export class VisibleNode implements VisibleNode{
   path: string[] = [];
 
   constructor(node: SceneNode, scopeNodeID: string) {
-    this.node = node;
     this.scopeNodeID = scopeNodeID;
+    this.matchNode(node);
     this.matchName();
     this.matchType();
     this.findAllParentInScope();
+  }
+
+  matchNode(node: SceneNode) {
+    switch (node && node.type) {
+      case "TEXT":
+        this.node = <TextNode>node;
+      case "COMPONENT":
+        this.node = <ComponentNode>node;
+        break;
+      case "RECTANGLE":
+        this.node = <RectangleNode>node;
+        break;
+      default:
+        this.node = <RectangleNode>node;
+        break;
+    }
   }
 
   matchType() {
