@@ -31,6 +31,12 @@ export class ReferenceNode extends VisibleNode {
       case "stroke":
         return this.getStroke();
         break;
+      case "strokeRGB":
+        return this.getStrokeRGB();
+        break;
+      case "strokeStyle":
+        return this.getStrokeStyle();
+        break;
       case "description":
         return this.getDescription();
         break;
@@ -38,7 +44,7 @@ export class ReferenceNode extends VisibleNode {
         return this.getWidth();
         break;
       case "height":
-        return this.getWidth();
+        return this.getHeight();
         break;
       default:
         return ""
@@ -82,6 +88,28 @@ export class ReferenceNode extends VisibleNode {
     } else {
       return "";
     }
+  }
+
+  getStrokeRGB():string{
+    if(this.isSolidPaints(this.node.strokes)){
+      let color = this.node.strokes[0].color;
+      return "R:" + (color.r*256).toFixed(0) +
+        " G:" + (color.g*256).toFixed(0) +
+        " B:" + (color.b*256).toFixed(0);
+    } else {
+      return "";
+    }
+  }
+
+  getStrokeStyle():string{
+    const componentNode = this.node as ComponentNode;
+
+    if(componentNode.strokeStyleId){
+      const styleID = componentNode.strokeStyleId.toString();
+      const style = figma.getStyleById(styleID)
+      return style ? style.name : "Can't read style";
+    }
+    return "No Style";
   }
 
   getDescription():string {

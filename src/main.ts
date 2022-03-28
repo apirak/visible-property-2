@@ -41,8 +41,22 @@ async function updateAllTextProperty() {
   }));
 }
 
+export function updateAll() {
+  updateAllTextProperty().then(() => {
+    figma.closePlugin("Updated 🎉");
+  })
+}
+
 export default function () {
   updateAllTextProperty().then(() => {
     figma.closePlugin("Updated 🎉");
   })
+}
+
+switch (figma.command) {
+  case 'updateAll':
+    updateAll();
+    break;
+  default:
+    break;
 }
