@@ -12,7 +12,7 @@ function selectScopeNode():BaseNode | SceneNode | PageNode {
   }
 }
 
-function updateAllTextProperty() {
+async function updateAllTextProperty() {
   const searchNodes = figma.currentPage.findAll(node => node.name.charAt(0) === "#");
   const scopeNode = selectScopeNode();
 
@@ -36,16 +36,17 @@ function updateAllTextProperty() {
     });
   });
 
-  propertyNodes.forEach(propertyNode => {
-    // propertyNode.debug();
-    propertyNode.updateValue();
-  });
+  await Promise.all(propertyNodes.map(async (propertyNode, index) => {
+    let success = await propertyNode.updateValue();
+    return true;
+  }));
 
+  figma.closePlugin("Updated 🎉");
 }
 
 
 export default function () {
-  // updateAllTextProperty().then(n => figma.closePlugin('Updated 👍'));
   updateAllTextProperty()
-  figma.notify('Updated 👍')
+  // figma.notify('Updated 👍')
+  // figma.closePlugin('Updated 👍');
 }

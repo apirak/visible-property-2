@@ -32,13 +32,40 @@ export class PropertyNode extends VisibleNode {
     // console.log("out: try");
   }
 
-  updateValue(){
+  // updateValue(){
+  //   if(this.referenceNode && this.node.type == "TEXT") {
+  //     loadFont(this.node).then(() => {
+  //       this.node.characters = this.referenceNode?.getValue(this.propertyName);
+  //     });
+  //   }
+  // }
+
+
+  // #retrun Boolean
+  async updateValue(): Promise<Boolean>{
     if(this.referenceNode && this.node.type == "TEXT") {
-      loadFont(this.node).then(() => {
-        this.node.characters = this.referenceNode?.getFill();
-      }) ;
+      await loadFont(this.node).then(() => {
+        this.node.characters = this.referenceNode?.getValue(this.propertyName);
+        return true
+      });
     }
+    return false
   }
+
+  // #Promiss all
+  // updateValue(){
+  //    if(this.referenceNode && this.node.type == "TEXT") {
+  //      return new Promise((resolve) => {
+  //        console.log("H1")
+  //        let font = <FontName>(<TextNode>this.node).fontName;
+  //        figma.loadFontAsync({family:font.family, style:font.style}).then(() => {
+  //          this.node.characters = this.referenceNode?.getFill();
+  //          resolve
+  //        });
+  //        console.log("H2")
+  //      });
+  //    }
+  // }
 
   debug(){
     console.log("#PerpertyNode");
