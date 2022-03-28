@@ -16,11 +16,11 @@ async function updateAllTextProperty() {
   const searchNodes = figma.currentPage.findAll(node => node.name.charAt(0) === "#");
   const scopeNode = selectScopeNode();
 
-  let propertyNodes: PropertyNode[] = [];
-  let referenceNodes: ReferenceNode[] = [];
+  const propertyNodes: PropertyNode[] = [];
+  const referenceNodes: ReferenceNode[] = [];
 
   searchNodes.forEach(searchNode => {
-    let visibleNode = new VisibleNode(searchNode, scopeNode.id);
+    const visibleNode = new VisibleNode(searchNode, scopeNode.id);
     if (visibleNode.type == "Property") {
       propertyNodes.push(new PropertyNode(visibleNode.node, scopeNode.id));
     } else {
@@ -36,17 +36,13 @@ async function updateAllTextProperty() {
     });
   });
 
-  await Promise.all(propertyNodes.map(async (propertyNode, index) => {
-    let success = await propertyNode.updateValue();
-    return true;
+  await Promise.all(propertyNodes.map(propertyNode => {
+    return propertyNode.updateValue();
   }));
-
-  figma.closePlugin("Updated 🎉");
 }
 
-
 export default function () {
-  updateAllTextProperty()
-  // figma.notify('Updated 👍')
-  // figma.closePlugin('Updated 👍');
+  updateAllTextProperty().then(() => {
+    figma.closePlugin("Updated 🎉");
+  })
 }

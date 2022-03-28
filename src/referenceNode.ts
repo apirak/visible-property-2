@@ -25,6 +25,9 @@ export class ReferenceNode extends VisibleNode {
       case "fillRGB":
         return this.getFillRGB();
         break;
+      case "fillStyle":
+        return this.getFillStyle();
+        break;
       case "stroke":
         return this.getStroke();
         break;
@@ -60,6 +63,17 @@ export class ReferenceNode extends VisibleNode {
     } else {
       return "";
     }
+  }
+
+  getFillStyle():string{
+    const componentNode = this.node as ComponentNode;
+
+    if(componentNode.fillStyleId){
+      const styleID = componentNode.fillStyleId.toString();
+      const style = figma.getStyleById(styleID)
+      return style ? style.name : "Can't read style";
+    }
+    return "No Style";
   }
 
   getStroke():string{
