@@ -2,11 +2,6 @@
 
 ![alt text](https://github.com/apirak/visible-property-2/blob/main/doc/images/github_cover_art.png?raw=true)
 
-### Pre-requisites
-
-- [Node.js](https://nodejs.org) – v14
-- [Figma desktop app](https://figma.com/downloads/)
-
 ### Build the plugin
 
 To build the plugin:

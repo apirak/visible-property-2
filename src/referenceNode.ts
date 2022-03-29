@@ -1,10 +1,13 @@
 import { VisibleNode } from './visibleNode';
 import { colorToHex } from './colorUtillity';
+import { ColorFormat, toHsl } from 'figx';
 
 export interface ReferenceNode extends VisibleNode{
   getFill():string;
   getValue(name:string):string;
 }
+
+export type HSLColor = { h: number; s: number; l: number };
 
 export class ReferenceNode extends VisibleNode {
 
@@ -23,7 +26,10 @@ export class ReferenceNode extends VisibleNode {
         return this.getFill();
         break;
       case "fillRGB":
-        return this.getFillRGB();
+        return this.getRGB("fill");
+        break;
+      case "fillHSL":
+        return this.getHSL("fill");
         break;
       case "fillStyle":
         return this.getFillStyle();
@@ -32,7 +38,10 @@ export class ReferenceNode extends VisibleNode {
         return this.getStroke();
         break;
       case "strokeRGB":
-        return this.getStrokeRGB();
+        return this.getRGB("stroke");
+        break;
+      case "strokeHSL":
+        return this.getHSL("stroke");
         break;
       case "strokeStyle":
         return this.getStrokeStyle();
@@ -47,7 +56,7 @@ export class ReferenceNode extends VisibleNode {
         return this.getHeight();
         break;
       default:
-        return ""
+        return "No function"
         break;
     }
   }
@@ -60,12 +69,15 @@ export class ReferenceNode extends VisibleNode {
     }
   }
 
-  getFillRGB():string{
-    if(this.isSolidPaints(this.node.fills)){
-      let color = this.node.fills[0].color;
+  getRGB(type:string):string{
+    const paints = (type == "stroke") ? this.node.strokes : this.node.fills;
+    if(this.isSolidPaints(paints)){
+      let color = paints[0].color;
+      let alpha = paints[0].opacity;
       return "R:" + (color.r*256).toFixed(0) +
         " G:" + (color.g*256).toFixed(0) +
-        " B:" + (color.b*256).toFixed(0);
+        " B:" + (color.b*256).toFixed(0) +
+        ((alpha == 1 || alpha == undefined) ? "" : " A:" + (alpha*100).toFixed(0));
     } else {
       return "";
     }
@@ -90,12 +102,21 @@ export class ReferenceNode extends VisibleNode {
     }
   }
 
-  getStrokeRGB():string{
-    if(this.isSolidPaints(this.node.strokes)){
-      let color = this.node.strokes[0].color;
-      return "R:" + (color.r*256).toFixed(0) +
-        " G:" + (color.g*256).toFixed(0) +
-        " B:" + (color.b*256).toFixed(0);
+  getHSL(type:string):string {
+    const paints = (type == "stroke") ? this.node.strokes : this.node.fills;
+    if(this.isSolidPaints(paints)){
+      const color = paints[0].color;
+      let alpha = paints[0].opacity;
+      const colorObject = {
+        r: color.r*256,
+        g: color.r*256,
+        b: color.r*256
+      };
+      const hslObject =  <HSLColor>toHsl(colorObject, ColorFormat.OBJECT);
+      return "H:" + (hslObject.h).toFixed(0) +
+        " S:" + (hslObject.s).toFixed(0) +
+        " L:" + (hslObject.l).toFixed(0) +
+        ((alpha == 1 || alpha == undefined) ? "" : " A:" + (alpha*100).toFixed(0));
     } else {
       return "";
     }

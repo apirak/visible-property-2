@@ -49,7 +49,7 @@ export function updateAll() {
 
 export default function () {
   updateAllTextProperty().then(() => {
-    figma.closePlugin("Updated x 🎉");
+    figma.closePlugin("Updated 🎉");
   })
 }
 
