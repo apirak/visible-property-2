@@ -49,10 +49,13 @@ export function updateAll() {
 
 export default function () {
   updateAllTextProperty().then(() => {
-    figma.closePlugin("Updated 🎉");
+    figma.closePlugin("Updated x 🎉");
   })
 }
 
+//
+// Command
+//
 switch (figma.command) {
   case 'updateAll':
     updateAll();
