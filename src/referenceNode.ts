@@ -1,6 +1,6 @@
 import { VisibleNode } from './visibleNode';
 import { colorToHex } from './colorUtillity';
-import { ColorFormat, toHsl } from 'figx';
+import { ColorFormat, toHsl, toHex } from 'figx';
 
 export interface ReferenceNode extends VisibleNode{
   getFill():string;
@@ -8,6 +8,11 @@ export interface ReferenceNode extends VisibleNode{
 }
 
 export type HSLColor = { h: number; s: number; l: number };
+export type RGB255 = { r: number; g:number; b: number};
+
+const toRGB255 = (color:RGB):RGB255 => {
+  return {r: color.r*255, g: color.g*255, b: color.b*255}
+}
 
 export class ReferenceNode extends VisibleNode {
 
@@ -23,10 +28,10 @@ export class ReferenceNode extends VisibleNode {
   getValue(name:string):string {
     switch(name) {
       case "fill":
-        return this.getFill();
+        return this.getHex('fill');
         break;
       case "stroke":
-        return this.getStroke();
+        return this.getHex('stroke');
         break;
       case "fillRGB":
         return this.getRGB("fill");
@@ -41,10 +46,10 @@ export class ReferenceNode extends VisibleNode {
         return this.getHSL("fill");
         break;
       case "fillStyle":
-        return this.getFillStyle();
+        return this.getStyle("fill");
         break;
       case "strokeStyle":
-        return this.getStrokeStyle();
+        return this.getStyle("stroke");
         break;
       case "description":
         return this.getDescription();
@@ -61,10 +66,14 @@ export class ReferenceNode extends VisibleNode {
     }
   }
 
-  getFill():string{
-    if(this.isSolidPaints(this.node.fills)){
-      return colorToHex(this.node.fills[0].color).toUpperCase();
+  getHex(type:string):string{
+    const paints = (type == "stroke") ? this.node.strokes : this.node.fills;
+    if(this.isSolidPaints(paints)){
+      return toHex(toRGB255(paints[0].color));
     } else {
+      if (paints.length == 0){
+        return "No " + type
+      }
       return "";
     }
   }
@@ -79,27 +88,23 @@ export class ReferenceNode extends VisibleNode {
         " B:" + (color.b*256).toFixed(0) +
         ((alpha == 1 || alpha == undefined) ? "" : " A:" + (alpha*100).toFixed(0));
     } else {
+      if (paints.length == 0){
+        return "No " + type
+      }
       return "";
     }
   }
 
-  getFillStyle():string{
+  getStyle(type:string):string{
     const componentNode = this.node as ComponentNode;
+    const styleId = (type == "stroke") ? componentNode.strokeStyleId : componentNode.fillStyleId;
 
-    if(componentNode.fillStyleId){
-      const styleID = componentNode.fillStyleId.toString();
+    if(styleId){
+      const styleID = styleId.toString();
       const style = figma.getStyleById(styleID)
       return style ? style.name : "Can't read style";
     }
     return "No Style";
-  }
-
-  getStroke():string{
-    if(this.isSolidPaints(this.node.strokes)){
-      return colorToHex(this.node.strokes[0].color).toUpperCase();
-    } else {
-      return "";
-    }
   }
 
   getHSL(type:string):string {
@@ -118,20 +123,13 @@ export class ReferenceNode extends VisibleNode {
         " L:" + (hslObject.l).toFixed(0) +
         ((alpha == 1 || alpha == undefined) ? "" : " A:" + (alpha*100).toFixed(0));
     } else {
+      if (paints.length == 0){
+        return "No " + type
+      }
       return "";
     }
   }
 
-  getStrokeStyle():string{
-    const componentNode = this.node as ComponentNode;
-
-    if(componentNode.strokeStyleId){
-      const styleID = componentNode.strokeStyleId.toString();
-      const style = figma.getStyleById(styleID)
-      return style ? style.name : "Can't read style";
-    }
-    return "No Style";
-  }
 
   getDescription():string {
     if(this.node.type == "COMPONENT") {

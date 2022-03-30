@@ -37,6 +37,14 @@ async function updateAllTextProperty() {
     });
   });
 
+  // propertyNodes.forEach(propertyNode => {
+  //   propertyNode.debug();
+  // });
+
+  // referenceNodes.forEach(referenceNode => {
+  //   referenceNode.debug();
+  // });
+
   await Promise.all(propertyNodes.map(propertyNode => {
     return propertyNode.updateValue();
   }));
@@ -45,7 +53,8 @@ async function updateAllTextProperty() {
 export default function () {
   setRelaunchButton(figma.currentPage,
     'visibleproperty',
-    { description: 'Update all text value follow reference element'})
+    { description: 'Update all text value follow reference element'});
+
   updateAllTextProperty().then(() => {
     figma.closePlugin("Updated 🎉");
   })

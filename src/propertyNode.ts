@@ -7,13 +7,13 @@ export interface PropertyNode extends VisibleNode{
 }
 
 async function loadFont(text:TextNode) {
-  let font = <FontName>text.fontName;
+  const font = <FontName>text.fontName;
   await figma.loadFontAsync({family:font.family, style:font.style});
 };
 
 export class PropertyNode extends VisibleNode {
   referenceNode?: ReferenceNode;
-  depth: number | null = null;
+  depth?: number;
 
   tryReferencePath(referenceNode: ReferenceNode){
     // console.log("in: try");

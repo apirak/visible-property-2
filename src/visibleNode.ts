@@ -45,7 +45,7 @@ export class VisibleNode implements VisibleNode{
   }
 
   matchName() {
-    let names = this.node.name.match(/#([a-zA-Z\:]+).?([a-zA-Z]*)/);
+    let names = this.node.name.match(/#([a-zA-Z0-9\:]+).?([a-zA-Z0-9]*)/);
     if (names) {
       this.referenceName = names[1] ? names[1] : "";
       this.propertyName = names[2] ? names[2] : "";
