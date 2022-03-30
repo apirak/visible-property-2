@@ -14,6 +14,11 @@ const toRGB255 = (color:RGB):RGB255 => {
   return {r: color.r*255, g: color.g*255, b: color.b*255}
 }
 
+const toFixedZero = (num:number):string => {
+  const numString = num.toString();
+  return numString.slice(0, (numString.indexOf(".")))
+}
+
 export class ReferenceNode extends VisibleNode {
 
   isSolidPaints(fills: readonly Paint[] | PluginAPI['mixed']): fills is SolidPaint[] {
@@ -83,9 +88,9 @@ export class ReferenceNode extends VisibleNode {
     if(this.isSolidPaints(paints)){
       let color = paints[0].color;
       let alpha = paints[0].opacity;
-      return "R:" + (color.r*256).toFixed(0) +
-        " G:" + (color.g*256).toFixed(0) +
-        " B:" + (color.b*256).toFixed(0) +
+      return "R:" + toFixedZero(color.r*256) +
+        " G:" + toFixedZero(color.g*256) +
+        " B:" + toFixedZero(color.b*256) +
         ((alpha == 1 || alpha == undefined) ? "" : " A:" + (alpha*100).toFixed(0));
     } else {
       if (paints.length == 0){
@@ -110,13 +115,8 @@ export class ReferenceNode extends VisibleNode {
   getHSL(type:string):string {
     const paints = (type == "stroke") ? this.node.strokes : this.node.fills;
     if(this.isSolidPaints(paints)){
-      const color = paints[0].color;
+      const colorObject = toRGB255(paints[0].color);
       let alpha = paints[0].opacity;
-      const colorObject = {
-        r: color.r*256,
-        g: color.r*256,
-        b: color.r*256
-      };
       const hslObject =  <HSLColor>toHsl(colorObject, ColorFormat.OBJECT);
       return "H:" + (hslObject.h).toFixed(0) +
         " S:" + (hslObject.s).toFixed(0) +
