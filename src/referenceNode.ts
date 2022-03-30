@@ -1,6 +1,6 @@
 import { VisibleNode } from './visibleNode';
-import { colorToHex } from './colorUtillity';
 import { ColorFormat, toHsl, toHex } from 'figx';
+import axios from 'axios';
 
 export interface ReferenceNode extends VisibleNode{
   getFill():string;
@@ -129,7 +129,6 @@ export class ReferenceNode extends VisibleNode {
       return "";
     }
   }
-
 
   getDescription():string {
     if(this.node.type == "COMPONENT") {
