@@ -1,6 +1,7 @@
 import { VisibleNode } from './visibleNode';
 import { PropertyNode } from './propertyNode';
 import { ReferenceNode } from './referenceNode';
+import { setRelaunchButton } from '@create-figma-plugin/utilities';
 
 function selectScopeNode():BaseNode | SceneNode | PageNode {
   const selectedNode = figma.currentPage.selection[0];
@@ -41,25 +42,11 @@ async function updateAllTextProperty() {
   }));
 }
 
-export function updateAll() {
-  updateAllTextProperty().then(() => {
-    figma.closePlugin("Updated 🎉");
-  })
-}
-
 export default function () {
+  setRelaunchButton(figma.currentPage,
+    'visibleproperty',
+    { description: 'Update all text value follow reference element'})
   updateAllTextProperty().then(() => {
     figma.closePlugin("Updated 🎉");
   })
-}
-
-//
-// Command
-//
-switch (figma.command) {
-  case 'updateAll':
-    updateAll();
-    break;
-  default:
-    break;
 }

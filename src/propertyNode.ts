@@ -1,6 +1,5 @@
 import { VisibleNode } from './visibleNode';
 import { ReferenceNode } from './referenceNode';
-import { setText } from './textUtility';
 
 export interface PropertyNode extends VisibleNode{
   tryReferencePath(referenceNode: ReferenceNode):any;

@@ -19,6 +19,12 @@
     ],
     "id": "1090193516013501637",
     "name": "Visible Property 2",
-    "main": "src/main.ts"
+    "main": "src/main.ts",
+    "relaunchButtons": {
+      "visibleproperty": {
+        "name": "Visible Property",
+        "main": "src/main.ts"
+      }
+    }
   }
 }

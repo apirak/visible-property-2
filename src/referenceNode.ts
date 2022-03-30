@@ -25,23 +25,23 @@ export class ReferenceNode extends VisibleNode {
       case "fill":
         return this.getFill();
         break;
-      case "fillRGB":
-        return this.getRGB("fill");
-        break;
-      case "fillHSL":
-        return this.getHSL("fill");
-        break;
-      case "fillStyle":
-        return this.getFillStyle();
-        break;
       case "stroke":
         return this.getStroke();
+        break;
+      case "fillRGB":
+        return this.getRGB("fill");
         break;
       case "strokeRGB":
         return this.getRGB("stroke");
         break;
       case "strokeHSL":
         return this.getHSL("stroke");
+        break;
+      case "fillHSL":
+        return this.getHSL("fill");
+        break;
+      case "fillStyle":
+        return this.getFillStyle();
         break;
       case "strokeStyle":
         return this.getStrokeStyle();
