@@ -9,6 +9,7 @@ export interface ReferenceNode extends VisibleNode{
 
 export type HSLColor = { h: number; s: number; l: number };
 export type RGB255 = { r: number; g:number; b: number};
+export type Space = { unit: string; value:number};
 
 const toRGB255 = (color:RGB):RGB255 => {
   return {r: color.r*255, g: color.g*255, b: color.b*255}
@@ -31,6 +32,10 @@ export class ReferenceNode extends VisibleNode {
   }
 
   getValue(name:string):string {
+    const textFunction = new Set<string>(['font', 'fontWeight', 'fontSize', 'paragraphIndent', 'paragraphSpace']);
+    if(textFunction.has(name)){
+      return this.getText(name);
+    }
     switch(name) {
       case "fill":
         return this.getHex('fill');
@@ -56,6 +61,9 @@ export class ReferenceNode extends VisibleNode {
       case "strokeStyle":
         return this.getStyle("stroke");
         break;
+      case "textStyle":
+        return this.getStyle("text");
+        break;
       case "description":
         return this.getDescription();
         break;
@@ -64,6 +72,12 @@ export class ReferenceNode extends VisibleNode {
         break;
       case "height":
         return this.getHeight();
+        break;
+      case "letterSpace":
+        return this.getTextSpace("letter space");
+        break;
+      case "lineHeight":
+        return this.getTextSpace("line height");
         break;
       default:
         return "No function"
@@ -101,12 +115,22 @@ export class ReferenceNode extends VisibleNode {
   }
 
   getStyle(type:string):string{
-    const componentNode = this.node as ComponentNode;
-    const styleId = (type == "stroke") ? componentNode.strokeStyleId : componentNode.fillStyleId;
+    let styleId:string = "";
+
+    switch(type){
+      case "stroke":
+        styleId = (this.node as ComponentNode).strokeStyleId.toString();
+        break;
+      case "fill":
+        styleId = (this.node as ComponentNode).fillStyleId.toString();
+        break;
+      case "text":
+        styleId = (this.node as TextNode).textStyleId.toString();
+        break;
+    }
 
     if(styleId){
-      const styleID = styleId.toString();
-      const style = figma.getStyleById(styleID)
+      const style = figma.getStyleById(styleId)
       return style ? style.name : "Can't read style";
     }
     return "No Style";
@@ -130,6 +154,57 @@ export class ReferenceNode extends VisibleNode {
     }
   }
 
+  getTextSpace(type:string):string {
+    if(this.node.type == "TEXT") {
+      let space:Space = { unit: "", value: 0};
+      switch(type) {
+        case "line height":
+          space = this.node.lineHeight;
+          break;
+        case "letter space":
+          space = this.node.letterSpacing;
+          break;
+        default:
+          return "No function";
+          break;
+      }
+
+      if(space.unit == "PERCENT") {
+        return "" + parseFloat(space.value.toFixed(2)) + "%";
+      } else {
+        return "" + parseFloat(space.value.toFixed(2));
+      }
+    } else {
+      return "Not a text";
+    }
+  }
+
+  getText(type:string):string {
+    if(this.node.type == "TEXT") {
+      switch(type) {
+        case "font":
+          return this.node.fontName.family;
+          break;
+        case "fontWeight":
+          return this.node.fontName.weight;
+          break;
+        case "fontSize":
+          return this.node.fontSize.toString();
+          break;
+        case "paragraphSpace":
+          return this.node.paragraphSpacing.toString();
+          break;
+        case "paragraphIndent":
+          return this.node.paragraphIndent.toString();
+          break;
+        default:
+          return "No function";
+          break;
+      }
+    } else {
+      return "Not a text";
+    }
+  }
 
   getDescription():string {
     if(this.node.type == "COMPONENT") {
