@@ -1,5 +1,4 @@
 import { VisibleNode } from './visibleNode';
-import { colorToHex } from './colorUtillity';
 import { ColorFormat, toHsl, toHex } from 'figx';
 
 export interface ReferenceNode extends VisibleNode{
