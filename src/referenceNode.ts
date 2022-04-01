@@ -185,7 +185,7 @@ export class ReferenceNode extends VisibleNode {
           return this.node.fontName.family;
           break;
         case "fontWeight":
-          return this.node.fontName.weight;
+          return this.node.fontName.style;
           break;
         case "fontSize":
           return this.node.fontSize.toString();

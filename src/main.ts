@@ -14,7 +14,7 @@ function selectScopeNode():BaseNode | SceneNode | PageNode {
 }
 
 async function updateAllTextProperty() {
-  const searchNodes = figma.currentPage.findAll(node => node.name.charAt(0) === "#");
+  const searchNodes = figma.currentPage.findAll(node => /#|_#/.test(node.name));
   const scopeNode = selectScopeNode();
 
   const propertyNodes: PropertyNode[] = [];
