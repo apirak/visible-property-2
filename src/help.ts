@@ -1,19 +1,15 @@
 import { showUI } from '@create-figma-plugin/utilities'
 
 export default function () {
-  const options = { width: 240, height: 430 };
+  const options = { width: 240, height: 450 };
   const data = {
     helps: [{
-      title: "Fill",
+      title: "Frame or Rectangle",
       list:[
         {label:"fill", value:"#123456"},
         {label:"fillRGB", value:"r:123 g:456 b:789"},
         {label:"fillHSL", value:"h:123 s:456 l:789"},
-        {label:"fillStyle", value:"DarkBlue"}
-      ]
-    },{
-      title:"Stroke",
-      list:[
+        {label:"fillStyle", value:"DarkBlue"},
         {label:"stroke", value:"#123456"},
         {label:"strokeRGB", value:"r:123 g:456 b:789"},
         {label:"strokeHSL", value:"h:123 s:456 l:789"},
