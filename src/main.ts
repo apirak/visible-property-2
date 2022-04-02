@@ -2,6 +2,7 @@ import { VisibleNode } from './visibleNode';
 import { PropertyNode } from './propertyNode';
 import { ReferenceNode } from './referenceNode';
 import { setRelaunchButton } from '@create-figma-plugin/utilities';
+import { showUI } from '@create-figma-plugin/utilities'
 
 function selectScopeNode():BaseNode | SceneNode | PageNode {
   const selectedNode = figma.currentPage.selection[0];
@@ -53,7 +54,7 @@ async function updateAllTextProperty() {
 export default function () {
   setRelaunchButton(figma.currentPage,
     'visibleproperty',
-    { description: 'Update all text value follow reference element'});
+    { description: 'Run Update all text follow #Reference'});
 
   updateAllTextProperty().then(() => {
     figma.closePlugin("Updated 🎉");
