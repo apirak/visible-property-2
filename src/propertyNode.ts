@@ -16,19 +16,14 @@ export class PropertyNode extends VisibleNode {
   depth?: number;
 
   tryReferencePath(referenceNode: ReferenceNode){
-    // console.log("in: try");
     this.path.forEach( (pPath, pIndex) => {
        referenceNode.path.forEach ( (rPath, rIndex) => {
-         //  console.log("pPath: " + pPath + " rPath: " + rPath);
-         //  console.log("pIndex: " + pIndex + " depth: " + this.depth);
          if (pPath == rPath && (this.depth == null || pIndex < this.depth )) {
-          //  console.log("Assign");
            this.depth = pIndex;
            this.referenceNode = referenceNode;
          }
        })
     })
-    // console.log("out: try");
   }
 
   async updateValue() {
@@ -37,12 +32,5 @@ export class PropertyNode extends VisibleNode {
         this.node.characters = this.referenceNode?.getValue(this.propertyName);
       })
     }
-  }
-
-  debug(){
-    console.log("#PerpertyNode");
-    console.log("Reference: " + this.referenceName);
-    console.log("Depth: " + this.depth);
-    super.debug();
   }
 }

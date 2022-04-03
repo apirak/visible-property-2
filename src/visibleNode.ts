@@ -1,6 +1,5 @@
 export interface VisibleNode {
   type: string;
-  // getType(): string;
   debug(): any;
 }
 
@@ -65,13 +64,4 @@ export class VisibleNode implements VisibleNode{
       }
     }
   }
-
-  debug(){
-    console.log('type: ' + this.type);
-    console.log('reference: ' + this.referenceName);
-    console.log('property: ' + this.propertyName);
-    console.log('path: ' + this.path);
-    console.log('------');
-  }
-
 }

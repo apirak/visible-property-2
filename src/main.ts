@@ -2,7 +2,6 @@ import { VisibleNode } from './visibleNode';
 import { PropertyNode } from './propertyNode';
 import { ReferenceNode } from './referenceNode';
 import { setRelaunchButton } from '@create-figma-plugin/utilities';
-import { showUI } from '@create-figma-plugin/utilities'
 
 function selectScopeNode():BaseNode | SceneNode | PageNode {
   const selectedNode = figma.currentPage.selection[0];
@@ -37,14 +36,6 @@ async function updateAllTextProperty() {
       }
     });
   });
-
-  // propertyNodes.forEach(propertyNode => {
-  //   propertyNode.debug();
-  // });
-
-  // referenceNodes.forEach(referenceNode => {
-  //   referenceNode.debug();
-  // });
 
   await Promise.all(propertyNodes.map(propertyNode => {
     return propertyNode.updateValue();

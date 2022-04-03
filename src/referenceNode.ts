@@ -254,9 +254,4 @@ export class ReferenceNode extends VisibleNode {
       return "";
     }
   }
-
-  debug(){
-    console.log("#ReferenceNode");
-    super.debug();
-  }
 }
