@@ -1,10 +1,10 @@
 import { showUI } from '@create-figma-plugin/utilities'
 
 export default function () {
-  const options = { width: 240, height: 450 };
+  const options = { width: 260, height: 400 };
   const data = {
     helps: [{
-      title: "Frame or Rectangle",
+      title: "Color Property",
       list:[
         {label:"fill", value:"#123456"},
         {label:"fillRGB", value:"r:123 g:456 b:789"},
@@ -16,7 +16,7 @@ export default function () {
         {label:"strokeStyle", value:"DarkBlue"}
       ]
     },{
-      title:"Text",
+      title:"Text Property",
       list:[
         {label:"font", value:"Roboto"},
         {label:"fontWeight", value:"Bold"},
@@ -28,7 +28,7 @@ export default function () {
         {label:"textStyle", value:"Body"}
       ]
     },{
-      title:"Size",
+      title:"Size Property",
       list:[
         {label:"height", value:"32"},
         {label:"width", value:"64"}

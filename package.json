@@ -23,12 +23,12 @@
     "name": "Visible Property 2",
     "menu": [
       {
-        "name": "Run update all",
+        "name": "🔍 Run update all",
         "main": "src/main.ts"
       },
       "-",
       {
-        "name": "Help",
+        "name": "🤔 Help",
         "main": "src/help.ts",
         "ui": "src/ui.tsx"
       }
