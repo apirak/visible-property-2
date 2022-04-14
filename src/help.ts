@@ -6,13 +6,13 @@ export default function () {
     helps: [{
       title: "Color Property",
       list:[
-        {label:"fill", value:"#123456"},
-        {label:"fillRGB", value:"r:123 g:456 b:789"},
-        {label:"fillHSL", value:"h:123 s:456 l:789"},
+        {label:"fill", value:"#123456 78%"},
+        {label:"fillRGB", value:"rgba(123, 456, 789, 0.45)"},
+        {label:"fillHSL", value:"hsla(123, 45%, 78%, 0.9)"},
         {label:"fillStyle", value:"DarkBlue"},
-        {label:"stroke", value:"#123456"},
-        {label:"strokeRGB", value:"r:123 g:456 b:789"},
-        {label:"strokeHSL", value:"h:123 s:456 l:789"},
+        {label:"stroke", value:"#123456 78%"},
+        {label:"strokeRGB", value:"rgba(123, 456, 789, 0.45)"},
+        {label:"strokeHSL", value:"hsla(123, 45%, 78%, 0.9)"},
         {label:"strokeStyle", value:"DarkBlue"}
       ]
     },{
