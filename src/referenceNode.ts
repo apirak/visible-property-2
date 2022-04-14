@@ -1,5 +1,5 @@
 import { VisibleNode } from './visibleNode';
-import { ColorFormat, toHsl, toHex } from 'figx';
+import { colorToHex, colorToHsl, colorToRgb } from './colorUtility';
 import { colorName } from './colorName';
 
 export interface ReferenceNode extends VisibleNode{
@@ -7,22 +7,9 @@ export interface ReferenceNode extends VisibleNode{
   getValue(name:string):string;
 }
 
-export type HSLColor = { h: number; s: number; l: number };
-export type RGB255 = { r: number; g:number; b: number};
 export type Space = { unit: string; value:number};
 
-const toRGB255 = (color:RGB):RGB255 => {
-  return {r: color.r*255, g: color.g*255, b: color.b*255}
-}
-
-const toFixedZero = (num:number):string => {
-  const numString = num.toString();
-  const fixedNumber = numString.slice(0, (numString.indexOf(".")))
-  return (fixedNumber != "") ? fixedNumber : "0"
-}
-
 export class ReferenceNode extends VisibleNode {
-
   isSolidPaints(fills: readonly Paint[] | PluginAPI['mixed']): fills is SolidPaint[] {
     if (fills as Paint[] != undefined){
       if ((fills as Paint[]).length != 0){
@@ -95,7 +82,7 @@ export class ReferenceNode extends VisibleNode {
   getHex(type:string):string{
     const paints = (type == "stroke") ? this.node.strokes : this.node.fills;
     if(this.isSolidPaints(paints)){
-      return toHex(toRGB255(paints[0].color));
+      return colorToHex(paints[0].color, paints[0].opacity)
     } else {
       if (paints.length == 0){
         return "No " + type
@@ -107,15 +94,19 @@ export class ReferenceNode extends VisibleNode {
   getRGB(type:string):string{
     const paints = (type == "stroke") ? this.node.strokes : this.node.fills;
     if(this.isSolidPaints(paints)){
-      let color = paints[0].color;
-      let alpha = paints[0].opacity;
-      const r =  toFixedZero(color.r*256);
-      const g =  toFixedZero(color.g*256);
-      const b =  toFixedZero(color.b*256);
-      return  "r:" + (r?r:"0") +
-             " g:" + (g?g:"0") +
-             " b:" + (b?b:"0") +
-             ((alpha == 1 || alpha == undefined) ? "" : " a:" + (alpha*100).toFixed(0));
+      return colorToRgb(paints[0].color, paints[0].opacity);
+    } else {
+      if (paints.length == 0){
+        return "No " + type
+      }
+      return "";
+    }
+  }
+
+  getHSL(type:string):string {
+    const paints = (type == "stroke") ? this.node.strokes : this.node.fills;
+    if(this.isSolidPaints(paints)){
+      return colorToHsl(paints[0].color, paints[0].opacity);
     } else {
       if (paints.length == 0){
         return "No " + type
@@ -144,27 +135,6 @@ export class ReferenceNode extends VisibleNode {
       return style ? style.name : "Can't read style";
     }
     return "No Style";
-  }
-
-  getHSL(type:string):string {
-    const paints = (type == "stroke") ? this.node.strokes : this.node.fills;
-    if(this.isSolidPaints(paints)){
-      const colorObject = toRGB255(paints[0].color);
-      let alpha = paints[0].opacity;
-      const hslObject =  <HSLColor>toHsl(colorObject, ColorFormat.OBJECT);
-      const h = (hslObject.h).toFixed(0);
-      const s = (hslObject.s).toFixed(0);
-      const l = (hslObject.l).toFixed(0);
-      return "h:" + (h?h:"0") +
-        " s:" + (s?s:"0") +
-        " l:" + (l?l:"0") +
-        ((alpha == 1 || alpha == undefined) ? "" : " a:" + (alpha*100).toFixed(0));
-    } else {
-      if (paints.length == 0){
-        return "No " + type
-      }
-      return "";
-    }
   }
 
   getTextSpace(type:string):string {
@@ -246,7 +216,7 @@ export class ReferenceNode extends VisibleNode {
   getColorName(type:string):string {
     const paints = (type == "stroke") ? this.node.strokes : this.node.fills;
     if(this.isSolidPaints(paints)){
-      return colorName(toHex(toRGB255(paints[0].color)));
+      return colorName(colorToHex(paints[0].color, undefined));
     } else {
       if (paints.length == 0){
         return "No " + type
