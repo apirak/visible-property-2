@@ -18,7 +18,7 @@ will update the text follow reference's properties whenever it is modified.
 
 # Properties:
 
-## Fill
+### Fill
 
 - fill -> #123456 78%
 - fillRGB -> rgba(123, 456, 789, 1)
@@ -26,7 +26,7 @@ will update the text follow reference's properties whenever it is modified.
 - fillStyle -> DarkBlue
 - fillStyleDescription -> The Description
 
-## Stroke
+### Stroke
 
 - stroke -> #123456
 - strokeRGB -> rgba(123, 456, 789, 1)
@@ -34,7 +34,7 @@ will update the text follow reference's properties whenever it is modified.
 - strokeStyle -> DarkBlue
 - strokeStyleDescription -> The Description
 
-## Text
+### Text
 
 - font -> Roboto
 - fontWeight -> Bold
@@ -46,12 +46,12 @@ will update the text follow reference's properties whenever it is modified.
 - textStyle -> Body
 - textStyleDescription -> The Description
 
-## Size
+### Size
 
 - height -> 32
 - width -> 64
 
-## Component
+### Component
 
 - description
 
