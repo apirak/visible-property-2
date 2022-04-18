@@ -6,11 +6,9 @@ Visible Property 2 let you use layer's name to connect the Element's property
 and the text's value that will speed-up your design system process. This plugin
 will update the text follow reference's properties whenever it is modified.
 
-# Video Tutorial
+# How it works:
 
 [![Visible Property 2 tutorial](http://img.youtube.com/vi/PEC56gILBMA/0.jpg)](http://www.youtube.com/watch?v=PEC56gILBMA "Visible Property 2 Tutorial")
-
-# How it works:
 
 1. Define reference element by add "#" in front of layer name. For example
    #color
