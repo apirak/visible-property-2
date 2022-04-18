@@ -26,6 +26,7 @@ will update the text follow reference's properties whenever it is modified.
 - fillRGB -> rgba(123, 456, 789, 1)
 - fillHSL -> hsla(123, 456, 789, 0.1)
 - fillStyle -> DarkBlue
+- fillStyleDescription -> The Description
 
 ## Stroke
 
@@ -33,6 +34,7 @@ will update the text follow reference's properties whenever it is modified.
 - strokeRGB -> rgba(123, 456, 789, 1)
 - strokeHSL -> hsla(123, 456, 789, 0.1)
 - strokeStyle -> DarkBlue
+- strokeStyleDescription -> The Description
 
 ## Text
 
@@ -44,6 +46,7 @@ will update the text follow reference's properties whenever it is modified.
 - letterSpace -> 12 or 12%
 - lineHeight -> 12 or 12%
 - textStyle -> Body
+- textStyleDescription -> The Description
 
 ## Size
 

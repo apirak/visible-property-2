@@ -52,6 +52,15 @@ export class ReferenceNode extends VisibleNode {
       case "textStyle":
         return this.getStyle("text");
         break;
+      case "fillStyleDescription":
+        return this.getStyleDescription("fill");
+        break;
+      case "strokeStyleDescription":
+        return this.getStyleDescription("stroke");
+        break;
+      case "textStyleDescription":
+        return this.getStyleDescription("text");
+        break;
       case "description":
         return this.getDescription();
         break;
@@ -132,7 +141,41 @@ export class ReferenceNode extends VisibleNode {
 
     if(styleId){
       const style = figma.getStyleById(styleId)
-      return style ? style.name : "Can't read style";
+      if(style){
+        return style.name.split(/ *\/ */).join('/');
+      } else {
+        return "Can't read style";
+      }
+    }
+    return "No Style";
+  }
+
+  getStyleDescription(type:string):string{
+    let styleId:string = "";
+
+    switch(type){
+      case "stroke":
+        styleId = (this.node as ComponentNode).strokeStyleId.toString();
+        break;
+      case "fill":
+        styleId = (this.node as ComponentNode).fillStyleId.toString();
+        break;
+      case "text":
+        styleId = (this.node as TextNode).textStyleId.toString();
+        break;
+    }
+
+    if(styleId){
+      const style = figma.getStyleById(styleId)
+      if (style) {
+        if (style.description) {
+          return style.description;
+        } else {
+          return "No description";
+        }
+      } else {
+        return "Can't read style";
+      }
     }
     return "No Style";
   }
