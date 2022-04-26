@@ -6,11 +6,9 @@ Visible Property 2 let you use layer's name to connect the Element's property
 and the text's value that will speed-up your design system process. This plugin
 will update the text follow reference's properties whenever it is modified.
 
-# Video Tutorial
+# How it works:
 
 [![Visible Property 2 tutorial](http://img.youtube.com/vi/PEC56gILBMA/0.jpg)](http://www.youtube.com/watch?v=PEC56gILBMA "Visible Property 2 Tutorial")
-
-# How it works:
 
 1. Define reference element by add "#" in front of layer name. For example
    #color
@@ -20,7 +18,7 @@ will update the text follow reference's properties whenever it is modified.
 
 # Properties:
 
-## Fill
+### Fill
 
 - fill -> #123456 78%
 - fillRGB -> rgba(123, 456, 789, 1)
@@ -28,7 +26,7 @@ will update the text follow reference's properties whenever it is modified.
 - fillStyle -> DarkBlue
 - fillStyleDescription -> The Description
 
-## Stroke
+### Stroke
 
 - stroke -> #123456
 - strokeRGB -> rgba(123, 456, 789, 1)
@@ -36,7 +34,7 @@ will update the text follow reference's properties whenever it is modified.
 - strokeStyle -> DarkBlue
 - strokeStyleDescription -> The Description
 
-## Text
+### Text
 
 - font -> Roboto
 - fontWeight -> Bold
@@ -48,12 +46,12 @@ will update the text follow reference's properties whenever it is modified.
 - textStyle -> Body
 - textStyleDescription -> The Description
 
-## Size
+### Size
 
 - height -> 32
 - width -> 64
 
-## Component
+### Component
 
 - description
 
