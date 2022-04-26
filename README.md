@@ -23,6 +23,7 @@ will update the text follow reference's properties whenever it is modified.
 - fill -> #123456 78%
 - fillRGB -> rgba(123, 456, 789, 1)
 - fillHSL -> hsla(123, 456, 789, 0.1)
+- fillHSB -> hsba(123, 456, 789, 0.1)
 - fillStyle -> DarkBlue
 - fillStyleDescription -> The Description
 
@@ -31,6 +32,7 @@ will update the text follow reference's properties whenever it is modified.
 - stroke -> #123456
 - strokeRGB -> rgba(123, 456, 789, 1)
 - strokeHSL -> hsla(123, 456, 789, 0.1)
+- strokeHSB -> hsba(123, 456, 789, 0.1)
 - strokeStyle -> DarkBlue
 - strokeStyleDescription -> The Description
 
