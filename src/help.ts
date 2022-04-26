@@ -9,11 +9,13 @@ export default function () {
         {label:"fill", value:"#123456 78%"},
         {label:"fillRGB", value:"rgba(123, 456, 789, 0.45)"},
         {label:"fillHSL", value:"hsla(123, 45%, 78%, 0.9)"},
+        {label:"fillHSB", value:"hsba(123, 45%, 78%, 0.9)"},
         {label:"fillStyle", value:"DarkBlue"},
         {label:"fillStyleDescription", value:"Description"},
         {label:"stroke", value:"#123456 78%"},
         {label:"strokeRGB", value:"rgba(123, 456, 789, 0.45)"},
         {label:"strokeHSL", value:"hsla(123, 45%, 78%, 0.9)"},
+        {label:"strokeHSB", value:"hsba(123, 45%, 78%, 0.9)"},
         {label:"strokeStyle", value:"DarkBlue"},
         {label:"strokeStyleDescription", value:"Description"},
       ]

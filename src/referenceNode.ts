@@ -1,5 +1,5 @@
 import { VisibleNode } from './visibleNode';
-import { colorToHex, colorToHsl, colorToRgb } from './colorUtility';
+import { colorToHex, colorToHSL, colorToRgb, colorToHSB } from './colorUtility';
 import { colorName } from './colorName';
 
 export interface ReferenceNode extends VisibleNode{
@@ -40,8 +40,14 @@ export class ReferenceNode extends VisibleNode {
       case "strokeHSL":
         return this.getHSL("stroke");
         break;
+      case "strokeHSB":
+        return this.getHSB("stroke");
+        break;
       case "fillHSL":
         return this.getHSL("fill");
+        break;
+      case "fillHSB":
+        return this.getHSB("fill");
         break;
       case "fillStyle":
         return this.getStyle("fill");
@@ -115,7 +121,19 @@ export class ReferenceNode extends VisibleNode {
   getHSL(type:string):string {
     const paints = (type == "stroke") ? this.node.strokes : this.node.fills;
     if(this.isSolidPaints(paints)){
-      return colorToHsl(paints[0].color, paints[0].opacity);
+      return colorToHSL(paints[0].color, paints[0].opacity);
+    } else {
+      if (paints.length == 0){
+        return "No " + type
+      }
+      return "";
+    }
+  }
+
+  getHSB(type:string):string {
+    const paints = (type == "stroke") ? this.node.strokes : this.node.fills;
+    if(this.isSolidPaints(paints)){
+      return colorToHSB(paints[0].color, paints[0].opacity);
     } else {
       if (paints.length == 0){
         return "No " + type

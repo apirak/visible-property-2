@@ -1,4 +1,5 @@
 export type HSLColor = { h: number; s: number; l: number };
+export type HSBColor = { h: number; s: number; b: number };
 
 export const colorNumberToHex = (color:number):string => {
   const hex = Math.round(color * 255).toString(16);
@@ -14,53 +15,28 @@ export function colorToHex(color:RGB, opacity:number|undefined):string{
   return rgbToHex(color["r"], color["g"], color["b"]) + a;
 }
 
-export function rgbToHsl(r:number, g:number, b:number) {
-  var min, max, i, l, s, maxcolor, h, rgb = [];
-  rgb[0] = r;
-  rgb[1] = g;
-  rgb[2] = b;
-  min = rgb[0];
-  max = rgb[0];
-  maxcolor = 0;
-  for (i = 0; i < rgb.length - 1; i++) {
-    if (rgb[i + 1] <= min) {min = rgb[i + 1];}
-    if (rgb[i + 1] >= max) {max = rgb[i + 1];maxcolor = i + 1;}
-  }
-  if (maxcolor == 0) {
-    h = (rgb[1] - rgb[2]) / (max - min);
-  }
-  if (maxcolor == 1) {
-    h = 2 + (rgb[2] - rgb[0]) / (max - min);
-  }
-  if (maxcolor == 2) {
-    h = 4 + (rgb[0] - rgb[1]) / (max - min);
-  }
-  if ((typeof h !== 'number') || isNaN(h)) {
-    h = 0;
-  } else {
-    h = h * 60;
-  }
-  if (h < 0) {h = h + 360; }
-  l = (min + max) / 2;
-  if (min == max) {
-    s = 0;
-  } else {
-    if (l < 0.5) {
-      s = (max - min) / (max + min);
-    } else {
-      s = (max - min) / (2 - max - min);
-    }
-  }
-  s = s;
-  return {h : h, s : s, l : l};
+export function rgbToHSB(r:number, g:number, b:number) {
+  let v=Math.max(r,g,b), c=v-Math.min(r,g,b);
+  let h= c && ((v==r) ? (g-b)/c : ((v==g) ? 2+(b-r)/c : 4+(r-g)/c));
+  return {h:60*(h<0?h+6:h), s:v&&c/v, b:v};
+};
+
+export function rgbToHSL(r:number, g:number, b:number) {
+  let v=Math.max(r,g,b), c=v-Math.min(r,g,b), f=(1-Math.abs(v+v-c-1));
+  let h= c && ((v==r) ? (g-b)/c : ((v==g) ? 2+(b-r)/c : 4+(r-g)/c));
+  return {h: 60*(h<0?h+6:h), s:f ? c/f : 0, l:(v+v-c)/2};
 }
 
-export function colorToHslObject(color:RGB):HSLColor{
-  return rgbToHsl(color["r"], color["g"], color["b"]);
+export function colorToHSLObject(color:RGB):HSLColor{
+  return rgbToHSL(color["r"], color["g"], color["b"]);
 }
 
-export function colorToHsl(color:RGB, opacity:number|undefined):string{
-  const hsl:HSLColor = colorToHslObject(color);
+export function colorToHSBObject(color:RGB):HSBColor{
+  return rgbToHSB(color["r"], color["g"], color["b"]);
+}
+
+export function colorToHSL(color:RGB, opacity:number|undefined):string{
+  const hsl:HSLColor = colorToHSLObject(color);
   const hue = Number(hsl.h.toFixed(0));
   const sat = Number(hsl.s.toFixed(2));
   const lightness = Number(hsl.l.toFixed(2));
@@ -68,6 +44,17 @@ export function colorToHsl(color:RGB, opacity:number|undefined):string{
 
   return "hsla(" + hue + ", " + Math.round(sat * 100) + "%, " + Math.round(lightness * 100) + "%, " + a + ")";
 }
+
+export function colorToHSB(color:RGB, opacity:number|undefined):string{
+  const hsb:HSBColor = colorToHSBObject(color);
+  const hue = Number(hsb.h.toFixed(0));
+  const sat = Number(hsb.s.toFixed(2));
+  const brightness = Number(hsb.b.toFixed(2));
+  const a = (opacity == 1 || opacity == undefined) ? "1" : Number(opacity.toFixed(2));
+
+  return "hsba(" + hue + ", " + Math.round(sat * 100) + "%, " + Math.round(brightness * 100) + "%, " + a + ")";
+}
+
 
 const toFixedZero = (num:number):string => {
   const numString = num.toString();
