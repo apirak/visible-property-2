@@ -1,7 +1,7 @@
 import { VisibleNode } from './visibleNode';
 import { colorToHex, colorToHSL, colorToRgb, colorToHSB } from './colorUtility';
 import { colorName } from './colorName';
-import { cssGradient } from './gardientUtility';
+import { gradientToString } from './gradientUtility';
 
 export interface ReferenceNode extends VisibleNode{
   getFill():string;
@@ -101,8 +101,7 @@ export class ReferenceNode extends VisibleNode {
       return colorToHex(paints[0].color, paints[0].opacity)
     } else {
       if (paints[0].type == "GRADIENT_LINEAR") {
-         const css = cssGradient(paints[0])
-         return css;
+        return gradientToString(paints[0], "HEX")
       }
       if (paints.length == 0){
         return "No " + type
@@ -116,6 +115,9 @@ export class ReferenceNode extends VisibleNode {
     if(this.isSolidPaints(paints)){
       return colorToRgb(paints[0].color, paints[0].opacity);
     } else {
+      if (paints[0].type == "GRADIENT_LINEAR") {
+        return gradientToString(paints[0], "RGB")
+      }
       if (paints.length == 0){
         return "No " + type
       }
@@ -128,6 +130,9 @@ export class ReferenceNode extends VisibleNode {
     if(this.isSolidPaints(paints)){
       return colorToHSL(paints[0].color, paints[0].opacity);
     } else {
+      if (paints[0].type == "GRADIENT_LINEAR") {
+        return gradientToString(paints[0], "HSL")
+      }
       if (paints.length == 0){
         return "No " + type
       }
@@ -140,6 +145,9 @@ export class ReferenceNode extends VisibleNode {
     if(this.isSolidPaints(paints)){
       return colorToHSB(paints[0].color, paints[0].opacity);
     } else {
+      if (paints[0].type == "GRADIENT_LINEAR") {
+        return gradientToString(paints[0], "HSB")
+      }
       if (paints.length == 0){
         return "No " + type
       }
