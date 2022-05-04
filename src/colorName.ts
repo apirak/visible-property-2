@@ -1,5 +1,3 @@
-import { toHex } from 'figx';
-
 interface AllColorName {
   [index: string]: string;
 }
