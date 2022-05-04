@@ -1,6 +1,7 @@
 import { VisibleNode } from './visibleNode';
 import { colorToHex, colorToHSL, colorToRgb, colorToHSB } from './colorUtility';
 import { colorName } from './colorName';
+import { cssGradient } from './gardientUtility';
 
 export interface ReferenceNode extends VisibleNode{
   getFill():string;
@@ -99,6 +100,10 @@ export class ReferenceNode extends VisibleNode {
     if(this.isSolidPaints(paints)){
       return colorToHex(paints[0].color, paints[0].opacity)
     } else {
+      if (paints[0].type == "GRADIENT_LINEAR") {
+         const css = cssGradient(paints[0])
+         return css;
+      }
       if (paints.length == 0){
         return "No " + type
       }
