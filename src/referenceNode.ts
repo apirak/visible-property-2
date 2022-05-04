@@ -1,6 +1,7 @@
 import { VisibleNode } from './visibleNode';
-import { colorToHex, colorToHsl, colorToRgb } from './colorUtility';
+import { colorToHex, colorToHSL, colorToRgb, colorToHSB } from './colorUtility';
 import { colorName } from './colorName';
+import { cssGradient } from './gardientUtility';
 
 export interface ReferenceNode extends VisibleNode{
   getFill():string;
@@ -40,8 +41,14 @@ export class ReferenceNode extends VisibleNode {
       case "strokeHSL":
         return this.getHSL("stroke");
         break;
+      case "strokeHSB":
+        return this.getHSB("stroke");
+        break;
       case "fillHSL":
         return this.getHSL("fill");
+        break;
+      case "fillHSB":
+        return this.getHSB("fill");
         break;
       case "fillStyle":
         return this.getStyle("fill");
@@ -51,6 +58,15 @@ export class ReferenceNode extends VisibleNode {
         break;
       case "textStyle":
         return this.getStyle("text");
+        break;
+      case "fillStyleDescription":
+        return this.getStyleDescription("fill");
+        break;
+      case "strokeStyleDescription":
+        return this.getStyleDescription("stroke");
+        break;
+      case "textStyleDescription":
+        return this.getStyleDescription("text");
         break;
       case "description":
         return this.getDescription();
@@ -84,6 +100,10 @@ export class ReferenceNode extends VisibleNode {
     if(this.isSolidPaints(paints)){
       return colorToHex(paints[0].color, paints[0].opacity)
     } else {
+      if (paints[0].type == "GRADIENT_LINEAR") {
+         const css = cssGradient(paints[0])
+         return css;
+      }
       if (paints.length == 0){
         return "No " + type
       }
@@ -106,7 +126,19 @@ export class ReferenceNode extends VisibleNode {
   getHSL(type:string):string {
     const paints = (type == "stroke") ? this.node.strokes : this.node.fills;
     if(this.isSolidPaints(paints)){
-      return colorToHsl(paints[0].color, paints[0].opacity);
+      return colorToHSL(paints[0].color, paints[0].opacity);
+    } else {
+      if (paints.length == 0){
+        return "No " + type
+      }
+      return "";
+    }
+  }
+
+  getHSB(type:string):string {
+    const paints = (type == "stroke") ? this.node.strokes : this.node.fills;
+    if(this.isSolidPaints(paints)){
+      return colorToHSB(paints[0].color, paints[0].opacity);
     } else {
       if (paints.length == 0){
         return "No " + type
@@ -132,7 +164,41 @@ export class ReferenceNode extends VisibleNode {
 
     if(styleId){
       const style = figma.getStyleById(styleId)
-      return style ? style.name : "Can't read style";
+      if(style){
+        return style.name.split(/ *\/ */).join('/');
+      } else {
+        return "Can't read style";
+      }
+    }
+    return "No Style";
+  }
+
+  getStyleDescription(type:string):string{
+    let styleId:string = "";
+
+    switch(type){
+      case "stroke":
+        styleId = (this.node as ComponentNode).strokeStyleId.toString();
+        break;
+      case "fill":
+        styleId = (this.node as ComponentNode).fillStyleId.toString();
+        break;
+      case "text":
+        styleId = (this.node as TextNode).textStyleId.toString();
+        break;
+    }
+
+    if(styleId){
+      const style = figma.getStyleById(styleId)
+      if (style) {
+        if (style.description) {
+          return style.description;
+        } else {
+          return "No description";
+        }
+      } else {
+        return "Can't read style";
+      }
     }
     return "No Style";
   }
