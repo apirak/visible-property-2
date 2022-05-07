@@ -38,6 +38,13 @@ export default function () {
         {label:"height", value:"32"},
         {label:"width", value:"64"}
       ]
+    },{
+      title:"Reference to Parent Layer",
+      list:[
+        {label:"#Parent.name", value:"Parent name"},
+        {label:"#TopParent.name", value:"TopParent name"},
+        {label:"name", value:"Layer name"}
+      ]
     }]
   }
 
