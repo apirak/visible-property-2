@@ -9,7 +9,8 @@ export class VisibleNode implements VisibleNode{
   type: string = "";
   referenceName: string = "";
   propertyName: string = "";
-  path: string[] = [];
+  path: string[] = []; //All parent nodes by id
+  topParent: RectangleNode | ComponentNode | TextNode | any;
 
   constructor(node: SceneNode, scopeNodeID: string) {
     this.scopeNodeID = scopeNodeID;
@@ -44,7 +45,7 @@ export class VisibleNode implements VisibleNode{
   }
 
   matchName() {
-    let names = this.node.name.match(/_?#([a-zA-Z0-9\:]+).?([a-zA-Z0-9]*)/);
+    let names = this.node.name.match(/_?#([#a-zA-Z0-9\:]+).?([a-zA-Z0-9]*)/);
     if (names) {
       this.referenceName = names[1] ? names[1] : "";
       this.propertyName = names[2] ? names[2] : "";

@@ -89,6 +89,9 @@ export class ReferenceNode extends VisibleNode {
       case "strokeColorName":
         return this.getColorName("stroke");
         break;
+      case "name":
+        return this.getLayerName();
+        break;
       default:
         return "No function"
         break;
@@ -297,5 +300,9 @@ export class ReferenceNode extends VisibleNode {
       }
       return "";
     }
+  }
+
+  getLayerName():string{
+    return this.node.name;
   }
 }

@@ -8,18 +8,21 @@ function selectScopeNode():BaseNode | SceneNode | PageNode {
   if(selectedNode == null) {
     return figma.currentPage;
   } else {
-    console.log("Selected ID: "+selectedNode.id);
     return selectedNode;
   }
 }
 
 async function updateAllTextProperty() {
   const searchNodes = figma.currentPage.findAll(node => /#|_#/.test(node.name));
-  const scopeNode = selectScopeNode();
+
+  // const scopeNode = selectScopeNode();
+  const scopeNode = figma.currentPage; // alway search all page
 
   const propertyNodes: PropertyNode[] = [];
   const referenceNodes: ReferenceNode[] = [];
 
+  // Create Properties and References node list
+  // also list all parent for each node
   searchNodes.forEach(searchNode => {
     const visibleNode = new VisibleNode(searchNode, scopeNode.id);
     if (visibleNode.type == "Property") {
@@ -29,12 +32,27 @@ async function updateAllTextProperty() {
     }
   });
 
+  // Match the nearest reference
   propertyNodes.forEach(propertyNode => {
-    referenceNodes.forEach(referenceNode => {
-      if(propertyNode.referenceName == referenceNode.referenceName){
-        propertyNode.tryReferencePath(referenceNode);
+    if(propertyNode.referenceName.match(/#([a-zA-Z0-9\:]+)/)){
+      switch(propertyNode.referenceName) {
+        case "#Parent":
+          propertyNode.referenceNode = new ReferenceNode(propertyNode.node.parent, scopeNode.id);
+          break;
+        case "#TopParent":
+          let topParent = <SceneNode>figma.getNodeById(propertyNode.path[propertyNode.path.length - 2]);
+          if(topParent){
+            propertyNode.referenceNode = new ReferenceNode(topParent, scopeNode.id);
+          }
+          break;
       }
-    });
+    } else {
+      referenceNodes.forEach(referenceNode => {
+        if(propertyNode.referenceName == referenceNode.referenceName){
+          propertyNode.tryReferencePath(referenceNode);
+        }
+      });
+    }
   });
 
   await Promise.all(propertyNodes.map(propertyNode => {
