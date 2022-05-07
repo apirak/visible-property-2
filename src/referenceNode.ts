@@ -21,51 +21,52 @@ export class ReferenceNode extends VisibleNode {
   }
 
   getValue(name:string):string {
-    const textFunction = new Set<string>(['font', 'fontWeight', 'fontSize', 'paragraphIndent', 'paragraphSpace']);
-    if(textFunction.has(name)){
-      return this.getText(name);
+    const lowerCaseName:string = name.toLowerCase();
+    const textFunction = new Set<string>(['font', 'fontweight', 'fontsize', 'paragraphindent', 'paragraphspace']);
+    if(textFunction.has(lowerCaseName)){
+      return this.getText(lowerCaseName);
     }
-    switch(name) {
+    switch(lowerCaseName) {
       case "fill":
         return this.getHex('fill');
         break;
       case "stroke":
         return this.getHex('stroke');
         break;
-      case "fillRGB":
+      case "fillrgb":
         return this.getRGB("fill");
         break;
-      case "strokeRGB":
+      case "strokergb":
         return this.getRGB("stroke");
         break;
-      case "strokeHSL":
+      case "strokehsl":
         return this.getHSL("stroke");
         break;
-      case "strokeHSB":
+      case "strokehsb":
         return this.getHSB("stroke");
         break;
-      case "fillHSL":
+      case "fillshl":
         return this.getHSL("fill");
         break;
-      case "fillHSB":
+      case "fillhsb":
         return this.getHSB("fill");
         break;
-      case "fillStyle":
+      case "fillstyle":
         return this.getStyle("fill");
         break;
-      case "strokeStyle":
+      case "strokestyle":
         return this.getStyle("stroke");
         break;
-      case "textStyle":
+      case "textstyle":
         return this.getStyle("text");
         break;
-      case "fillStyleDescription":
+      case "fillstyledescription":
         return this.getStyleDescription("fill");
         break;
-      case "strokeStyleDescription":
+      case "strokestyledescription":
         return this.getStyleDescription("stroke");
         break;
-      case "textStyleDescription":
+      case "textstyledescription":
         return this.getStyleDescription("text");
         break;
       case "description":
@@ -77,16 +78,16 @@ export class ReferenceNode extends VisibleNode {
       case "height":
         return this.getHeight();
         break;
-      case "letterSpace":
+      case "letterspace":
         return this.getTextSpace("letter space");
         break;
-      case "lineHeight":
+      case "lineheight":
         return this.getTextSpace("line height");
         break;
-      case "fillColorName":
+      case "fillcolorname":
         return this.getColorName("fill");
         break;
-      case "strokeColorName":
+      case "strokecolorname":
         return this.getColorName("stroke");
         break;
       case "name":
