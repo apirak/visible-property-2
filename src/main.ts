@@ -35,11 +35,11 @@ async function updateAllTextProperty() {
   // Match the nearest reference
   propertyNodes.forEach(propertyNode => {
     if(propertyNode.referenceName.match(/#([a-zA-Z0-9\:]+)/)){
-      switch(propertyNode.referenceName) {
-        case "#Parent":
+      switch(propertyNode.referenceName.toLowerCase()) {
+        case "#parent":
           propertyNode.referenceNode = new ReferenceNode(propertyNode.node.parent, scopeNode.id);
           break;
-        case "#TopParent":
+        case "#topparent":
           let topParent = <SceneNode>figma.getNodeById(propertyNode.path[propertyNode.path.length - 2]);
           if(topParent){
             propertyNode.referenceNode = new ReferenceNode(topParent, scopeNode.id);
