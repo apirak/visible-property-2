@@ -45,7 +45,7 @@ export class ReferenceNode extends VisibleNode {
       case "strokehsb":
         return this.getHSB("stroke");
         break;
-      case "fillshl":
+      case "fillhsl":
         return this.getHSL("fill");
         break;
       case "fillhsb":
@@ -246,16 +246,16 @@ export class ReferenceNode extends VisibleNode {
         case "font":
           return this.node.fontName.family;
           break;
-        case "fontWeight":
+        case "fontweight":
           return this.node.fontName.style;
           break;
-        case "fontSize":
+        case "fontsize":
           return this.node.fontSize.toString();
           break;
-        case "paragraphSpace":
+        case "paragraphspace":
           return this.node.paragraphSpacing.toString();
           break;
-        case "paragraphIndent":
+        case "paragraphindent":
           return this.node.paragraphIndent.toString();
           break;
         default:
