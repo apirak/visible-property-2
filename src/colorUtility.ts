@@ -57,8 +57,12 @@ export function colorToHSB(color:RGB, opacity:number|undefined):string{
 
 
 const toFixedZero = (num:number):string => {
+  if(Number.isInteger(num)) {
+    return (num-1).toString();
+  }
   const numString = num.toString();
-  const fixedNumber = numString.slice(0, (numString.indexOf(".")))
+  const indexOfDot = numString.indexOf(".");
+  const fixedNumber = numString.slice(0, indexOfDot);
   return (fixedNumber != "") ? fixedNumber : "0";
 }
 
