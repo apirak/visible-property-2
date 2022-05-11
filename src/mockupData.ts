@@ -1,10 +1,21 @@
-import { showUI } from '@create-figma-plugin/utilities'
+import { h } from 'preact';
 
-export default function () {
-  const options = { width: 260, height: 400 };
-  const data = {
+export interface HelpList {
+  label: string;
+  value: string;
+};
+
+export interface Help {
+  helps: {
+    title: string;
+    list: HelpList[];
+  }[];
+}
+
+const mockupData = () => {
+  return ({
     helps: [{
-      title: "Color Property",
+      title: "Fill Property",
       list:[
         {label:"fill", value:"#123456 78%"},
         {label:"fillRGB", value:"rgba(123, 456, 789, 0.45)"},
@@ -12,6 +23,10 @@ export default function () {
         {label:"fillHSB", value:"hsba(123, 45%, 78%, 0.9)"},
         {label:"fillStyle", value:"DarkBlue"},
         {label:"fillStyleDescription", value:"Description"},
+      ]
+    },{
+      title: "Stroke Property",
+      list:[
         {label:"stroke", value:"#123456 78%"},
         {label:"strokeRGB", value:"rgba(123, 456, 789, 0.45)"},
         {label:"strokeHSL", value:"hsla(123, 45%, 78%, 0.9)"},
@@ -46,9 +61,7 @@ export default function () {
         {label:"name", value:"Layer name"}
       ]
     }]
-  }
-
-  showUI(options, data);
+  })
 }
 
-
+export { mockupData };

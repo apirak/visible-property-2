@@ -1,87 +1,42 @@
-import { render, Container, Text, VerticalSpace, Divider } from '@create-figma-plugin/ui';
-import { IconLayerText16, IconLayerRectangle16 } from '@create-figma-plugin/ui';
-import { h } from 'preact';
+import { render } from '@create-figma-plugin/ui';
+import { Tabs, TabsOption } from '@create-figma-plugin/ui';
+import { useState } from 'preact/hooks'
+import { h, JSX } from 'preact';
+import { Document } from './component/document';
+import { Home } from './component/home';
 
-function Plugin (props: { helps:[]}) {
-  const styleLable = {
-    "user-select": 'text',
-    "font-size": '11px',
-    "font-family": '"Roboto Mono", monospace'
-  }
-  const styleValue = {
-    color: '#a2a2a2'
-  }
-  const styleTutorRow = {
-    display: "flex",
-    "flex-direction": "row",
-    "align-items": "flex-start",
-    "gap": 8,
-    height: "20px"
-  }
-  const styleNumber = {
-    width: "12"
-  }
+function Plugin () {
+  const [value, setValue] = useState('Home');
+  const [selectedId, setSelectedId] = useState("");
+  const [selectedData, setSelectedData] = useState();
 
-  function createTable(list:[]) {
-    const table = list.map(({label, value}) =>{
-      return (
-        <div>
-          <span style={styleLable}>{label}: </span>
-          <span style={styleValue}>{value}</span>
-        </div>
-      );
-    });
-    return table;
+  const options: Array<TabsOption> = [
+    { children: <Home selectedId={selectedId} selectedData={selectedData} />, value: 'Home' },
+    { children: <Document />, value: 'Document' },
+  ];
+
+  function handleChange(event: JSX.TargetedEvent<HTMLInputElement>) {
+    const newValue = event.currentTarget.value
+    console.log(newValue)
+    setValue(newValue)
   };
 
-  function createHeader(helps:[]){
-    const header = helps.map(({title, list}) => {
-      return (
-        <div>
-          <Text bold>{title}</Text>
-          <VerticalSpace space='extraSmall' />
-          {createTable(list)}
-          <VerticalSpace space='medium' />
-        </div>
-      );
-    });
-    return header;
+  onmessage = (event) => {
+    const nodeId = event.data.pluginMessage.nodeId;
+    const properties = event.data.pluginMessage.properties;
+
+    console.log("nodeId", nodeId)
+
+    if (nodeId != "") {
+      setSelectedData(properties);
+      setSelectedId(nodeId);
+    } else {
+      setSelectedId("");
+    }
   }
 
   return (
-    <div>
-    <Container space='medium'>
-      <VerticalSpace space='small' />
-      <div style={styleTutorRow}>
-        <div style={styleNumber}>1.</div>
-        <div><IconLayerRectangle16 /></div>
-        <div>#Color</div>
-        <div style={styleValue}>← Define Reference</div>
-      </div>
-      <div style={styleTutorRow}>
-        <div style={styleNumber}>2.</div>
-        <div><IconLayerText16 /></div>
-        <div>#Color.fillRGB</div>
-        <div style={styleValue}>← Property</div>
-      </div>
-      <div style={styleTutorRow}>
-        <div style={styleNumber}>3.</div>
-        <div>Run Plugin</div>
-      </div>
-      <VerticalSpace space='small' />
-    </Container>
-    <Divider />
-    <Container space='medium'>
-      <VerticalSpace space='small' />
-      {createHeader(props.helps)}
-    </Container>
-    <Divider />
-    <Container space='medium'>
-      <VerticalSpace space='small' />
-      <text style={styleValue}>Learn more on <a href="#">Youtube</a></text>
-      <VerticalSpace space='medium' />
-    </Container>
-    </div>
+    <Tabs onChange={handleChange} options={options} value={value} />
   )
 }
 

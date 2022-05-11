@@ -1,0 +1,21 @@
+.buttonIcon {
+  background-color: #FFFFFF;
+  border: 0px;
+  border-radius: 4px;
+}
+
+.buttonIcon:hover {
+  background-color: #F5F5F5;
+}
+
+.valueSpan {
+  display: inline-block;
+  width: 180px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden !important;
+}
+
+.valueStyle {
+  flex-grow: 1;
+}

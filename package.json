@@ -1,8 +1,8 @@
 {
   "dependencies": {
-    "@create-figma-plugin/ui": "^1.8.4",
+    "@create-figma-plugin/ui": "^1.9.1",
     "@create-figma-plugin/utilities": "^1.8.4",
-    "preact": "^10.7.0"
+    "preact": "^10.7.2"
   },
   "devDependencies": {
     "@create-figma-plugin/build": "^1.8.4",
@@ -22,19 +22,19 @@
     "name": "Visible Property 2",
     "menu": [
       {
-        "name": "🔍 Run update all",
-        "main": "src/main.ts"
+        "name": "✚ Add Property",
+        "main": "src/main.ts",
+        "ui": "src/ui.tsx"
       },
       "-",
       {
-        "name": "🤔 Help",
-        "main": "src/help.ts",
-        "ui": "src/ui.tsx"
+        "name": "▶︎ Quick update",
+        "main": "src/updateText.ts"
       }
     ],
     "relaunchButtons": {
       "visibleproperty": {
-        "name": "Visible Property",
+        "name": "▶︎ Quick update",
         "main": "src/main.ts"
       }
     }

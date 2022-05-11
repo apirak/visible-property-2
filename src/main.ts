@@ -1,71 +1,69 @@
-import { VisibleNode } from './visibleNode';
-import { PropertyNode } from './propertyNode';
-import { ReferenceNode } from './referenceNode';
-import { setRelaunchButton } from '@create-figma-plugin/utilities';
-
-function selectScopeNode():BaseNode | SceneNode | PageNode {
-  const selectedNode = figma.currentPage.selection[0];
-  if(selectedNode == null) {
-    return figma.currentPage;
-  } else {
-    return selectedNode;
-  }
-}
-
-async function updateAllTextProperty() {
-  const searchNodes = figma.currentPage.findAll(node => /#|_#/.test(node.name));
-
-  // const scopeNode = selectScopeNode();
-  const scopeNode = figma.currentPage; // alway search all page
-
-  const propertyNodes: PropertyNode[] = [];
-  const referenceNodes: ReferenceNode[] = [];
-
-  // Create Properties and References node list
-  // also list all parent for each node
-  searchNodes.forEach(searchNode => {
-    const visibleNode = new VisibleNode(searchNode, scopeNode.id);
-    if (visibleNode.type == "Property") {
-      propertyNodes.push(new PropertyNode(visibleNode.node, scopeNode.id));
-    } else {
-      referenceNodes.push(new ReferenceNode(visibleNode.node, scopeNode.id));
-    }
-  });
-
-  // Match the nearest reference
-  propertyNodes.forEach(propertyNode => {
-    if(propertyNode.referenceName.match(/#([a-zA-Z0-9\:]+)/)){
-      switch(propertyNode.referenceName.toLowerCase()) {
-        case "#parent":
-          propertyNode.referenceNode = new ReferenceNode(propertyNode.node.parent, scopeNode.id);
-          break;
-        case "#topparent":
-          let topParent = <SceneNode>figma.getNodeById(propertyNode.path[propertyNode.path.length - 2]);
-          if(topParent){
-            propertyNode.referenceNode = new ReferenceNode(topParent, scopeNode.id);
-          }
-          break;
-      }
-    } else {
-      referenceNodes.forEach(referenceNode => {
-        if(propertyNode.referenceName == referenceNode.referenceName){
-          propertyNode.tryReferencePath(referenceNode);
-        }
-      });
-    }
-  });
-
-  await Promise.all(propertyNodes.map(propertyNode => {
-    return propertyNode.updateValue();
-  }));
-}
+import { showUI } from '@create-figma-plugin/utilities'
 
 export default function () {
-  setRelaunchButton(figma.currentPage,
-    'visibleproperty',
-    { description: 'Run Update all text follow #Reference'});
+  const options = { width: 260, height: 400 };
 
-  updateAllTextProperty().then(() => {
-    figma.closePlugin("Updated 🎉");
+  showUI(options);
+
+  figma.on('selectionchange', () => {
+
+    const selection = figma.currentPage.selection
+    let nodeId = ""
+    if (typeof selection !== "undefined" && selection.length > 0){
+      nodeId = selection[0].id
+    }
+
+    let selectedProperties = () => {
+      return ({
+        helps: [{
+          title: "Fill",
+          list:[
+            {label:"HEX", value:"#123456 78%"},
+            {label:"RGB", value:"rgba(123, 456, 789, 0.45)"},
+            {label:"HSL", value:"hsla(123, 45%, 78%, 0.9)"},
+            {label:"HSB", value:"hsba(123, 45%, 78%, 0.9)"},
+            {label:"Style", value:"DarkBlue"},
+            {label:"Description", value:"Description adslkfajl asdfka slja sdf aslkdf asf "},
+          ]
+        },{
+          title: "Stroke",
+          list:[
+            {label:"HEX", value:"#123456 78%"},
+            {label:"RGB", value:"rgba(123, 456, 789, 0.45)"},
+            {label:"HSL", value:"hsla(123, 45%, 78%, 0.9)"},
+            {label:"HSB", value:"hsba(123, 45%, 78%, 0.9)"},
+            {label:"Style", value:"DarkBlue"},
+            {label:"Description", value:"Description"},
+          ]
+        },{
+          title:"Font",
+          list:[
+            {label:"Font", value:"Roboto"},
+            {label:"Weight", value:"Bold"},
+            {label:"Size", value:"12"},
+            {label:"Indent", value:"12"},
+            {label:"Space", value:"12"},
+            {label:"Letter Space", value:"12 or 12%"},
+            {label:"Line Height", value:"12 or 12%"},
+            {label:"Style", value:"Body"},
+            {label:"Description", value:"Description"}
+          ]
+        },{
+          title:"Component",
+          list:[
+            {label:"Height", value:"32"},
+            {label:"width", value:"64"},
+            {label:"name", value:"Layer name"}
+          ]
+        }]
+      })
+    }
+
+    const selectedNode = {
+      nodeId: nodeId,
+      properties: selectedProperties()
+    }
+
+    figma.ui.postMessage(selectedNode);
   })
 }
