@@ -27,11 +27,9 @@ const Home = (props: {selectedId:string, selectedData:Help|undefined}) => {
 
   const showId = () => {
     if (typeof props.selectedId != "undefined" && props.selectedId != "") {
-      console.log("A")
       setSeletedType("reference by ID");
       return props.selectedId;
     } else {
-      console.log("B")
       setSeletedType("");
       return "Select a reference layer";
     }

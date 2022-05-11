@@ -8,14 +8,24 @@
   background-color: #F5F5F5;
 }
 
+.valueName {
+  flex: none;
+  width: 80px;
+  flex-grow: 0;
+  color: rgba(0, 0, 0, 1);
+}
+
 .valueSpan {
   display: inline-block;
   width: 180px;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden !important;
+  text-align: right;
 }
 
 .valueStyle {
-  flex-grow: 1;
+  width: 100%;
+  /* text-align: right; */
+  color: rgba(0, 0, 0, 0.3);
 }
