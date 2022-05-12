@@ -64,14 +64,16 @@ const setSelectedProperties = (nodeId:string): [Help, string] => {
   const referenceNode = new ReferenceNode(selectedNode, figma.currentPage.id)
   referenceNode.matchName();
 
-  let help:Help = {helps:[]}
+  // console.log("reference Name", referenceNode.referenceName);
+  // console.log("reference Name", referenceNode.propertyName);
 
+  let help:Help = {helps:[]}
   referenceNode.hasFill() && help.helps.push(getFillData(referenceNode));
   referenceNode.hasStroke() && help.helps.push(getStrokeData(referenceNode));
   referenceNode.isText() && help.helps.push(getTextData(referenceNode));
   help.helps.push(getComponentData(referenceNode));
 
-  return [help, nodeId];
+  return [help, referenceNode.referenceName];
 }
 
 export default function () {
@@ -81,21 +83,18 @@ export default function () {
 
   figma.on('selectionchange', () => {
     const selection = figma.currentPage.selection
-    let nodeName = ""
     if (typeof selection !== "undefined" && selection.length > 0){
       const [help, nodeName] = setSelectedProperties(selection[0].id)
 
       const selectedNode = {
-        nodeId: selection[0].id,
-        nodeName: nodeName,
-        refDescription: "reference by ID",
+        nodeId: nodeName? nodeName : selection[0].id,
+        refDescription: nodeName ? "reference by name" : "reference by ID",
         properties: help
       }
       figma.ui.postMessage(selectedNode);
     } else {
       const selectedNode = {
         nodeId: "",
-        nodeName: "Select a reference layer",
         refDescription: "",
         properties: null
       }

@@ -15,7 +15,6 @@ function Plugin () {
 
   const options: Array<TabsOption> = [
     { children: <Home
-      selectedName={selectedName}
       selectedId={selectedId}
       selectedData={selectedData}
       selectedRefDescription={selectedRefDescription}/>, value: 'Home' },
@@ -33,12 +32,9 @@ function Plugin () {
     const refDescription = event.data.pluginMessage.refDescription;
     const name = event.data.pluginMessage.nodeName;
 
-    console.log("property:",event.data.pluginMessage.properties);
 
     if (event.data.pluginMessage.properties !== null) {
       setSelectedData(event.data.pluginMessage.properties)
-    } else {
-      // setSelectedData({helps:[]})
     }
 
     setSelectedId(nodeId);

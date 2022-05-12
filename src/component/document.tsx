@@ -57,6 +57,8 @@ const Document = () => {
     <div>
       <Container space='medium'>
         <VerticalSpace space='small' />
+        <Text bold>Manualy add property</Text>
+        <VerticalSpace space='small' />
         <div style={styleTutorRow}>
           <div style={styleNumber}>1.</div>
           <div><IconLayerRectangle16 /></div>
@@ -78,6 +80,8 @@ const Document = () => {
       <Divider />
       <Container space='medium'>
         <VerticalSpace space='small' />
+        <Text>Here is property avaliable to display. You can add it after reference Name.</Text>
+        <VerticalSpace space='medium' />
         {createHeader()}
       </Container>
       <Divider />

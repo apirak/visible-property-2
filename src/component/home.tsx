@@ -6,7 +6,6 @@ import { Help } from '../mockupData';
 import { Properties } from './properties';
 
 const Home = (props: {
-  selectedName:string
   selectedId:string,
   selectedData:Help|undefined,
   selectedRefDescription:string }) => {
@@ -29,21 +28,29 @@ const Home = (props: {
     'color': '#B3B3B3'
   }
 
-  console.log(props.selectedName)
-  console.log(props.selectedId)
-  console.log(props.selectedRefDescription)
+  const propertyLayer = {
+    'display': props.selectedId == "" ? "none" : "block"
+  }
+
+  const helpLayer ={
+    'diaplay': 'block'
+  }
+
+  let referenceName = props.selectedId ? props.selectedId : "Select a referece layer";
 
   return (
     <div>
       <div style={selectedStyle}>
         <IconTarget32 />
-        <div style={selectedLayer}>{props.selectedName}</div>
+        <div style={selectedLayer}>{referenceName}</div>
         <div style={selectedLayerStatus}>{props.selectedRefDescription}</div>
       </div>
       <Divider />
-      <div>
+      <div style={propertyLayer}>
         <Properties data={props.selectedData}/>
       </div>
+      <div style={helpLayer}> </div>
+
     </div>
   );
 }
