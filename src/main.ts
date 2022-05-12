@@ -71,7 +71,7 @@ const setSelectedProperties = (nodeId:string): [Help, string] => {
   referenceNode.isText() && help.helps.push(getTextData(referenceNode));
   help.helps.push(getComponentData(referenceNode));
 
-  return [help, "abc"];
+  return [help, nodeId];
 }
 
 export default function () {
