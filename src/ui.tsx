@@ -4,14 +4,21 @@ import { useState } from 'preact/hooks'
 import { h, JSX } from 'preact';
 import { Document } from './component/document';
 import { Home } from './component/home';
+import { Help } from './mockupData';
 
 function Plugin () {
   const [value, setValue] = useState('Home');
   const [selectedId, setSelectedId] = useState("");
   const [selectedData, setSelectedData] = useState();
+  const [selectedName, setSelectedName] = useState("");
+  const [selectedRefDescription, setSelectedRefDescription] = useState("");
 
   const options: Array<TabsOption> = [
-    { children: <Home selectedId={selectedId} selectedData={selectedData} />, value: 'Home' },
+    { children: <Home
+      selectedName={selectedName}
+      selectedId={selectedId}
+      selectedData={selectedData}
+      selectedRefDescription={selectedRefDescription}/>, value: 'Home' },
     { children: <Document />, value: 'Document' },
   ];
 
@@ -23,16 +30,20 @@ function Plugin () {
 
   onmessage = (event) => {
     const nodeId = event.data.pluginMessage.nodeId;
-    const properties = event.data.pluginMessage.properties;
+    const refDescription = event.data.pluginMessage.refDescription;
+    const name = event.data.pluginMessage.nodeName;
 
-    console.log("nodeId", nodeId)
+    console.log("property:",event.data.pluginMessage.properties);
 
-    if (nodeId != "") {
-      setSelectedData(properties);
-      setSelectedId(nodeId);
+    if (event.data.pluginMessage.properties !== null) {
+      setSelectedData(event.data.pluginMessage.properties)
     } else {
-      setSelectedId("");
+      // setSelectedData({helps:[]})
     }
+
+    setSelectedId(nodeId);
+    setSelectedRefDescription(refDescription);
+    setSelectedName(name);
   }
 
   return (

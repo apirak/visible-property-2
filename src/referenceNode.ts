@@ -79,10 +79,10 @@ export class ReferenceNode extends VisibleNode {
         return this.getHeight();
         break;
       case "letterspace":
-        return this.getTextSpace("letter space");
+        return this.getTextSpace("letterspace");
         break;
       case "lineheight":
-        return this.getTextSpace("line height");
+        return this.getTextSpace("lineheight");
         break;
       case "fillcolorname":
         return this.getColorName("fill");
@@ -97,6 +97,18 @@ export class ReferenceNode extends VisibleNode {
         return "No function"
         break;
     }
+  }
+
+  hasFill():boolean {
+    return this.node.fills.length > 0 ? true : false;
+  }
+
+  hasStroke():boolean {
+    return this.node.strokes.length > 0 ? true : false;
+  }
+
+  isText():boolean {
+    return this.node.type == "TEXT" ? true : false;
   }
 
   getHex(type:string):string{

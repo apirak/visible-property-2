@@ -5,7 +5,11 @@ import { useState } from 'preact/hooks';
 import { Help } from '../mockupData';
 import { Properties } from './properties';
 
-const Home = (props: {selectedId:string, selectedData:Help|undefined}) => {
+const Home = (props: {
+  selectedName:string
+  selectedId:string,
+  selectedData:Help|undefined,
+  selectedRefDescription:string }) => {
 
   const [selectedType, setSeletedType] = useState("");
 
@@ -25,22 +29,16 @@ const Home = (props: {selectedId:string, selectedData:Help|undefined}) => {
     'color': '#B3B3B3'
   }
 
-  const showId = () => {
-    if (typeof props.selectedId != "undefined" && props.selectedId != "") {
-      setSeletedType("reference by ID");
-      return props.selectedId;
-    } else {
-      setSeletedType("");
-      return "Select a reference layer";
-    }
-  }
+  console.log(props.selectedName)
+  console.log(props.selectedId)
+  console.log(props.selectedRefDescription)
 
   return (
     <div>
       <div style={selectedStyle}>
         <IconTarget32 />
-        <div style={selectedLayer}>{showId()}</div>
-        <div style={selectedLayerStatus}>{selectedType}</div>
+        <div style={selectedLayer}>{props.selectedName}</div>
+        <div style={selectedLayerStatus}>{props.selectedRefDescription}</div>
       </div>
       <Divider />
       <div>
