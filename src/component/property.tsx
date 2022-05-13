@@ -2,6 +2,7 @@ import { IconPlus32 } from '@create-figma-plugin/ui';
 import { useState } from 'preact/hooks';
 import { h, JSX } from 'preact';
 import styles from '../style.css';
+import { emit } from '@create-figma-plugin/utilities';
 
 const Property = (props: {name:string, value:string}) => {
   const property = {
@@ -12,12 +13,14 @@ const Property = (props: {name:string, value:string}) => {
     'gap': '0'
   }
 
-  const [value, setValue] = useState(false)
   function handleChange(event: JSX.TargetedMouseEvent<HTMLButtonElement>) {
-    // const newValue = event.currentTarget.checked
-    // console.log(newValue)
-    setValue(false);
-    console.log("click 2", value);
+    console.log("event", event);
+
+    const data = props.name;
+    console.log("b");
+    // emit('ADDTEXT', data);
+    parent.postMessage({pluginMessage:props.name}, '*');
+    console.log("c");
   }
 
   function handleOnClick(){

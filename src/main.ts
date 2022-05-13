@@ -2,6 +2,7 @@ import { showUI } from '@create-figma-plugin/utilities'
 import { Help } from './mockupData';
 import { ReferenceNode } from './referenceNode';
 import { updateAllTextProperty } from './updateText';
+import { once } from '@create-figma-plugin/utilities';
 
 const getComponentData = (ref:ReferenceNode) => {
   return ({
@@ -92,7 +93,8 @@ const setSelectedProperties = (nodeId:string): [Help, string] => {
   return [help, referenceNode.referenceName];
 }
 
-export default function () {
+export default function() {
+
   const options = { width: 260, height: 400 };
 
   showUI(options);
@@ -122,4 +124,13 @@ export default function () {
       // figma.notify("update");
     })
   })
+
+  figma.ui.onmessage = (message) => {
+    console.log("got this from the UI", message)
+  }
+
+  // function handleAddTextProperty(data:string) {
+    // console.log("data",data);
+  // }
+  // once('ADDTEXT', handleAddTextProperty);
 }
