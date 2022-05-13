@@ -12,6 +12,32 @@ function selectScopeNode():BaseNode | SceneNode | PageNode {
   }
 }
 
+function updateByParent(propertyNode:PropertyNode) {
+  const scopeNode = figma.currentPage;
+
+  switch(propertyNode.referenceName.toLowerCase()) {
+    case "#parent":
+      propertyNode.referenceNode = new ReferenceNode(propertyNode.node.parent, scopeNode.id);
+      break;
+    case "#topparent":
+      let topParent = <SceneNode>figma.getNodeById(propertyNode.path[propertyNode.path.length - 2]);
+      if(topParent){
+        propertyNode.referenceNode = new ReferenceNode(topParent, scopeNode.id);
+      }
+      break;
+  }
+}
+
+function updateById(propertyNode:PropertyNode){
+  const scopeNode = figma.currentPage;
+
+  let id = propertyNode.referenceName.match(/(?<=\[)([a-zA-Z0-9\:]+)(?=\])/);
+  if(id){
+    const node = <SceneNode>figma.getNodeById(id[0]);
+    propertyNode.referenceNode = new ReferenceNode(node, scopeNode.id);
+  }
+}
+
 async function updateAllTextProperty() {
   const searchNodes = figma.currentPage.findAll(node => /#|_#/.test(node.name));
 
@@ -35,23 +61,17 @@ async function updateAllTextProperty() {
   // Match the nearest reference
   propertyNodes.forEach(propertyNode => {
     if(propertyNode.referenceName.match(/#([a-zA-Z0-9\:]+)/)){
-      switch(propertyNode.referenceName.toLowerCase()) {
-        case "#parent":
-          propertyNode.referenceNode = new ReferenceNode(propertyNode.node.parent, scopeNode.id);
-          break;
-        case "#topparent":
-          let topParent = <SceneNode>figma.getNodeById(propertyNode.path[propertyNode.path.length - 2]);
-          if(topParent){
-            propertyNode.referenceNode = new ReferenceNode(topParent, scopeNode.id);
-          }
-          break;
-      }
+      updateByParent(propertyNode);
     } else {
-      referenceNodes.forEach(referenceNode => {
-        if(propertyNode.referenceName == referenceNode.referenceName){
-          propertyNode.tryReferencePath(referenceNode);
-        }
-      });
+      if(propertyNode.referenceName.match(/\[[0-9\:]+\]/)){
+        updateById(propertyNode);
+      } else {
+        referenceNodes.forEach(referenceNode => {
+          if(propertyNode.referenceName == referenceNode.referenceName){
+            propertyNode.tryReferencePath(referenceNode);
+          }
+        });
+      }
     }
   });
 

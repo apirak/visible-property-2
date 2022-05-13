@@ -128,12 +128,6 @@ export default function() {
   })
 
   figma.ui.onmessage = (message, payload:any) => {
-    console.log("payload", payload);
-    console.log("type", message.type);
-    console.log("data", message.data.name);
-    console.log("api", message.data.api)
-    console.log("value", message.data.value)
-
     const selection = figma.currentPage.selection
 
     if (typeof selection !== "undefined" && selection.length > 0){
