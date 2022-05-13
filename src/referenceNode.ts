@@ -11,10 +11,13 @@ export interface ReferenceNode extends VisibleNode{
 export type Space = { unit: string; value:number};
 
 export class ReferenceNode extends VisibleNode {
+
   isSolidPaints(fills: readonly Paint[] | PluginAPI['mixed']): fills is SolidPaint[] {
     if (fills as Paint[] != undefined){
       if ((fills as Paint[]).length != 0){
         return (fills as SolidPaint[])[0].color != undefined;
+      } else {
+        return false;
       }
     }
     return false;
@@ -116,11 +119,11 @@ export class ReferenceNode extends VisibleNode {
     if(this.isSolidPaints(paints)){
       return colorToHex(paints[0].color, paints[0].opacity)
     } else {
-      if (paints[0].type == "GRADIENT_LINEAR") {
-        return gradientToString(paints[0], "HEX")
-      }
       if (paints.length == 0){
         return "No " + type
+      }
+      if (paints[0].type == "GRADIENT_LINEAR") {
+        return gradientToString(paints[0], "HEX")
       }
       return "";
     }
@@ -131,11 +134,12 @@ export class ReferenceNode extends VisibleNode {
     if(this.isSolidPaints(paints)){
       return colorToRgb(paints[0].color, paints[0].opacity);
     } else {
-      if (paints[0].type == "GRADIENT_LINEAR") {
-        return gradientToString(paints[0], "RGB")
-      }
       if (paints.length == 0){
         return "No " + type
+      }
+      console.log("d")
+      if (paints[0].type == "GRADIENT_LINEAR") {
+        return gradientToString(paints[0], "RGB")
       }
       return "";
     }

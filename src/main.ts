@@ -1,7 +1,7 @@
 import { showUI } from '@create-figma-plugin/utilities'
 import { Help } from './mockupData';
 import { ReferenceNode } from './referenceNode';
-
+import { updateAllTextProperty } from './updateText';
 
 const getComponentData = (ref:ReferenceNode) => {
   return ({
@@ -32,7 +32,7 @@ const getTextData = (ref:ReferenceNode) => {
 }
 
 const getStrokeData = (ref:ReferenceNode) => {
-  return ({
+  let strokeData = {
     title: "Stroke",
     list:[
       {label:"HEX", value:ref.getValue("stroke").toUpperCase()},
@@ -42,11 +42,19 @@ const getStrokeData = (ref:ReferenceNode) => {
       {label:"Style", value:ref.getValue("strokestyle")},
       {label:"Description", value:ref.getValue("strokestyledescription")},
     ]
-  });
+  };
+  const strokeColorName:string = ref.getValue("fillcolorname");
+  if (strokeColorName !== "Not match") {
+    strokeData.list.push({
+      label:"brand",
+      value:strokeColorName
+    })
+  }
+  return strokeData;
 }
 
 const getFillData = (ref:ReferenceNode) => {
-  return ({
+  let fillData = {
     title: "Fill",
     list:[
       {label:"HEX", value:ref.getValue("fill").toUpperCase()},
@@ -56,7 +64,15 @@ const getFillData = (ref:ReferenceNode) => {
       {label:"Style", value:ref.getValue("fillstyle")},
       {label:"Description", value:ref.getValue("fillstyledescription")},
     ]
-  });
+  };
+  const fillColorName:string = ref.getValue("fillcolorname");
+  if (fillColorName !== "Not match") {
+    fillData.list.push({
+      label:"brand",
+      value:fillColorName
+    })
+  }
+  return fillData;
 }
 
 const setSelectedProperties = (nodeId:string): [Help, string] => {
@@ -87,7 +103,7 @@ export default function () {
       const [help, nodeName] = setSelectedProperties(selection[0].id)
 
       const selectedNode = {
-        nodeId: nodeName? nodeName : selection[0].id,
+        nodeId: nodeName? `#${nodeName}` : selection[0].id,
         refDescription: nodeName ? "reference by name" : "reference by ID",
         properties: help
       }
@@ -100,5 +116,10 @@ export default function () {
       }
       figma.ui.postMessage(selectedNode);
     }
+
+    updateAllTextProperty().then(() => {
+      // console.log("update all text property")
+      // figma.notify("update");
+    })
   })
 }

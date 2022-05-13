@@ -69,3 +69,5 @@ export default function () {
     figma.closePlugin("Updated 🎉");
   })
 }
+
+export {updateAllTextProperty}
