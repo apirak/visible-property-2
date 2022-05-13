@@ -8,9 +8,9 @@ const Properties = (props: {data:Help|undefined}) => {
   // function createRow(lists:{label: string; value: string}[]){
   function createRow(lists:HelpList[]){
 
-    const list = lists.map(({label, value}) => {
+    const list = lists.map(({label, value, api}) => {
       return (
-        <Property name={label} value={value} />
+        <Property name={label} value={value} api={api} />
       );
     });
     return list;

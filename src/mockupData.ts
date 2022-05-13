@@ -3,6 +3,7 @@ import { h } from 'preact';
 export interface HelpList {
   label: string;
   value: string;
+  api?: string;
 };
 
 export interface Help {
@@ -12,7 +13,7 @@ export interface Help {
   }[];
 }
 
-const mockupData = () => {
+const mockupData = ():Help => {
   return ({
     helps: [{
       title: "Fill Property",

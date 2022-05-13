@@ -4,7 +4,7 @@ import { h, JSX } from 'preact';
 import styles from '../style.css';
 import { emit } from '@create-figma-plugin/utilities';
 
-const Property = (props: {name:string, value:string}) => {
+const Property = (props: {name:string, value:string, api?:string}) => {
   const property = {
     'display': 'flex',
     'height': '32',
@@ -13,24 +13,16 @@ const Property = (props: {name:string, value:string}) => {
     'gap': '0'
   }
 
-  function handleChange(event: JSX.TargetedMouseEvent<HTMLButtonElement>) {
-    console.log("event", event);
-
-    const data = props.name;
-    console.log("b");
-    // emit('ADDTEXT', data);
-    parent.postMessage({pluginMessage:props.name}, '*');
-    console.log("c");
-  }
-
-  function handleOnClick(){
-
+  function handleOnChange(event: JSX.TargetedMouseEvent<HTMLButtonElement>) {
+    const data = {name:props.name, api:props.api, value:props.value};
+    const type = "ADD_TEXT";
+    parent.postMessage({pluginMessage:{type, data}}, '*');
   }
 
   return (
     <div style={property}>
       <span>
-        <button class={styles.buttonIcon} onClick={handleChange}>
+        <button class={styles.buttonIcon} onClick={handleOnChange}>
           <IconPlus32 />
         </button>
       </span>

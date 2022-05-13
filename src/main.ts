@@ -3,14 +3,15 @@ import { Help } from './mockupData';
 import { ReferenceNode } from './referenceNode';
 import { updateAllTextProperty } from './updateText';
 import { once } from '@create-figma-plugin/utilities';
+import { addTextNearSelected } from './textUtility';
 
 const getComponentData = (ref:ReferenceNode) => {
   return ({
     title:"Component",
     list:[
-      {label:"Height", value:ref.getValue("height")},
-      {label:"width", value:ref.getValue("width")},
-      {label:"name", value:ref.getValue("name")}
+      {label:"Height", value:ref.getValue("height"), api:"Height"},
+      {label:"width", value:ref.getValue("width"), api:"Width"},
+      {label:"name", value:ref.getValue("name"), api:"Name"}
     ]
   })
 }
@@ -19,15 +20,15 @@ const getTextData = (ref:ReferenceNode) => {
   return ({
     title:"Text",
     list:[
-      {label:"Font", value:ref.getValue("font")},
-      {label:"Weight", value:ref.getValue("fontweight")},
-      {label:"Size", value:ref.getValue("fontsize")},
-      {label:"Indent", value:ref.getValue("paragraphindent")},
-      {label:"Space", value:ref.getValue("paragraphspace")},
-      {label:"Letter Space", value:ref.getValue("letterspace")},
-      {label:"Line Height", value:ref.getValue("lineheight")},
-      {label:"Style", value:ref.getValue("textstyle")},
-      {label:"Description", value:ref.getValue("textstyledescription")}
+      {label:"Font", value:ref.getValue("font"), api:"font"},
+      {label:"Weight", value:ref.getValue("fontweight"), api:"fontWeight"},
+      {label:"Size", value:ref.getValue("fontsize"), api:"fontSize"},
+      {label:"Indent", value:ref.getValue("paragraphindent"), api:"paragraphIndent"},
+      {label:"Space", value:ref.getValue("paragraphspace"), api:"paragraphSpace"},
+      {label:"Letter Space", value:ref.getValue("letterspace"), api:"letterSpace"},
+      {label:"Line Height", value:ref.getValue("lineheight"), api:"lineHeight"},
+      {label:"Style", value:ref.getValue("textstyle"), api:"textStyle"},
+      {label:"Description", value:ref.getValue("textstyledescription"), api:"textStyleDescription"}
     ]
   });
 }
@@ -36,19 +37,20 @@ const getStrokeData = (ref:ReferenceNode) => {
   let strokeData = {
     title: "Stroke",
     list:[
-      {label:"HEX", value:ref.getValue("stroke").toUpperCase()},
-      {label:"RGB", value:ref.getValue("strokergb").toUpperCase()},
-      {label:"HSL", value:ref.getValue("strokehsl").toUpperCase()},
-      {label:"HSB", value:ref.getValue("strokehsb").toUpperCase()},
-      {label:"Style", value:ref.getValue("strokestyle")},
-      {label:"Description", value:ref.getValue("strokestyledescription")},
+      {label:"HEX", value:ref.getValue("stroke").toUpperCase(), api:"stroke"},
+      {label:"RGB", value:ref.getValue("strokergb").toUpperCase(), api:"strokeRGB"},
+      {label:"HSL", value:ref.getValue("strokehsl").toUpperCase(), api:"strokeHSL"},
+      {label:"HSB", value:ref.getValue("strokehsb").toUpperCase(), api:"strokeHSB"},
+      {label:"Style", value:ref.getValue("strokestyle"), api:"strokeStyle"},
+      {label:"Description", value:ref.getValue("strokestyledescription"), api:"strokeStyleDescription"},
     ]
   };
   const strokeColorName:string = ref.getValue("fillcolorname");
   if (strokeColorName !== "Not match") {
     strokeData.list.push({
       label:"brand",
-      value:strokeColorName
+      value:strokeColorName,
+      api:"fillColorName"
     })
   }
   return strokeData;
@@ -58,19 +60,20 @@ const getFillData = (ref:ReferenceNode) => {
   let fillData = {
     title: "Fill",
     list:[
-      {label:"HEX", value:ref.getValue("fill").toUpperCase()},
-      {label:"RGB", value:ref.getValue("fillrgb").toUpperCase()},
-      {label:"HSL", value:ref.getValue("fillhsl").toUpperCase()},
-      {label:"HSB", value:ref.getValue("fillhsb").toUpperCase()},
-      {label:"Style", value:ref.getValue("fillstyle")},
-      {label:"Description", value:ref.getValue("fillstyledescription")},
+      {label:"HEX", value:ref.getValue("fill").toUpperCase(), api:"fill"},
+      {label:"RGB", value:ref.getValue("fillrgb").toUpperCase(), api:"fillRGB"},
+      {label:"HSL", value:ref.getValue("fillhsl").toUpperCase(), api:"fillHSL"},
+      {label:"HSB", value:ref.getValue("fillhsb").toUpperCase(), api:"fillHSB"},
+      {label:"Style", value:ref.getValue("fillstyle"), api:"fillstyle"},
+      {label:"Description", value:ref.getValue("fillstyledescription"),api:"fillStyleDescription"}
     ]
   };
   const fillColorName:string = ref.getValue("fillcolorname");
   if (fillColorName !== "Not match") {
     fillData.list.push({
       label:"brand",
-      value:fillColorName
+      value:fillColorName,
+      api:"fillColorName"
     })
   }
   return fillData;
@@ -120,13 +123,25 @@ export default function() {
     }
 
     updateAllTextProperty().then(() => {
-      // console.log("update all text property")
-      // figma.notify("update");
+      console.log("on selection change: update all text property")
     })
   })
 
-  figma.ui.onmessage = (message) => {
-    console.log("got this from the UI", message)
+  figma.ui.onmessage = (message, payload:any) => {
+    console.log("payload", payload);
+    console.log("type", message.type);
+    console.log("data", message.data.name);
+    console.log("api", message.data.api)
+    console.log("value", message.data.value)
+
+    const selection = figma.currentPage.selection
+
+    if (typeof selection !== "undefined" && selection.length > 0){
+      const [help, nodeName] = setSelectedProperties(selection[0].id)
+      const text = nodeName? `#${nodeName}` : `#[${selection[0].id}]`
+      addTextNearSelected(selection[0], message.data.value, `${text}.${message.data.api}`);
+    }
+
   }
 
   // function handleAddTextProperty(data:string) {

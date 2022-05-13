@@ -1,5 +1,3 @@
-
-
 export async function addText(text:string, x:number, y:number):Promise<TextNode>{
   await figma.loadFontAsync({family:"Roboto", style: "Regular"});
   const textNode = figma.createText();
