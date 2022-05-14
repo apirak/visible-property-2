@@ -4,6 +4,8 @@ import { h } from 'preact';
 import { useState } from 'preact/hooks';
 import { Help } from '../mockupData';
 import { Properties } from './properties';
+import styles from '../style.css';
+import tutorial from '../images/tutorial.png';
 
 const Home = (props: {
   selectedId:string,
@@ -16,7 +18,7 @@ const Home = (props: {
     'display': 'flex',
     'align-items': 'center',
     'align-self': 'stretch',
-    'padding': '0px 8px 0px 0px',
+    'padding': '0px 8px 0px 4px',
     'height': '40'
   };
 
@@ -29,11 +31,13 @@ const Home = (props: {
   }
 
   const propertyLayer = {
-    'display': props.selectedId == "" ? "none" : "block"
+    'display': props.selectedId == "" ? "none" : "block",
+    'padding-top': '8px',
+    'padding-bottom': '8px'
   }
 
-  const helpLayer ={
-    'diaplay': 'block'
+  const helpLayer = {
+    'display': props.selectedId == "" ? "block" : "none"
   }
 
   let referenceName = props.selectedId ? props.selectedId : "Select a referece layer";
@@ -49,8 +53,11 @@ const Home = (props: {
       <div style={propertyLayer}>
         <Properties data={props.selectedData}/>
       </div>
-      <div style={helpLayer}> </div>
-
+      <div style={helpLayer}>
+        <div class={styles.helpLayer}>
+          <img src={tutorial} />
+        </div>
+      </div>
     </div>
   );
 }

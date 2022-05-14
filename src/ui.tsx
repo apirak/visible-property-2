@@ -32,7 +32,6 @@ function Plugin () {
     const refDescription = event.data.pluginMessage.refDescription;
     const name = event.data.pluginMessage.nodeName;
 
-
     if (event.data.pluginMessage.properties !== null) {
       setSelectedData(event.data.pluginMessage.properties)
     }

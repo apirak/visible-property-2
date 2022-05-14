@@ -26,6 +26,29 @@
 
 .valueStyle {
   width: 100%;
-  /* text-align: right; */
   color: rgba(0, 0, 0, 0.3);
+}
+
+.headerStyle {
+  padding: 4px 8px;
+  color: var(--color-black-30);
+}
+
+.property {
+  display: flex;
+  height: 32;
+  align-items: center;
+  padding: 0px 8px 0px 4px;
+  gap: 0;
+}
+
+.helpLayer {
+  display: block;
+  text-align: center;
+  padding-top: 36px;
+}
+
+.helpLayer img {
+  width: 172px;
+  height: 232px;
 }

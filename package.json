@@ -22,20 +22,20 @@
     "name": "Visible Property 2",
     "menu": [
       {
-        "name": "✚ Add Property",
+        "name": "🔦 Add Property",
         "main": "src/main.ts",
         "ui": "src/ui.tsx"
       },
       "-",
       {
-        "name": "▶︎ Quick update",
+        "name": "🔍 Run Update",
         "main": "src/updateText.ts"
       }
     ],
     "relaunchButtons": {
       "visibleproperty": {
-        "name": "▶︎ Quick update",
-        "main": "src/main.ts"
+        "name": "Visible Property",
+        "main": "src/updateText.ts"
       }
     }
   }

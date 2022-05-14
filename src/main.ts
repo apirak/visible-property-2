@@ -96,35 +96,39 @@ const setSelectedProperties = (nodeId:string): [Help, string] => {
   return [help, referenceNode.referenceName];
 }
 
+const updateAllValue = () => {
+  const selection = figma.currentPage.selection
+  if (typeof selection !== "undefined" && selection.length > 0){
+    const [help, nodeName] = setSelectedProperties(selection[0].id)
+
+    const selectedNode = {
+      nodeId: nodeName? `#${nodeName}` : selection[0].id,
+      refDescription: nodeName ? "reference by name" : "reference by ID",
+      properties: help
+    }
+    figma.ui.postMessage(selectedNode);
+  } else {
+    const selectedNode = {
+      nodeId: "",
+      refDescription: "",
+      properties: null
+    }
+    figma.ui.postMessage(selectedNode);
+  }
+
+  updateAllTextProperty().then(() => {
+    console.log("on selection change: update all text property")
+  })
+}
+
 export default function() {
 
   const options = { width: 260, height: 400 };
-
   showUI(options);
+  updateAllValue();
 
   figma.on('selectionchange', () => {
-    const selection = figma.currentPage.selection
-    if (typeof selection !== "undefined" && selection.length > 0){
-      const [help, nodeName] = setSelectedProperties(selection[0].id)
-
-      const selectedNode = {
-        nodeId: nodeName? `#${nodeName}` : selection[0].id,
-        refDescription: nodeName ? "reference by name" : "reference by ID",
-        properties: help
-      }
-      figma.ui.postMessage(selectedNode);
-    } else {
-      const selectedNode = {
-        nodeId: "",
-        refDescription: "",
-        properties: null
-      }
-      figma.ui.postMessage(selectedNode);
-    }
-
-    updateAllTextProperty().then(() => {
-      console.log("on selection change: update all text property")
-    })
+    updateAllValue();
   })
 
   figma.ui.onmessage = (message, payload:any) => {
@@ -137,9 +141,4 @@ export default function() {
     }
 
   }
-
-  // function handleAddTextProperty(data:string) {
-    // console.log("data",data);
-  // }
-  // once('ADDTEXT', handleAddTextProperty);
 }

@@ -1,7 +1,7 @@
 import { h } from "preact";
 import { Help, HelpList } from "../mockupData";
 import { Property } from "./property";
-import { Text } from "@create-figma-plugin/ui";
+import styles from "../style.css";
 
 const Properties = (props: {data:Help|undefined}) => {
 
@@ -18,16 +18,11 @@ const Properties = (props: {data:Help|undefined}) => {
 
   function createTable() {
 
-    const headerStyle = {
-      'padding': '8px',
-      'color': 'var(--color-black-30)'
-    }
-
     if(typeof props.data !== "undefined"){
       const header =  props.data.helps.map(({title, list}) => {
         return (
           <div>
-            <div style={headerStyle}>{title}</div>
+            <div class={styles.headerStyle}>{title}</div>
             {createRow(list)}
           </div>
         )

@@ -83,7 +83,7 @@ async function updateAllTextProperty() {
 export default function () {
   setRelaunchButton(figma.currentPage,
     'visibleproperty',
-    { description: 'Run Update all text follow #Reference'});
+    { description: '🔍 Quick Update all property'});
 
   updateAllTextProperty().then(() => {
     figma.closePlugin("Updated 🎉");
