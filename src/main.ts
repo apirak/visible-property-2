@@ -3,7 +3,7 @@ import { Help } from './mockupData';
 import { ReferenceNode } from './referenceNode';
 import { updateAllTextProperty } from './updateText';
 import { once } from '@create-figma-plugin/utilities';
-import { addTextNearSelected } from './textUtility';
+import { addTextNearSelected } from './utility/textUtility';
 
 const getComponentData = (ref:ReferenceNode) => {
   return ({

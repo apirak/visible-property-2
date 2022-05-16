@@ -1,7 +1,7 @@
 import { VisibleNode } from './visibleNode';
-import { colorToHex, colorToHSL, colorToRgb, colorToHSB } from './colorUtility';
+import { colorToHex, colorToHSL, colorToRgb, colorToHSB } from './utility/colorUtility';
 import { colorName } from './colorName';
-import { gradientToString } from './gradientUtility';
+import { gradientToString } from './utility/gradientUtility';
 
 export interface ReferenceNode extends VisibleNode{
   getFill():string;
