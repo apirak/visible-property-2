@@ -2,7 +2,6 @@ import { showUI } from '@create-figma-plugin/utilities'
 import { Help } from './mockupData';
 import { ReferenceNode } from './referenceNode';
 import { updateAllTextProperty } from './updateText';
-import { once } from '@create-figma-plugin/utilities';
 import { addTextNearSelected } from './utility/textUtility';
 
 const getComponentData = (ref:ReferenceNode) => {
@@ -79,19 +78,16 @@ const getFillData = (ref:ReferenceNode) => {
   return fillData;
 }
 
-const setSelectedProperties = (nodeId:string): [Help, string] => {
+const setSelectedProperties = (nodeId:string): [Help[], string] => {
   const selectedNode = <SceneNode>figma.getNodeById(nodeId);
   const referenceNode = new ReferenceNode(selectedNode, figma.currentPage.id)
   referenceNode.matchName();
 
-  // console.log("reference Name", referenceNode.referenceName);
-  // console.log("reference Name", referenceNode.propertyName);
-
-  let help:Help = {helps:[]}
-  referenceNode.hasFill() && help.helps.push(getFillData(referenceNode));
-  referenceNode.hasStroke() && help.helps.push(getStrokeData(referenceNode));
-  referenceNode.isText() && help.helps.push(getTextData(referenceNode));
-  help.helps.push(getComponentData(referenceNode));
+  let help:Help[] = []
+  referenceNode.hasFill() && help.push(getFillData(referenceNode));
+  referenceNode.hasStroke() && help.push(getStrokeData(referenceNode));
+  referenceNode.isText() && help.push(getTextData(referenceNode));
+  help.push(getComponentData(referenceNode));
 
   return [help, referenceNode.referenceName];
 }
@@ -139,6 +135,5 @@ export default function() {
       const text = nodeName? `#${nodeName}` : `#[${selection[0].id}]`
       addTextNearSelected(selection[0], message.data.value, `${text}.${message.data.api}`);
     }
-
   }
 }

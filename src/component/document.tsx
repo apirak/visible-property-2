@@ -40,7 +40,7 @@ const Document = () => {
   };
 
   function createHeader(){
-    const header = mockupData().helps.map(({title, list}) => {
+    const header = mockupData().map(({title, list}) => {
       return (
         <div>
           <Text bold>{title}</Text>

@@ -7,15 +7,13 @@ export interface HelpList {
 };
 
 export interface Help {
-  helps: {
-    title: string;
-    list: HelpList[];
-  }[];
+  title: string;
+  list: HelpList[];
 }
 
-const mockupData = ():Help => {
-  return ({
-    helps: [{
+const mockupData = ():Help[] => {
+  return (
+    [{
       title: "Fill Property",
       list:[
         {label:"fill", value:"#123456 78%"},
@@ -62,7 +60,7 @@ const mockupData = ():Help => {
         {label:"name", value:"Layer name"}
       ]
     }]
-  })
+  )
 }
 
 export { mockupData };
