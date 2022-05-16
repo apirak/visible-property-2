@@ -3,36 +3,35 @@ import { Help, HelpList } from "../mockupData";
 import { Property } from "./property";
 import styles from "../style.css";
 
-const Properties = (props: {data:Help[]|undefined}) => {
+function createRow(lists:HelpList[]){
+  const list = lists.map(({label, value, api}) => {
+    return (
+      <Property name={label} value={value} api={api} />
+    );
+  });
+  return list;
+}
 
-  function createRow(lists:HelpList[]){
-    const list = lists.map(({label, value, api}) => {
+function createTable(data:Help[]|undefined) {
+  if(typeof data !== "undefined"){
+    const header =  data.map(({title, list}) => {
       return (
-        <Property name={label} value={value} api={api} />
-      );
+        <div>
+          <div class={styles.headerStyle}>{title}</div>
+          {createRow(list)}
+        </div>
+      )
     });
-    return list;
+    return header;
+  } else {
+    return "No data";
   }
+}
 
-  function createTable() {
-    if(typeof props.data !== "undefined"){
-      const header =  props.data.map(({title, list}) => {
-        return (
-          <div>
-            <div class={styles.headerStyle}>{title}</div>
-            {createRow(list)}
-          </div>
-        )
-      });
-      return header;
-    } else {
-      return "No data";
-    }
-  }
-
+const Properties = (props:{data:Help[]|undefined}) => {
   return (
     <div>
-      {createTable()}
+      {createTable(props.data)}
     </div>
   )
 }
