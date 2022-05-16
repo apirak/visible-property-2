@@ -49,7 +49,7 @@ const getStrokeData = (ref:ReferenceNode) => {
     strokeData.list.push({
       label:"brand",
       value:strokeColorName,
-      api:"fillColorName"
+      api:"strokeColorName"
     })
   }
   return strokeData;
@@ -118,7 +118,6 @@ const updateAllValue = () => {
 }
 
 export default function() {
-
   const options = { width: 260, height: 400 };
   showUI(options);
   updateAllValue();
