@@ -9,26 +9,10 @@ import tutorial from '../images/tutorial.png';
 
 const Home = (props: {
   selectedId:string,
-  selectedData:Help|undefined,
+  selectedData:Help[]|undefined,
   selectedRefDescription:string }) => {
 
   const [selectedType, setSeletedType] = useState("");
-
-  const selectedStyle = {
-    'display': 'flex',
-    'align-items': 'center',
-    'align-self': 'stretch',
-    'padding': '0px 8px 0px 4px',
-    'height': '40'
-  };
-
-  const selectedLayer = {
-    'flex-grow': '1'
-  };
-
-  const selectedLayerStatus = {
-    'color': '#B3B3B3'
-  }
 
   const propertyLayer = {
     'display': props.selectedId == "" ? "none" : "block",
@@ -44,10 +28,10 @@ const Home = (props: {
 
   return (
     <div>
-      <div style={selectedStyle}>
+      <div class={styles.selectedStyle}>
         <IconTarget32 />
-        <div style={selectedLayer}>{referenceName}</div>
-        <div style={selectedLayerStatus}>{props.selectedRefDescription}</div>
+        <div class={styles.selectedLayer}>{referenceName}</div>
+        <div class={styles.selectedLayerStatus}>{props.selectedRefDescription}</div>
       </div>
       <Divider />
       <div style={propertyLayer}>

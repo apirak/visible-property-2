@@ -52,3 +52,19 @@
   width: 172px;
   height: 232px;
 }
+
+.selectedStyle {
+  display: flex;
+  align-items: center;
+  align-self: stretch;
+  padding: 0px 8px 0px 4px;
+  height: 40;
+}
+
+.selectedLayer {
+  flex-grow: 1
+}
+
+.selectedLayerStatus {
+  color: #B3B3B3
+}

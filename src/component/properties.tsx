@@ -5,7 +5,6 @@ import styles from "../style.css";
 
 const Properties = (props: {data:Help[]|undefined}) => {
 
-  // function createRow(lists:{label: string; value: string}[]){
   function createRow(lists:HelpList[]){
     const list = lists.map(({label, value, api}) => {
       return (
@@ -16,7 +15,6 @@ const Properties = (props: {data:Help[]|undefined}) => {
   }
 
   function createTable() {
-
     if(typeof props.data !== "undefined"){
       const header =  props.data.map(({title, list}) => {
         return (
