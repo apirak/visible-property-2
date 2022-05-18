@@ -2,7 +2,7 @@ interface AllColorName {
   [index: string]: string;
 }
 
-const allColorNames:AllColorName = {
+const allColorNames: AllColorName = {
   "#0050f0ff": "01-primary / 01_confident_blue",
   "#ffffffff": "01-primary / 03 honest white",
   "#002d63ff": "01-primary / 04 trusted navy",
@@ -64,12 +64,12 @@ const allColorNames:AllColorName = {
   "#8c522aff": "04-tertiary / 11_brown_01_100",
   "#ae8569ff": "04-tertiary / 11_brown_02_70",
   "#d1baaaff": "04-tertiary / 11_brown_03_40",
-  "#f3ede9ff": "04-tertiary / 11_brown_04_10"
-}
+  "#f3ede9ff": "04-tertiary / 11_brown_04_10",
+};
 
-const colorName = (colorHEX:string):string => {
-  const name = allColorNames[colorHEX.toLowerCase()+"ff"];
+const colorName = (colorHEX: string): string => {
+  const name = allColorNames[colorHEX.toLowerCase() + "ff"];
   return name ? name : "Not match";
-}
+};
 
 export { colorName };

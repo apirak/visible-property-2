@@ -1,20 +1,26 @@
-import { VisibleNode } from './visibleNode';
-import { colorToHex, colorToHSL, colorToRgb, colorToHSB } from './utility/colorUtility';
-import { colorName } from './colorName';
-import { gradientToString } from './utility/gradientUtility';
+import { VisibleNode } from "./visibleNode";
+import {
+  colorToHex,
+  colorToHSL,
+  colorToRgb,
+  colorToHSB,
+} from "./utility/colorUtility";
+import { colorName } from "./colorName";
+import { gradientToString } from "./utility/gradientUtility";
 
-export interface ReferenceNode extends VisibleNode{
-  getFill():string;
-  getValue(name:string):string;
+export interface ReferenceNode extends VisibleNode {
+  getFill(): string;
+  getValue(name: string): string;
 }
 
-export type Space = { unit: string; value:number};
+export type Space = { unit: string; value: number };
 
 export class ReferenceNode extends VisibleNode {
-
-  isSolidPaints(fills: readonly Paint[] | PluginAPI['mixed']): fills is SolidPaint[] {
-    if (fills as Paint[] != undefined){
-      if ((fills as Paint[]).length != 0){
+  isSolidPaints(
+    fills: readonly Paint[] | PluginAPI["mixed"]
+  ): fills is SolidPaint[] {
+    if ((fills as Paint[]) != undefined) {
+      if ((fills as Paint[]).length != 0) {
         return (fills as SolidPaint[])[0].color != undefined;
       } else {
         return false;
@@ -23,18 +29,24 @@ export class ReferenceNode extends VisibleNode {
     return false;
   }
 
-  getValue(name:string):string {
-    const lowerCaseName:string = name.toLowerCase();
-    const textFunction = new Set<string>(['font', 'fontweight', 'fontsize', 'paragraphindent', 'paragraphspace']);
-    if(textFunction.has(lowerCaseName)){
+  getValue(name: string): string {
+    const lowerCaseName: string = name.toLowerCase();
+    const textFunction = new Set<string>([
+      "font",
+      "fontweight",
+      "fontsize",
+      "paragraphindent",
+      "paragraphspace",
+    ]);
+    if (textFunction.has(lowerCaseName)) {
       return this.getText(lowerCaseName);
     }
-    switch(lowerCaseName) {
+    switch (lowerCaseName) {
       case "fill":
-        return this.getHex('fill');
+        return this.getHex("fill");
         break;
       case "stroke":
-        return this.getHex('stroke');
+        return this.getHex("stroke");
         break;
       case "fillrgb":
         return this.getRGB("fill");
@@ -97,88 +109,88 @@ export class ReferenceNode extends VisibleNode {
         return this.getLayerName();
         break;
       default:
-        return "No function"
+        return "No function";
         break;
     }
   }
 
-  hasFill():boolean {
+  hasFill(): boolean {
     return this.node.fills.length > 0 ? true : false;
   }
 
-  hasStroke():boolean {
+  hasStroke(): boolean {
     return this.node.strokes.length > 0 ? true : false;
   }
 
-  isText():boolean {
+  isText(): boolean {
     return this.node.type == "TEXT" ? true : false;
   }
 
-  getHex(type:string):string{
-    const paints = (type == "stroke") ? this.node.strokes : this.node.fills;
-    if(this.isSolidPaints(paints)){
-      return colorToHex(paints[0].color, paints[0].opacity)
+  getHex(type: string): string {
+    const paints = type == "stroke" ? this.node.strokes : this.node.fills;
+    if (this.isSolidPaints(paints)) {
+      return colorToHex(paints[0].color, paints[0].opacity);
     } else {
-      if (paints.length == 0){
-        return "No " + type
+      if (paints.length == 0) {
+        return "No " + type;
       }
       if (paints[0].type == "GRADIENT_LINEAR") {
-        return gradientToString(paints[0], "HEX")
+        return gradientToString(paints[0], "HEX");
       }
       return "";
     }
   }
 
-  getRGB(type:string):string{
-    const paints = (type == "stroke") ? this.node.strokes : this.node.fills;
-    if(this.isSolidPaints(paints)){
+  getRGB(type: string): string {
+    const paints = type == "stroke" ? this.node.strokes : this.node.fills;
+    if (this.isSolidPaints(paints)) {
       return colorToRgb(paints[0].color, paints[0].opacity);
     } else {
-      if (paints.length == 0){
-        return "No " + type
+      if (paints.length == 0) {
+        return "No " + type;
       }
-      console.log("d")
+      console.log("d");
       if (paints[0].type == "GRADIENT_LINEAR") {
-        return gradientToString(paints[0], "RGB")
+        return gradientToString(paints[0], "RGB");
       }
       return "";
     }
   }
 
-  getHSL(type:string):string {
-    const paints = (type == "stroke") ? this.node.strokes : this.node.fills;
-    if(this.isSolidPaints(paints)){
+  getHSL(type: string): string {
+    const paints = type == "stroke" ? this.node.strokes : this.node.fills;
+    if (this.isSolidPaints(paints)) {
       return colorToHSL(paints[0].color, paints[0].opacity);
     } else {
       if (paints[0].type == "GRADIENT_LINEAR") {
-        return gradientToString(paints[0], "HSL")
+        return gradientToString(paints[0], "HSL");
       }
-      if (paints.length == 0){
-        return "No " + type
+      if (paints.length == 0) {
+        return "No " + type;
       }
       return "";
     }
   }
 
-  getHSB(type:string):string {
-    const paints = (type == "stroke") ? this.node.strokes : this.node.fills;
-    if(this.isSolidPaints(paints)){
+  getHSB(type: string): string {
+    const paints = type == "stroke" ? this.node.strokes : this.node.fills;
+    if (this.isSolidPaints(paints)) {
       return colorToHSB(paints[0].color, paints[0].opacity);
     } else {
       if (paints[0].type == "GRADIENT_LINEAR") {
-        return gradientToString(paints[0], "HSB")
+        return gradientToString(paints[0], "HSB");
       }
-      if (paints.length == 0){
-        return "No " + type
+      if (paints.length == 0) {
+        return "No " + type;
       }
       return "";
     }
   }
 
-  getStyle(type:string):string{
-    let styleId:string = "";
+  getStyle(type: string): string {
+    let styleId: string = "";
 
-    switch(type){
+    switch (type) {
       case "stroke":
         styleId = (this.node as ComponentNode).strokeStyleId.toString();
         break;
@@ -190,10 +202,10 @@ export class ReferenceNode extends VisibleNode {
         break;
     }
 
-    if(styleId){
-      const style = figma.getStyleById(styleId)
-      if(style){
-        return style.name.split(/ *\/ */).join('/');
+    if (styleId) {
+      const style = figma.getStyleById(styleId);
+      if (style) {
+        return style.name.split(/ *\/ */).join("/");
       } else {
         return "Can't read style";
       }
@@ -201,10 +213,10 @@ export class ReferenceNode extends VisibleNode {
     return "No Style";
   }
 
-  getStyleDescription(type:string):string{
-    let styleId:string = "";
+  getStyleDescription(type: string): string {
+    let styleId: string = "";
 
-    switch(type){
+    switch (type) {
       case "stroke":
         styleId = (this.node as ComponentNode).strokeStyleId.toString();
         break;
@@ -216,8 +228,8 @@ export class ReferenceNode extends VisibleNode {
         break;
     }
 
-    if(styleId){
-      const style = figma.getStyleById(styleId)
+    if (styleId) {
+      const style = figma.getStyleById(styleId);
       if (style) {
         if (style.description) {
           return style.description;
@@ -231,10 +243,10 @@ export class ReferenceNode extends VisibleNode {
     return "No Style";
   }
 
-  getTextSpace(type:string):string {
-    if(this.node.type == "TEXT") {
-      let space:Space = { unit: "", value: 0};
-      switch(type) {
+  getTextSpace(type: string): string {
+    if (this.node.type == "TEXT") {
+      let space: Space = { unit: "", value: 0 };
+      switch (type) {
         case "line height":
           space = this.node.lineHeight;
           break;
@@ -246,7 +258,7 @@ export class ReferenceNode extends VisibleNode {
           break;
       }
 
-      if(space.unit == "PERCENT") {
+      if (space.unit == "PERCENT") {
         return "" + parseFloat(space.value.toFixed(2)) + "%";
       } else {
         return "" + parseFloat(space.value.toFixed(2));
@@ -256,9 +268,9 @@ export class ReferenceNode extends VisibleNode {
     }
   }
 
-  getText(type:string):string {
-    if(this.node.type == "TEXT") {
-      switch(type) {
+  getText(type: string): string {
+    if (this.node.type == "TEXT") {
+      switch (type) {
         case "font":
           return this.node.fontName.family;
           break;
@@ -283,43 +295,43 @@ export class ReferenceNode extends VisibleNode {
     }
   }
 
-  getDescription():string {
-    if(this.node.type == "COMPONENT") {
+  getDescription(): string {
+    if (this.node.type == "COMPONENT") {
       return this.node.description;
     } else {
       return "";
     }
   }
 
-  getWidth():string{
-    if(this.node.width != undefined){
+  getWidth(): string {
+    if (this.node.width != undefined) {
       return String(this.node.width);
     } else {
       return "";
     }
   }
 
-  getHeight():string{
-    if(this.node.height != undefined){
+  getHeight(): string {
+    if (this.node.height != undefined) {
       return String(this.node.height);
     } else {
       return "";
     }
   }
 
-  getColorName(type:string):string {
-    const paints = (type == "stroke") ? this.node.strokes : this.node.fills;
-    if(this.isSolidPaints(paints)){
+  getColorName(type: string): string {
+    const paints = type == "stroke" ? this.node.strokes : this.node.fills;
+    if (this.isSolidPaints(paints)) {
       return colorName(colorToHex(paints[0].color, undefined));
     } else {
-      if (paints.length == 0){
-        return "No " + type
+      if (paints.length == 0) {
+        return "No " + type;
       }
       return "";
     }
   }
 
-  getLayerName():string{
+  getLayerName(): string {
     return this.node.name;
   }
 }

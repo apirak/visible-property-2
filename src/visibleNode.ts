@@ -3,7 +3,7 @@ export interface VisibleNode {
   debug(): any;
 }
 
-export class VisibleNode implements VisibleNode{
+export class VisibleNode implements VisibleNode {
   node: RectangleNode | ComponentNode | TextNode | any;
   scopeNodeID: string = "";
   type: string = "";
@@ -37,7 +37,7 @@ export class VisibleNode implements VisibleNode{
   }
 
   matchType() {
-    if(this.propertyName == "") {
+    if (this.propertyName == "") {
       this.type = "Reference";
     } else {
       this.type = "Property";
@@ -45,7 +45,9 @@ export class VisibleNode implements VisibleNode{
   }
 
   matchName() {
-    let names = this.node.name.match(/_?#([#a-zA-Z0-9\:\[\]]+).?([a-zA-Z0-9]*)/);
+    let names = this.node.name.match(
+      /_?#([#a-zA-Z0-9\:\[\]]+).?([a-zA-Z0-9]*)/
+    );
     if (names) {
       this.referenceName = names[1] ? names[1] : "";
       this.propertyName = names[2] ? names[2] : "";
@@ -55,9 +57,9 @@ export class VisibleNode implements VisibleNode{
   findAllParentInScope() {
     let currentNode: BaseNode | PageNode | SceneNode = this.node;
     while (currentNode.id != this.scopeNodeID) {
-      if (currentNode.parent){
+      if (currentNode.parent) {
         currentNode = currentNode.parent;
-        if(currentNode) {
+        if (currentNode) {
           this.path.push(currentNode.id);
         }
       } else {
