@@ -126,16 +126,27 @@ export class ReferenceNode extends VisibleNode {
     return this.node.type == "TEXT" ? true : false;
   }
 
+  hasPaints(paints: Paint[], type: string): [boolean, string] {
+    if (paints === undefined) {
+      return [false, `No function for ${type}`];
+    }
+    if (paints.length == 0) {
+      return [false, "No " + type];
+    }
+    return [true, ""];
+  }
+
   getHex(type: string): string {
     const paints = type == "stroke" ? this.node.strokes : this.node.fills;
     if (this.isSolidPaints(paints)) {
       return colorToHex(paints[0].color, paints[0].opacity);
     } else {
-      if (paints.length == 0) {
-        return "No " + type;
-      }
-      if (paints[0].type == "GRADIENT_LINEAR") {
+      let [isPaints, feedback] = this.hasPaints(paints, type);
+
+      if (isPaints && paints[0].type == "GRADIENT_LINEAR") {
         return gradientToString(paints[0], "HEX");
+      } else {
+        return feedback;
       }
       return "";
     }
@@ -146,14 +157,12 @@ export class ReferenceNode extends VisibleNode {
     if (this.isSolidPaints(paints)) {
       return colorToRgb(paints[0].color, paints[0].opacity);
     } else {
-      if (paints.length == 0) {
-        return "No " + type;
-      }
-      console.log("d");
-      if (paints[0].type == "GRADIENT_LINEAR") {
+      let [isPaints, feedback] = this.hasPaints(paints, type);
+      if (isPaints && paints[0].type == "GRADIENT_LINEAR") {
         return gradientToString(paints[0], "RGB");
+      } else {
+        return feedback;
       }
-      return "";
     }
   }
 
@@ -162,13 +171,12 @@ export class ReferenceNode extends VisibleNode {
     if (this.isSolidPaints(paints)) {
       return colorToHSL(paints[0].color, paints[0].opacity);
     } else {
-      if (paints[0].type == "GRADIENT_LINEAR") {
-        return gradientToString(paints[0], "HSL");
-      }
-      if (paints.length == 0) {
+      let [isPaints, feedback] = this.hasPaints(paints, type);
+      if (isPaints && paints.length == 0) {
         return "No " + type;
+      } else {
+        return feedback;
       }
-      return "";
     }
   }
 
@@ -177,13 +185,12 @@ export class ReferenceNode extends VisibleNode {
     if (this.isSolidPaints(paints)) {
       return colorToHSB(paints[0].color, paints[0].opacity);
     } else {
-      if (paints[0].type == "GRADIENT_LINEAR") {
-        return gradientToString(paints[0], "HSB");
-      }
-      if (paints.length == 0) {
+      let [isPaints, feedback] = this.hasPaints(paints, type);
+      if (isPaints && paints.length == 0) {
         return "No " + type;
+      } else {
+        return feedback;
       }
-      return "";
     }
   }
 

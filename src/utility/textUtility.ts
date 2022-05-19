@@ -8,6 +8,8 @@ export async function addText(
   textNode.fontName = { family: "Roboto", style: "Regular" };
   textNode.fontSize = 12;
   textNode.characters = text;
+  textNode.x = x;
+  textNode.y = y;
   return textNode;
 }
 
