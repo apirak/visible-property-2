@@ -36,22 +36,22 @@ describe("Rectangle Reference", () => {
 
   it("get HEX", () => {
     expect(ref.getValue("fill")).toBe("#f2994a");
-    expect(ref.getValue("stroke")).toBe("No function for stroke");
+    expect(ref.getValue("stroke")).toBe("No stroke");
   });
 
   it("get RGB", () => {
     expect(ref.getValue("fillRGB")).toBe("rgba(242, 153, 74, 1)");
-    expect(ref.getValue("strokeRGB")).toBe("No function for stroke");
+    expect(ref.getValue("strokeRGB")).toBe("No stroke");
   });
 
   it("get HSL", () => {
     expect(ref.getValue("fillHSL")).toBe("hsla(28, 87%, 62%, 1)");
-    expect(ref.getValue("strokeHSL")).toBe("No function for stroke");
+    expect(ref.getValue("strokeHSL")).toBe("No stroke");
   });
 
   it("get HSB", () => {
     expect(ref.getValue("fillHSB")).toBe("hsba(28, 69%, 95%, 1)");
-    expect(ref.getValue("strokeHSB")).toBe("No function for stroke");
+    expect(ref.getValue("strokeHSB")).toBe("No stroke");
   });
 
   it("get Dimention", () => {
