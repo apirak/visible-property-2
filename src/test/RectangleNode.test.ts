@@ -1,4 +1,4 @@
-import { ReferenceNode } from "../referenceNode";
+import { ReferenceNode } from "../module/referenceNode";
 import { createFigma } from "figma-api-stub";
 
 describe("Rectangle Reference", () => {

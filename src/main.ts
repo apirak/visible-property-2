@@ -1,6 +1,6 @@
 import { showUI } from "@create-figma-plugin/utilities";
-import { Help } from "./mockupData";
-import { ReferenceNode } from "./referenceNode";
+import { Help } from "./module/mockupData";
+import { ReferenceNode } from "./module/referenceNode";
 import { updateAllTextProperty } from "./updateText";
 import { addTextNearSelected } from "./utility/textUtility";
 
@@ -152,29 +152,31 @@ const setSelectedProperties = (nodeId: string): [Help[], string] => {
   return [help, referenceNode.referenceName];
 };
 
-const updateAllValue = () => {
+const preparePropertyForUI = (): {
+  nodeId: string;
+  refDescription: string;
+  properties: Help[];
+} => {
   const selection = figma.currentPage.selection;
   if (typeof selection !== "undefined" && selection.length > 0) {
     const [help, nodeName] = setSelectedProperties(selection[0].id);
 
-    const selectedNode = {
+    return {
       nodeId: nodeName ? `#${nodeName}` : selection[0].id,
       refDescription: nodeName ? "reference by name" : "reference by ID",
       properties: help,
     };
-    figma.ui.postMessage(selectedNode);
-  } else {
-    const selectedNode = {
-      nodeId: "",
-      refDescription: "",
-      properties: null,
-    };
-    figma.ui.postMessage(selectedNode);
   }
+  return {
+    nodeId: "",
+    refDescription: "",
+    properties: [],
+  };
+};
 
-  updateAllTextProperty().then(() => {
-    console.log("on selection change: update all text property");
-  });
+const updateAllValue = () => {
+  figma.ui.postMessage(preparePropertyForUI());
+  updateAllTextProperty();
 };
 
 export default function () {

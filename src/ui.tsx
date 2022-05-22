@@ -4,7 +4,6 @@ import { useState } from 'preact/hooks'
 import { h, JSX } from 'preact';
 import { Document } from './component/document';
 import { Home } from './component/home';
-import { Help } from './mockupData';
 
 function Plugin () {
   const [value, setValue] = useState('Home');

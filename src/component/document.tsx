@@ -1,7 +1,7 @@
 import { Container, Text, VerticalSpace, Divider } from '@create-figma-plugin/ui';
 import { IconLayerText16, IconLayerRectangle16 } from '@create-figma-plugin/ui';
 import { h } from 'preact';
-import { mockupData } from '../mockupData';
+import { mockupData } from '../module/mockupData';
 
 const Document = () => {
   const styleLable = {

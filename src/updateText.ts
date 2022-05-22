@@ -1,6 +1,6 @@
-import { VisibleNode } from "./visibleNode";
-import { PropertyNode } from "./propertyNode";
-import { ReferenceNode } from "./referenceNode";
+import { VisibleNode } from "./module/visibleNode";
+import { PropertyNode } from "./module/propertyNode";
+import { ReferenceNode } from "./module/referenceNode";
 import { setRelaunchButton } from "@create-figma-plugin/utilities";
 
 function selectScopeNode(): BaseNode | SceneNode | PageNode {

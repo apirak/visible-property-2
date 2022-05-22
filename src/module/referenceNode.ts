@@ -4,9 +4,9 @@ import {
   colorToHSL,
   colorToRgb,
   colorToHSB,
-} from "./utility/colorUtility";
-import { colorName } from "./colorName";
-import { gradientToString } from "./utility/gradientUtility";
+} from "../utility/colorUtility";
+import { colorName } from "../colorName";
+import { gradientToString } from "../utility/gradientUtility";
 
 export interface ReferenceNode extends VisibleNode {
   getFill(): string;
@@ -193,25 +193,25 @@ export class ReferenceNode extends VisibleNode {
 
   getStyle(type: string): string {
     let styleId: string = "";
-    const cNode = this.node as ComponentNode
+    const cNode = this.node as ComponentNode;
 
     switch (type) {
       case "stroke":
-        if(cNode.strokeStyleId !== undefined){
+        if (cNode.strokeStyleId !== undefined) {
           styleId = (this.node as ComponentNode).strokeStyleId.toString();
         } else {
           return "No stroke style";
         }
-        break
+        break;
       case "fill":
-        if(cNode.fillStyleId !== undefined){
+        if (cNode.fillStyleId !== undefined) {
           styleId = (this.node as ComponentNode).fillStyleId.toString();
         } else {
           return "No fill style";
         }
         break;
       case "text":
-        const tNode = this.node as TextNode
+        const tNode = this.node as TextNode;
         styleId = (this.node as TextNode).textStyleId.toString();
         break;
     }
@@ -229,18 +229,18 @@ export class ReferenceNode extends VisibleNode {
 
   getStyleDescription(type: string): string {
     let styleId: string = "";
-    const cNode = this.node as ComponentNode
+    const cNode = this.node as ComponentNode;
 
     switch (type) {
       case "stroke":
-        if(cNode.strokeStyleId !== undefined) {
+        if (cNode.strokeStyleId !== undefined) {
           styleId = cNode.strokeStyleId.toString();
         } else {
           return "No stroke style";
         }
         break;
       case "fill":
-        if(cNode.fillStyleId !== undefined) {
+        if (cNode.fillStyleId !== undefined) {
           styleId = cNode.fillStyleId.toString();
         } else {
           return "No fill style";

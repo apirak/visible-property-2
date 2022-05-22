@@ -1,4 +1,4 @@
-import { ReferenceNode } from "../referenceNode";
+import { ReferenceNode } from "../module/referenceNode";
 import { createFigma } from "figma-api-stub";
 
 describe("Rectangle has both fill and stroke", () => {
@@ -36,24 +36,24 @@ describe("Rectangle has both fill and stroke", () => {
     },
   ];
 
-  const style1:PaintStyle = figma.createPaintStyle();
+  const style1: PaintStyle = figma.createPaintStyle();
   style1.type = "PAINT";
-  style1.name = "Fill style 1"
+  style1.name = "Fill style 1";
   style1.paints = fills1;
   style1.description = "This is style 1";
 
-  const style2:PaintStyle = figma.createPaintStyle();
+  const style2: PaintStyle = figma.createPaintStyle();
   style2.type = "PAINT";
-  style2.name = "Stroke style 2"
+  style2.name = "Stroke style 2";
   style2.paints = stroke1;
   style2.description = "This is style 2";
 
   const rect1 = figma.createRectangle();
   rect1.fillStyleId = style1.id;
-  rect1.fills = style1.paints
+  rect1.fills = style1.paints;
 
   rect1.strokeStyleId = style2.id;
-  rect1.strokes = style2.paints
+  rect1.strokes = style2.paints;
 
   rect1.name = "#color";
   rect1.resize(100, 200);
@@ -78,5 +78,4 @@ describe("Rectangle has both fill and stroke", () => {
     expect(ref.getStyleDescription("fill")).toBe("This is style 1");
     expect(ref.getStyleDescription("stroke")).toBe("This is style 2");
   });
-})
-
+});

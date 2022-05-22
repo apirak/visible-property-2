@@ -2,7 +2,7 @@ import { Divider } from '@create-figma-plugin/ui';
 import { IconTarget32 } from '@create-figma-plugin/ui';
 import { h } from 'preact';
 import { useState } from 'preact/hooks';
-import { Help } from '../mockupData';
+import { Help } from '../module/mockupData';
 import { Properties } from './properties';
 import styles from '../style.css';
 import tutorial from '../images/tutorial.png';
