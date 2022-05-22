@@ -8,36 +8,36 @@ import { Home } from './component/home';
 function Plugin () {
   const [value, setValue] = useState('Home');
   const [selectedId, setSelectedId] = useState("");
+  const [selectedType, setSelectedType] = useState("Default");
   const [selectedData, setSelectedData] = useState();
   const [selectedName, setSelectedName] = useState("");
   const [selectedRefDescription, setSelectedRefDescription] = useState("");
 
-  const options: Array<TabsOption> = [
-    { children: <Home
+  const options: Array<TabsOption> = [{
+    children: <Home
       selectedId={selectedId}
+      selectedType={selectedType}
       selectedData={selectedData}
-      selectedRefDescription={selectedRefDescription}/>, value: 'Home' },
-    { children: <Document />, value: 'Document' },
-  ];
+      selectedRefDescription={selectedRefDescription}/>,
+    value: 'Home' },{
+    children: <Document />,
+    value: 'Document'
+  }];
 
   function handleChange(event: JSX.TargetedEvent<HTMLInputElement>) {
     const newValue = event.currentTarget.value
-    console.log(newValue)
     setValue(newValue)
   };
 
   onmessage = (event) => {
-    const nodeId = event.data.pluginMessage.nodeId;
-    const refDescription = event.data.pluginMessage.refDescription;
-    const name = event.data.pluginMessage.nodeName;
+    setSelectedId(event.data.pluginMessage.nodeId);
+    setSelectedType(event.data.pluginMessage.nodeType);
+    setSelectedRefDescription(event.data.pluginMessage.refDescription);
+    setSelectedName(event.data.pluginMessage.nodeName);
 
     if (event.data.pluginMessage.properties !== null) {
       setSelectedData(event.data.pluginMessage.properties)
     }
-
-    setSelectedId(nodeId);
-    setSelectedRefDescription(refDescription);
-    setSelectedName(name);
   }
 
   return (

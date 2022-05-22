@@ -5,7 +5,7 @@ import {
   colorToRgb,
   colorToHSB,
 } from "../utility/colorUtility";
-import { colorName } from "../colorName";
+import { colorName } from "../utility/colorName";
 import { gradientToString } from "../utility/gradientUtility";
 
 export interface ReferenceNode extends VisibleNode {

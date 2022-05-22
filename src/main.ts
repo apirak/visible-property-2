@@ -154,6 +154,7 @@ const setSelectedProperties = (nodeId: string): [Help[], string] => {
 
 const preparePropertyForUI = (): {
   nodeId: string;
+  nodeType: string;
   refDescription: string;
   properties: Help[];
 } => {
@@ -163,12 +164,14 @@ const preparePropertyForUI = (): {
 
     return {
       nodeId: nodeName ? `#${nodeName}` : selection[0].id,
+      nodeType: selection[0].type,
       refDescription: nodeName ? "reference by name" : "reference by ID",
       properties: help,
     };
   }
   return {
     nodeId: "",
+    nodeType: "DEFAULT",
     refDescription: "",
     properties: [],
   };

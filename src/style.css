@@ -68,3 +68,11 @@
 .selectedLayerStatus {
   color: #B3B3B3
 }
+
+.selectedIcon {
+  width: 32;
+  height: 32;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
