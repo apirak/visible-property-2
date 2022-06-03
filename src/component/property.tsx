@@ -1,5 +1,4 @@
 import { IconPlus32 } from '@create-figma-plugin/ui';
-import { useState } from 'preact/hooks';
 import { h, JSX } from 'preact';
 import styles from '../style.css';
 

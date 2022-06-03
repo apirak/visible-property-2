@@ -1,138 +1,207 @@
-import { showUI } from '@create-figma-plugin/utilities'
-import { Help } from './mockupData';
-import { ReferenceNode } from './referenceNode';
-import { updateAllTextProperty } from './updateText';
-import { addTextNearSelected } from './utility/textUtility';
+import { showUI } from "@create-figma-plugin/utilities";
+import { Help } from "./module/mockupData";
+import { ReferenceNode } from "./module/referenceNode";
+import { updateAllTextProperty } from "./updateText";
+import { addTextNearSelected } from "./utility/textUtility";
 
-const getComponentData = (ref:ReferenceNode) => {
-  return ({
-    title:"Component",
-    list:[
-      {label:"Height", value:ref.getValue("height"), api:"Height"},
-      {label:"Width", value:ref.getValue("width"), api:"Width"},
-      {label:"Name", value:ref.getValue("name"), api:"Name"}
-    ]
-  })
-}
+const getComponentData = (ref: ReferenceNode) => {
+  return {
+    title: "Component",
+    list: [
+      { label: "Height", value: ref.getValue("height"), api: "Height" },
+      { label: "width", value: ref.getValue("width"), api: "Width" },
+      { label: "name", value: ref.getValue("name"), api: "Name" },
+    ],
+  };
+};
 
-const getTextData = (ref:ReferenceNode) => {
-  return ({
-    title:"Text",
-    list:[
-      {label:"Font", value:ref.getValue("font"), api:"font"},
-      {label:"Weight", value:ref.getValue("fontweight"), api:"fontWeight"},
-      {label:"Size", value:ref.getValue("fontsize"), api:"fontSize"},
-      {label:"Indent", value:ref.getValue("paragraphindent"), api:"paragraphIndent"},
-      {label:"Space", value:ref.getValue("paragraphspace"), api:"paragraphSpace"},
-      {label:"Letter Space", value:ref.getValue("letterspace"), api:"letterSpace"},
-      {label:"Line Height", value:ref.getValue("lineheight"), api:"lineHeight"},
-      {label:"Style", value:ref.getValue("textstyle"), api:"textStyle"},
-      {label:"Description", value:ref.getValue("textstyledescription"), api:"textStyleDescription"}
-    ]
-  });
-}
+const getTextData = (ref: ReferenceNode) => {
+  return {
+    title: "Text",
+    list: [
+      { label: "Font", value: ref.getValue("font"), api: "font" },
+      { label: "Weight", value: ref.getValue("fontweight"), api: "fontWeight" },
+      { label: "Size", value: ref.getValue("fontsize"), api: "fontSize" },
+      {
+        label: "Indent",
+        value: ref.getValue("paragraphindent"),
+        api: "paragraphIndent",
+      },
+      {
+        label: "Space",
+        value: ref.getValue("paragraphspace"),
+        api: "paragraphSpace",
+      },
+      {
+        label: "Letter Space",
+        value: ref.getValue("letterspace"),
+        api: "letterSpace",
+      },
+      {
+        label: "Line Height",
+        value: ref.getValue("lineheight"),
+        api: "lineHeight",
+      },
+      { label: "Style", value: ref.getValue("textstyle"), api: "textStyle" },
+      {
+        label: "Description",
+        value: ref.getValue("textstyledescription"),
+        api: "textStyleDescription",
+      },
+    ],
+  };
+};
 
-const getStrokeData = (ref:ReferenceNode) => {
+const getStrokeData = (ref: ReferenceNode) => {
   let strokeData = {
     title: "Stroke",
-    list:[
-      {label:"HEX", value:ref.getValue("stroke").toUpperCase(), api:"stroke"},
-      {label:"RGB", value:ref.getValue("strokergb").toUpperCase(), api:"strokeRGB"},
-      {label:"HSL", value:ref.getValue("strokehsl").toUpperCase(), api:"strokeHSL"},
-      {label:"HSB", value:ref.getValue("strokehsb").toUpperCase(), api:"strokeHSB"},
-      {label:"Style", value:ref.getValue("strokestyle"), api:"strokeStyle"},
-      {label:"Description", value:ref.getValue("strokestyledescription"), api:"strokeStyleDescription"},
-    ]
+    list: [
+      {
+        label: "HEX",
+        value: ref.getValue("stroke").toUpperCase(),
+        api: "stroke",
+      },
+      {
+        label: "RGB",
+        value: ref.getValue("strokergb").toUpperCase(),
+        api: "strokeRGB",
+      },
+      {
+        label: "HSL",
+        value: ref.getValue("strokehsl").toUpperCase(),
+        api: "strokeHSL",
+      },
+      {
+        label: "HSB",
+        value: ref.getValue("strokehsb").toUpperCase(),
+        api: "strokeHSB",
+      },
+      {
+        label: "Style",
+        value: ref.getValue("strokestyle"),
+        api: "strokeStyle",
+      },
+      {
+        label: "Description",
+        value: ref.getValue("strokestyledescription"),
+        api: "strokeStyleDescription",
+      },
+    ],
   };
-  const strokeColorName:string = ref.getValue("fillcolorname");
+  const strokeColorName: string = ref.getValue("fillcolorname");
   if (strokeColorName !== "Not match") {
     strokeData.list.push({
-      label:"brand",
-      value:strokeColorName,
-      api:"strokeColorName"
-    })
+      label: "brand",
+      value: strokeColorName,
+      api: "strokeColorName",
+    });
   }
   return strokeData;
-}
+};
 
-const getFillData = (ref:ReferenceNode) => {
+const getFillData = (ref: ReferenceNode) => {
   let fillData = {
     title: "Fill",
-    list:[
-      {label:"HEX", value:ref.getValue("fill").toUpperCase(), api:"fill"},
-      {label:"RGB", value:ref.getValue("fillrgb").toUpperCase(), api:"fillRGB"},
-      {label:"HSL", value:ref.getValue("fillhsl").toUpperCase(), api:"fillHSL"},
-      {label:"HSB", value:ref.getValue("fillhsb").toUpperCase(), api:"fillHSB"},
-      {label:"Style", value:ref.getValue("fillstyle"), api:"fillstyle"},
-      {label:"Description", value:ref.getValue("fillstyledescription"),api:"fillStyleDescription"}
-    ]
+    list: [
+      { label: "HEX", value: ref.getValue("fill").toUpperCase(), api: "fill" },
+      {
+        label: "RGB",
+        value: ref.getValue("fillrgb").toUpperCase(),
+        api: "fillRGB",
+      },
+      {
+        label: "HSL",
+        value: ref.getValue("fillhsl").toUpperCase(),
+        api: "fillHSL",
+      },
+      {
+        label: "HSB",
+        value: ref.getValue("fillhsb").toUpperCase(),
+        api: "fillHSB",
+      },
+      { label: "Style", value: ref.getValue("fillstyle"), api: "fillstyle" },
+      {
+        label: "Description",
+        value: ref.getValue("fillstyledescription"),
+        api: "fillStyleDescription",
+      },
+    ],
   };
-  const fillColorName:string = ref.getValue("fillcolorname");
+  const fillColorName: string = ref.getValue("fillcolorname");
   if (fillColorName !== "Not match") {
     fillData.list.push({
-      label:"brand",
-      value:fillColorName,
-      api:"fillColorName"
-    })
+      label: "brand",
+      value: fillColorName,
+      api: "fillColorName",
+    });
   }
   return fillData;
-}
+};
 
-const setSelectedProperties = (nodeId:string): [Help[], string] => {
+const setSelectedProperties = (nodeId: string): [Help[], string] => {
   const selectedNode = <SceneNode>figma.getNodeById(nodeId);
-  const referenceNode = new ReferenceNode(selectedNode, figma.currentPage.id)
+  const referenceNode = new ReferenceNode(selectedNode, figma.currentPage.id);
   referenceNode.matchName();
 
-  let help:Help[] = []
+  let help: Help[] = [];
   referenceNode.hasFill() && help.push(getFillData(referenceNode));
   referenceNode.hasStroke() && help.push(getStrokeData(referenceNode));
   referenceNode.isText() && help.push(getTextData(referenceNode));
   help.push(getComponentData(referenceNode));
 
   return [help, referenceNode.referenceName];
-}
+};
+
+const preparePropertyForUI = (): {
+  nodeId: string;
+  nodeType: string;
+  refDescription: string;
+  properties: Help[];
+} => {
+  const selection = figma.currentPage.selection;
+  if (typeof selection !== "undefined" && selection.length > 0) {
+    const [help, nodeName] = setSelectedProperties(selection[0].id);
+
+    return {
+      nodeId: nodeName ? `#${nodeName}` : selection[0].id,
+      nodeType: selection[0].type,
+      refDescription: nodeName ? "reference by name" : "reference by ID",
+      properties: help,
+    };
+  }
+  return {
+    nodeId: "",
+    nodeType: "DEFAULT",
+    refDescription: "",
+    properties: [],
+  };
+};
 
 const updateAllValue = () => {
-  const selection = figma.currentPage.selection
-  if (typeof selection !== "undefined" && selection.length > 0){
-    const [help, nodeName] = setSelectedProperties(selection[0].id)
+  figma.ui.postMessage(preparePropertyForUI());
+  updateAllTextProperty();
+};
 
-    const selectedNode = {
-      nodeId: nodeName? `#${nodeName}` : selection[0].id,
-      refDescription: nodeName ? "reference by name" : "reference by ID",
-      properties: help
-    }
-    figma.ui.postMessage(selectedNode);
-  } else {
-    const selectedNode = {
-      nodeId: "",
-      refDescription: "",
-      properties: null
-    }
-    figma.ui.postMessage(selectedNode);
-  }
-
-  updateAllTextProperty().then(() => {
-    // console.log("on selection change: update all text property")
-  })
-}
-
-export default function() {
+export default function () {
   const options = { width: 260, height: 400 };
   showUI(options);
   updateAllValue();
 
-  figma.on('selectionchange', () => {
+  figma.on("selectionchange", () => {
     updateAllValue();
-  })
+  });
 
-  figma.ui.onmessage = (message, payload:any) => {
-    const selection = figma.currentPage.selection
+  figma.ui.onmessage = (message, payload: any) => {
+    const selection = figma.currentPage.selection;
 
-    if (typeof selection !== "undefined" && selection.length > 0){
-      const [help, nodeName] = setSelectedProperties(selection[0].id)
-      const text = nodeName? `#${nodeName}` : `#[${selection[0].id}]`
-      addTextNearSelected(selection[0], message.data.value, `${text}.${message.data.api}`);
+    if (typeof selection !== "undefined" && selection.length > 0) {
+      const [help, nodeName] = setSelectedProperties(selection[0].id);
+      const text = nodeName ? `#${nodeName}` : `#[${selection[0].id}]`;
+      addTextNearSelected(
+        selection[0],
+        message.data.value,
+        `${text}.${message.data.api}`
+      );
     }
-  }
+  };
 }

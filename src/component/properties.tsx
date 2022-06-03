@@ -1,5 +1,5 @@
 import { h } from "preact";
-import { Help, HelpList } from "../mockupData";
+import { Help, HelpList } from "../module/mockupData";
 import { Property } from "./property";
 import styles from "../style.css";
 
