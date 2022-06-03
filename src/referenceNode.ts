@@ -26,6 +26,7 @@ export class ReferenceNode extends VisibleNode {
   getValue(name:string):string {
     const lowerCaseName:string = name.toLowerCase();
     const textFunction = new Set<string>(['font', 'fontweight', 'fontsize', 'paragraphindent', 'paragraphspace']);
+
     if(textFunction.has(lowerCaseName)){
       return this.getText(lowerCaseName);
     }
@@ -235,10 +236,10 @@ export class ReferenceNode extends VisibleNode {
     if(this.node.type == "TEXT") {
       let space:Space = { unit: "", value: 0};
       switch(type) {
-        case "line height":
+        case "lineheight":
           space = this.node.lineHeight;
           break;
-        case "letter space":
+        case "letterspace":
           space = this.node.letterSpacing;
           break;
         default:
@@ -246,10 +247,17 @@ export class ReferenceNode extends VisibleNode {
           break;
       }
 
-      if(space.unit == "PERCENT") {
-        return "" + parseFloat(space.value.toFixed(2)) + "%";
-      } else {
-        return "" + parseFloat(space.value.toFixed(2));
+      switch(space.unit) {
+        case "PERCENT":
+          return "" + parseFloat(space.value.toFixed(2)) + "%";
+          break;
+        case "AUTO":
+          return "Auto"
+          break;
+        default:
+          //PIXELS
+          return "" + parseFloat(space.value.toFixed(2));
+          break;
       }
     } else {
       return "Not a text";

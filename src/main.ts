@@ -9,8 +9,8 @@ const getComponentData = (ref:ReferenceNode) => {
     title:"Component",
     list:[
       {label:"Height", value:ref.getValue("height"), api:"Height"},
-      {label:"width", value:ref.getValue("width"), api:"Width"},
-      {label:"name", value:ref.getValue("name"), api:"Name"}
+      {label:"Width", value:ref.getValue("width"), api:"Width"},
+      {label:"Name", value:ref.getValue("name"), api:"Name"}
     ]
   })
 }
@@ -113,7 +113,7 @@ const updateAllValue = () => {
   }
 
   updateAllTextProperty().then(() => {
-    console.log("on selection change: update all text property")
+    // console.log("on selection change: update all text property")
   })
 }
 
