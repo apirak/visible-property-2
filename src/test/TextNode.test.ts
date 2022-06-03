@@ -32,22 +32,26 @@ describe("Rectangle Reference", () => {
 
   const letterSpace: LetterSpacing = {
     value: 10,
-    unit: "PERCENT"
+    unit: "PERCENT",
+  };
+
+  const letterSpacePixel: LetterSpacing = {
+    value: 10,
+    unit: "PIXELS",
   };
 
   const lineHeight: LineHeight = {
     value: 150,
-    unit: "PIXELS"
-  }
+    unit: "PIXELS",
+  };
 
+  const lineHeightAuto: LineHeight = {
+    unit: "AUTO",
+  };
 
-  const lineHeight_auto: LineHeight= {
-    unit: "AUTO"
-  }
-
-  const textStyle = figma.createTextStyle()
+  const textStyle = figma.createTextStyle();
   textStyle.type = "TEXT";
-  textStyle.fontSize = 16
+  textStyle.fontSize = 16;
   // textStyle.textDecoration: TextDecoratio
   textStyle.fontName = { family: "Roboto", style: "Regular" };
   textStyle.letterSpacing = letterSpace;
@@ -66,14 +70,14 @@ describe("Rectangle Reference", () => {
   page.appendChild(text1);
   const ref = new ReferenceNode(<SceneNode>text1, "0:0");
 
-  // const text2 = figma.createText();
-  // text1.fills = fills1;
-  // text1.name = "#typo";
-  // text1.lineHeight = lineHeight_auto;
-  // text1.letterSpacing = letterSpace;
-  // text1.resize(200, 100);
-  // page.appendChild(text1);
-  // const ref2 = new ReferenceNode(<SceneNode>text2, "1:1");
+  const text2 = figma.createText();
+  text2.fills = fills1;
+  text2.name = "#typo2";
+  text2.lineHeight = lineHeightAuto;
+  text2.letterSpacing = letterSpacePixel;
+  text2.resize(200, 100);
+  page.appendChild(text2);
+  const ref2 = new ReferenceNode(<SceneNode>text2, "0:0");
 
   it("create referenceNode", () => {
     expect(ref.getValue("name")).toBe("#typo");
@@ -109,9 +113,11 @@ describe("Rectangle Reference", () => {
     expect(ref.getValue("letterSpace")).toBe("10%");
   });
 
-  // it("get size auto", () => {
-  //   expect(ref2.getValue("lineHeight")).toBe("auto");
-  //   expect(ref2.getValue("letterSpace")).toBe("auto");
-  // });
+  it("get size auto", () => {
+    expect(ref2.getValue("lineHeight")).toBe("auto");
+  });
 
+  it("get letter space in pixel", () => {
+    expect(ref2.getValue("letterSpace")).toBe("10");
+  });
 });
