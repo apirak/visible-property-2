@@ -1,13 +1,6 @@
 import { ReferenceNode } from "../module/referenceNode";
 import { createFigma } from "figma-api-stub";
 
-// type LineHeight = {
-//   readonly value: number
-//   readonly unit: "PIXELS" | "PERCENT"
-// } | {
-//   readonly unit: "AUTO"
-// }
-
 describe("Rectangle Reference", () => {
   // @ts-ignore
   global.figma = createFigma({
