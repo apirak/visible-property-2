@@ -74,6 +74,7 @@ describe("Rectangle Reference", () => {
 
   it("create referenceNode", () => {
     expect(ref.getValue("name")).toBe("#typo");
+    expect(ref.getValue("abc")).toBe("No function abc");
   });
 
   it("get HEX", () => {

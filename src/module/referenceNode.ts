@@ -6,7 +6,7 @@ import {
   colorToHSB,
 } from "../utility/colorUtility";
 import { colorName } from "../utility/colorName";
-import { gradientToString } from "../utility/gradientUtility";
+import { gradientString } from "../utility/gradientUtility";
 
 export interface ReferenceNode extends VisibleNode {
   getFill(): string;
@@ -109,7 +109,7 @@ export class ReferenceNode extends VisibleNode {
         return this.getLayerName();
         break;
       default:
-        return "No function";
+        return `No function ${name}`;
         break;
     }
   }
@@ -133,62 +133,37 @@ export class ReferenceNode extends VisibleNode {
     return [true, ""];
   }
 
-  getHex(type: string): string {
+  getPaints(type:string, getColor:Function): string {
     const paints = type == "stroke" ? this.node.strokes : this.node.fills;
     if (this.isSolidPaints(paints)) {
-      return colorToHex(paints[0].color, paints[0].opacity);
+      return getColor(paints[0].color, paints[0].opacity);
     } else {
       let [isPaints, feedback] = this.hasPaints(paints, type);
 
       if (isPaints && paints[0].type == "GRADIENT_LINEAR") {
-        return gradientToString(paints[0], "HEX");
+        return gradientString(paints[0], getColor)
       } else {
         return feedback;
       }
-      return "";
+
+      return feedback;
     }
+  }
+
+  getHex(type: string): string {
+    return this.getPaints(type, colorToHex);
   }
 
   getRGB(type: string): string {
-    const paints = type == "stroke" ? this.node.strokes : this.node.fills;
-    if (this.isSolidPaints(paints)) {
-      return colorToRgb(paints[0].color, paints[0].opacity);
-    } else {
-      let [isPaints, feedback] = this.hasPaints(paints, type);
-      if (isPaints && paints[0].type == "GRADIENT_LINEAR") {
-        return gradientToString(paints[0], "RGB");
-      } else {
-        return feedback;
-      }
-    }
+    return this.getPaints(type, colorToRgb);
   }
 
   getHSL(type: string): string {
-    const paints = type == "stroke" ? this.node.strokes : this.node.fills;
-    if (this.isSolidPaints(paints)) {
-      return colorToHSL(paints[0].color, paints[0].opacity);
-    } else {
-      let [isPaints, feedback] = this.hasPaints(paints, type);
-      if (isPaints && paints.length == 0) {
-        return "No " + type;
-      } else {
-        return feedback;
-      }
-    }
+    return this.getPaints(type, colorToHSL);
   }
 
   getHSB(type: string): string {
-    const paints = type == "stroke" ? this.node.strokes : this.node.fills;
-    if (this.isSolidPaints(paints)) {
-      return colorToHSB(paints[0].color, paints[0].opacity);
-    } else {
-      let [isPaints, feedback] = this.hasPaints(paints, type);
-      if (isPaints && paints.length == 0) {
-        return "No " + type;
-      } else {
-        return feedback;
-      }
-    }
+    return this.getPaints(type, colorToHSB);
   }
 
   getStyle(type: string): string {
@@ -277,7 +252,7 @@ export class ReferenceNode extends VisibleNode {
           space = this.node.letterSpacing;
           break;
         default:
-          return "No function";
+          return `No function ${type}`;
           break;
       }
 

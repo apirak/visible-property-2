@@ -67,6 +67,7 @@ describe("Rectangle has both fill and stroke", () => {
   it("get style name", () => {
     expect(ref.getStyle("fill")).toBe("Fill style 1");
     expect(ref.getStyle("stroke")).toBe("Stroke style 2");
+    expect(ref.getStyle("abc")).toBe("No Style");
   });
 
   it("get style HEX", () => {

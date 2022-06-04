@@ -54,6 +54,10 @@ describe("Empty Style", () => {
     expect(ref_text.getStyle("stroke")).toBe("No stroke style");
   });
 
+  it("get No fuction when call for wrong function", () => {
+    expect(ref.getHex("abc")).toBe("No abc");
+  });
+
   it("get style HEX", () => {
     expect(ref.getHex("fill")).toBe("No fill");
     expect(ref.getHex("stroke")).toBe("No stroke");

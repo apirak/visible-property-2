@@ -48,6 +48,10 @@ describe("Rectangle Reference", () => {
     expect(ref.getValue("name")).toBe("#color");
   });
 
+  it("return No function when call wrong function", () => {
+    expect(ref.getValue("abc")).toBe("No function abc");
+  });
+
   it("get HEX", () => {
     expect(ref.getValue("fill")).toBe("#f2994a");
     expect(ref.getValue("stroke")).toBe("#f2c94c");
@@ -72,4 +76,5 @@ describe("Rectangle Reference", () => {
     expect(ref.getValue("Height")).toBe("200");
     expect(ref.getValue("Width")).toBe("100");
   });
+
 });
