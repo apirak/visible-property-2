@@ -58,22 +58,22 @@ const getStrokeData = (ref: ReferenceNode) => {
     list: [
       {
         label: "HEX",
-        value: ref.getValue("stroke").toUpperCase(),
+        value: ref.getValue("stroke"),
         api: "stroke",
       },
       {
         label: "RGB",
-        value: ref.getValue("strokergb").toUpperCase(),
+        value: ref.getValue("strokergb"),
         api: "strokeRGB",
       },
       {
         label: "HSL",
-        value: ref.getValue("strokehsl").toUpperCase(),
+        value: ref.getValue("strokehsl"),
         api: "strokeHSL",
       },
       {
         label: "HSB",
-        value: ref.getValue("strokehsb").toUpperCase(),
+        value: ref.getValue("strokehsb"),
         api: "strokeHSB",
       },
       {
@@ -103,20 +103,20 @@ const getFillData = (ref: ReferenceNode) => {
   let fillData = {
     title: "Fill",
     list: [
-      { label: "HEX", value: ref.getValue("fill").toUpperCase(), api: "fill" },
+      { label: "HEX", value: ref.getValue("fill"), api: "fill" },
       {
         label: "RGB",
-        value: ref.getValue("fillrgb").toUpperCase(),
+        value: ref.getValue("fillrgb"),
         api: "fillRGB",
       },
       {
         label: "HSL",
-        value: ref.getValue("fillhsl").toUpperCase(),
+        value: ref.getValue("fillhsl"),
         api: "fillHSL",
       },
       {
         label: "HSB",
-        value: ref.getValue("fillhsb").toUpperCase(),
+        value: ref.getValue("fillhsb"),
         api: "fillHSB",
       },
       { label: "Style", value: ref.getValue("fillstyle"), api: "fillstyle" },

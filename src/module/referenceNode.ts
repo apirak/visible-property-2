@@ -126,32 +126,21 @@ export class ReferenceNode extends VisibleNode {
     return this.node.type == "TEXT" ? true : false;
   }
 
-  hasPaints(paints: Paint[], type: string): [boolean, string] {
-    if (paints === undefined || paints.length == 0) {
-      return [false, `No ${type}`];
-    }
-    return [true, ""];
-  }
-
-  getPaints(type:string, getColor:Function): string {
+  getPaints(type:string, getColor:Function, getAlphaColor?:Function): string {
     const paints = type == "stroke" ? this.node.strokes : this.node.fills;
     if (this.isSolidPaints(paints)) {
       return getColor(paints[0].color, paints[0].opacity);
     } else {
-      let [isPaints, feedback] = this.hasPaints(paints, type);
-
-      if (isPaints && paints[0].type == "GRADIENT_LINEAR") {
-        return gradientString(paints[0], getColor)
+      if (paints !== undefined && paints.length != 0 && paints[0].type == "GRADIENT_LINEAR") {
+        return gradientString(paints[0], getColor, getAlphaColor)
       } else {
-        return feedback;
+        return `No ${type}`;
       }
-
-      return feedback;
     }
   }
 
   getHex(type: string): string {
-    return this.getPaints(type, colorToHex);
+    return this.getPaints(type, colorToHex, colorToRgb);
   }
 
   getRGB(type: string): string {

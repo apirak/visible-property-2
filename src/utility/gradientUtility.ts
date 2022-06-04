@@ -66,12 +66,16 @@ function getPosition(stop: ColorStop, matrix: Transform): number {
   return Math.round(stop.position * 100 * 100) / 100;
 }
 
-export function gradientString(paint: GradientPaint, colorToString:Function):string {
+export function gradientString(paint: GradientPaint, colorToString:Function, alphaColorToString?:Function):string {
   const { gradientTransform, gradientStops } = paint;
   const gradientTransformString = getDegreeForMatrix(gradientTransform);
   const gradientStopString = gradientStops.map((stop) => {
     let color = "";
-    color = colorToString(stop.color, stop.color.a);
+    if(typeof alphaColorToString != 'undefined' && stop.color.a != 1){
+      color = alphaColorToString(stop.color, stop.color.a);
+    } else {
+      color = colorToString(stop.color, stop.color.a);
+    }
     return color + " " + getPosition(stop, gradientTransform) + "%";
   }).join(",\n");
   return `linear-gradient( ${gradientTransformString},\n${gradientStopString} )`;
