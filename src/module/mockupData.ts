@@ -22,6 +22,7 @@ const mockupData = (): Help[] => {
         { label: "fillHSB", value: "hsba(123, 45%, 78%, 0.9)" },
         { label: "fillStyle", value: "DarkBlue" },
         { label: "fillStyleDescription", value: "Description" },
+        { label: "fillOpacity", value: "60%" },
       ],
     },
     {
@@ -33,6 +34,7 @@ const mockupData = (): Help[] => {
         { label: "strokeHSB", value: "hsba(123, 45%, 78%, 0.9)" },
         { label: "strokeStyle", value: "DarkBlue" },
         { label: "strokeStyleDescription", value: "Description" },
+        { label: "strokeOpacity", value: "60%" },
       ],
     },
     {

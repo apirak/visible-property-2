@@ -41,6 +41,7 @@ export class ReferenceNode extends VisibleNode {
     if (textFunction.has(lowerCaseName)) {
       return this.getText(lowerCaseName);
     }
+
     switch (lowerCaseName) {
       case "fill":
         return this.getHex("fill");
@@ -80,6 +81,12 @@ export class ReferenceNode extends VisibleNode {
         break;
       case "strokestyledescription":
         return this.getStyleDescription("stroke");
+        break;
+      case "fillopacity":
+        return this.getOpacity("fill");
+        break;
+      case "strokeopacity":
+        return this.getOpacity('stroke');
         break;
       case "textstyledescription":
         return this.getStyleDescription("text");
@@ -161,6 +168,16 @@ export class ReferenceNode extends VisibleNode {
 
   getHSB(type: string): string {
     return this.getPaints(type, colorToHSB);
+  }
+
+  getOpacity(type: string): string {
+    const paints = type == "stroke" ? this.node.strokes : this.node.fills;
+    const opacity = paints[0].opacity;
+    if (this.isSolidPaints(paints) && opacity != 1 && opacity) {
+      return Number((opacity * 100).toFixed(0)) + "%";
+    } else {
+      return '100%';
+    }
   }
 
   getStyle(type: string): string {
