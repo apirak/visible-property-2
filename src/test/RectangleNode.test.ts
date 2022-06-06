@@ -76,5 +76,4 @@ describe("Rectangle Reference", () => {
     expect(ref.getValue("Height")).toBe("200");
     expect(ref.getValue("Width")).toBe("100");
   });
-
 });

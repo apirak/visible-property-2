@@ -126,13 +126,21 @@ export class ReferenceNode extends VisibleNode {
     return this.node.type == "TEXT" ? true : false;
   }
 
-  getPaints(type:string, getColor:Function, getAlphaColor?:Function): string {
+  getPaints(
+    type: string,
+    getColor: Function,
+    getAlphaColor?: Function
+  ): string {
     const paints = type == "stroke" ? this.node.strokes : this.node.fills;
     if (this.isSolidPaints(paints)) {
       return getColor(paints[0].color, paints[0].opacity);
     } else {
-      if (paints !== undefined && paints.length != 0 && paints[0].type == "GRADIENT_LINEAR") {
-        return gradientString(paints[0], getColor, getAlphaColor)
+      if (
+        paints !== undefined &&
+        paints.length != 0 &&
+        paints[0].type == "GRADIENT_LINEAR"
+      ) {
+        return gradientString(paints[0], getColor, getAlphaColor);
       } else {
         return `No ${type}`;
       }
