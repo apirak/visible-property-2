@@ -6,7 +6,7 @@ import {
   colorToHSB,
 } from "../utility/colorUtility";
 import { colorName } from "../utility/colorName";
-import { gradientToString } from "../utility/gradientUtility";
+import { gradientString } from "../utility/gradientUtility";
 
 export interface ReferenceNode extends VisibleNode {
   getFill(): string;
@@ -109,7 +109,7 @@ export class ReferenceNode extends VisibleNode {
         return this.getLayerName();
         break;
       default:
-        return "No function";
+        return `No function ${name}`;
         break;
     }
   }
@@ -126,69 +126,41 @@ export class ReferenceNode extends VisibleNode {
     return this.node.type == "TEXT" ? true : false;
   }
 
-  hasPaints(paints: Paint[], type: string): [boolean, string] {
-    if (paints === undefined || paints.length == 0) {
-      return [false, `No ${type}`];
+  getPaints(
+    type: string,
+    getColor: Function,
+    getAlphaColor?: Function
+  ): string {
+    const paints = type == "stroke" ? this.node.strokes : this.node.fills;
+    if (this.isSolidPaints(paints)) {
+      return getColor(paints[0].color, paints[0].opacity);
+    } else {
+      if (
+        paints !== undefined &&
+        paints.length != 0 &&
+        paints[0].type == "GRADIENT_LINEAR"
+      ) {
+        return gradientString(paints[0], getColor, getAlphaColor);
+      } else {
+        return `No ${type}`;
+      }
     }
-    return [true, ""];
   }
 
   getHex(type: string): string {
-    const paints = type == "stroke" ? this.node.strokes : this.node.fills;
-    if (this.isSolidPaints(paints)) {
-      return colorToHex(paints[0].color, paints[0].opacity);
-    } else {
-      let [isPaints, feedback] = this.hasPaints(paints, type);
-
-      if (isPaints && paints[0].type == "GRADIENT_LINEAR") {
-        return gradientToString(paints[0], "HEX");
-      } else {
-        return feedback;
-      }
-      return "";
-    }
+    return this.getPaints(type, colorToHex, colorToRgb);
   }
 
   getRGB(type: string): string {
-    const paints = type == "stroke" ? this.node.strokes : this.node.fills;
-    if (this.isSolidPaints(paints)) {
-      return colorToRgb(paints[0].color, paints[0].opacity);
-    } else {
-      let [isPaints, feedback] = this.hasPaints(paints, type);
-      if (isPaints && paints[0].type == "GRADIENT_LINEAR") {
-        return gradientToString(paints[0], "RGB");
-      } else {
-        return feedback;
-      }
-    }
+    return this.getPaints(type, colorToRgb);
   }
 
   getHSL(type: string): string {
-    const paints = type == "stroke" ? this.node.strokes : this.node.fills;
-    if (this.isSolidPaints(paints)) {
-      return colorToHSL(paints[0].color, paints[0].opacity);
-    } else {
-      let [isPaints, feedback] = this.hasPaints(paints, type);
-      if (isPaints && paints.length == 0) {
-        return "No " + type;
-      } else {
-        return feedback;
-      }
-    }
+    return this.getPaints(type, colorToHSL);
   }
 
   getHSB(type: string): string {
-    const paints = type == "stroke" ? this.node.strokes : this.node.fills;
-    if (this.isSolidPaints(paints)) {
-      return colorToHSB(paints[0].color, paints[0].opacity);
-    } else {
-      let [isPaints, feedback] = this.hasPaints(paints, type);
-      if (isPaints && paints.length == 0) {
-        return "No " + type;
-      } else {
-        return feedback;
-      }
-    }
+    return this.getPaints(type, colorToHSB);
   }
 
   getStyle(type: string): string {
@@ -270,15 +242,19 @@ export class ReferenceNode extends VisibleNode {
     if (this.node.type == "TEXT") {
       let space: Space = { unit: "", value: 0 };
       switch (type) {
-        case "line height":
+        case "lineheight":
           space = this.node.lineHeight;
           break;
-        case "letter space":
+        case "letterspace":
           space = this.node.letterSpacing;
           break;
         default:
-          return "No function";
+          return `No function ${type}`;
           break;
+      }
+
+      if (space.unit == "AUTO") {
+        return "auto";
       }
 
       if (space.unit == "PERCENT") {

@@ -23,15 +23,58 @@ describe("Rectangle Reference", () => {
     },
   ];
 
+  const letterSpace: LetterSpacing = {
+    value: 10,
+    unit: "PERCENT",
+  };
+
+  const letterSpacePixel: LetterSpacing = {
+    value: 10,
+    unit: "PIXELS",
+  };
+
+  const lineHeight: LineHeight = {
+    value: 150,
+    unit: "PIXELS",
+  };
+
+  const lineHeightAuto: LineHeight = {
+    unit: "AUTO",
+  };
+
+  const textStyle = figma.createTextStyle();
+  textStyle.type = "TEXT";
+  textStyle.fontSize = 16;
+  // textStyle.textDecoration: TextDecoratio
+  textStyle.fontName = { family: "Roboto", style: "Regular" };
+  textStyle.letterSpacing = letterSpace;
+  textStyle.lineHeight = lineHeight;
+  textStyle.paragraphIndent = 8;
+  textStyle.paragraphSpacing = 12;
+  // textStyle.textCase = TextCas
+
   const text1 = figma.createText();
   text1.fills = fills1;
   text1.name = "#typo";
+  // text1.textStyleId = textStyle.id;
+  text1.lineHeight = lineHeight;
+  text1.letterSpacing = letterSpace;
   text1.resize(200, 100);
   page.appendChild(text1);
   const ref = new ReferenceNode(<SceneNode>text1, "0:0");
 
+  const text2 = figma.createText();
+  text2.fills = fills1;
+  text2.name = "#typo2";
+  text2.lineHeight = lineHeightAuto;
+  text2.letterSpacing = letterSpacePixel;
+  text2.resize(200, 100);
+  page.appendChild(text2);
+  const ref2 = new ReferenceNode(<SceneNode>text2, "0:0");
+
   it("create referenceNode", () => {
     expect(ref.getValue("name")).toBe("#typo");
+    expect(ref.getValue("abc")).toBe("No function abc");
   });
 
   it("get HEX", () => {
@@ -57,5 +100,18 @@ describe("Rectangle Reference", () => {
   it("get Dimention", () => {
     expect(ref.getValue("Height")).toBe("100");
     expect(ref.getValue("Width")).toBe("200");
+  });
+
+  it("get size", () => {
+    expect(ref.getValue("lineHeight")).toBe("150");
+    expect(ref.getValue("letterSpace")).toBe("10%");
+  });
+
+  it("get size auto", () => {
+    expect(ref2.getValue("lineHeight")).toBe("auto");
+  });
+
+  it("get letter space in pixel", () => {
+    expect(ref2.getValue("letterSpace")).toBe("10");
   });
 });

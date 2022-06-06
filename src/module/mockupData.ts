@@ -59,8 +59,8 @@ const mockupData = (): Help[] => {
     {
       title: "Reference to Parent Layer",
       list: [
-        { label: "#Parent.name", value: "Parent name" },
-        { label: "#TopParent.name", value: "TopParent name" },
+        { label: "##Parent.name", value: "Parent name" },
+        { label: "##TopParent.name", value: "TopParent name" },
         { label: "name", value: "Layer name" },
       ],
     },

@@ -66,44 +66,23 @@ function getPosition(stop: ColorStop, matrix: Transform): number {
   return Math.round(stop.position * 100 * 100) / 100;
 }
 
-function getGradientStop(
-  stops: ReadonlyArray<ColorStop>,
-  matrix: Transform,
-  type: ColorType
-): string {
-  const colors = stops
-    .map((stop) => {
-      let color = "";
-      switch (type) {
-        case "RGB":
-          color = colorToRgb(stop.color, stop.color.a);
-          break;
-        case "HSL":
-          color = colorToHSL(stop.color, stop.color.a);
-          break;
-        case "HSB":
-          color = colorToHSB(stop.color, stop.color.a);
-          break;
-        default:
-          color = getGradientStopByAlpha(stop.color);
-          break;
-      }
-      return color + " " + getPosition(stop, matrix) + "%";
-    })
-    .join(",\n");
-  return colors;
-}
-
-export function gradientToString(
+export function gradientString(
   paint: GradientPaint,
-  type: ColorType
+  colorToString: Function,
+  alphaColorToString?: Function
 ): string {
   const { gradientTransform, gradientStops } = paint;
   const gradientTransformString = getDegreeForMatrix(gradientTransform);
-  const gradientStopString = getGradientStop(
-    gradientStops,
-    gradientTransform,
-    type
-  );
+  const gradientStopString = gradientStops
+    .map((stop) => {
+      let color = "";
+      if (typeof alphaColorToString != "undefined" && stop.color.a != 1) {
+        color = alphaColorToString(stop.color, stop.color.a);
+      } else {
+        color = colorToString(stop.color, stop.color.a);
+      }
+      return color + " " + getPosition(stop, gradientTransform) + "%";
+    })
+    .join(",\n");
   return `linear-gradient( ${gradientTransformString},\n${gradientStopString} )`;
 }
