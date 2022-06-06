@@ -72,4 +72,9 @@ describe("Rectangle Reference", () => {
     expect(ref.getValue("Height")).toBe("200");
     expect(ref.getValue("Width")).toBe("100");
   });
+
+  it("get Opacity", () => {
+    expect(ref.getValue("fillOpacity")).toBe("100%");
+    expect(ref.getValue("strokeOpacity")).toBe("100%");
+  });
 });
