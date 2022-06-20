@@ -29,13 +29,13 @@
     "name": "Visible Property 2",
     "menu": [
       {
-        "name": "🔦 Add Property",
+        "name": "＋ Add Property",
         "main": "src/main.ts",
         "ui": "src/ui.tsx"
       },
       "-",
       {
-        "name": "🔍 Run Update",
+        "name": "Run Update",
         "main": "src/updateText.ts"
       }
     ],
