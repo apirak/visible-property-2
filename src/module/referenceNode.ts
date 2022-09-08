@@ -8,6 +8,15 @@ import {
 import { colorName } from "../utility/colorName";
 import { gradientString } from "../utility/gradientUtility";
 
+// Plugin-api TextCase is not uptodate 6 Sep 2022
+type FixTextCase =
+  | "ORIGINAL"
+  | "UPPER"
+  | "LOWER"
+  | "TITLE"
+  | "SMALL_CAPS"
+  | "SMALL_CAPS_FORCED";
+
 export interface ReferenceNode extends VisibleNode {
   getFill(): string;
   getValue(name: string): string;
@@ -37,6 +46,7 @@ export class ReferenceNode extends VisibleNode {
       "fontsize",
       "paragraphindent",
       "paragraphspace",
+      "textcase",
     ]);
     if (textFunction.has(lowerCaseName)) {
       return this.getText(lowerCaseName);
@@ -86,7 +96,7 @@ export class ReferenceNode extends VisibleNode {
         return this.getOpacity("fill");
         break;
       case "strokeopacity":
-        return this.getOpacity('stroke');
+        return this.getOpacity("stroke");
         break;
       case "textstyledescription":
         return this.getStyleDescription("text");
@@ -176,7 +186,7 @@ export class ReferenceNode extends VisibleNode {
     if (this.isSolidPaints(paints) && opacity != 1 && opacity) {
       return Number((opacity * 100).toFixed(0)) + "%";
     } else {
-      return '100%';
+      return "100%";
     }
   }
 
@@ -285,22 +295,34 @@ export class ReferenceNode extends VisibleNode {
   }
 
   getText(type: string): string {
+    const textCaseDisplay = {
+      ORIGINAL: "As Typed",
+      UPPER: "Uppercase",
+      LOWER: "Lowercase",
+      TITLE: "Title case",
+      SMALL_CAPS: "Small caps",
+      SMALL_CAPS_FORCED: "Small caps forced",
+    };
     if (this.node.type == "TEXT") {
+      const textNode = this.node as TextNode;
       switch (type) {
         case "font":
-          return this.node.fontName.family;
+          return (textNode.fontName as FontName).family;
           break;
         case "fontweight":
-          return this.node.fontName.style;
+          return (textNode.fontName as FontName).style;
           break;
         case "fontsize":
-          return this.node.fontSize.toString();
+          return textNode.fontSize.toString();
           break;
         case "paragraphspace":
-          return this.node.paragraphSpacing.toString();
+          return textNode.paragraphSpacing.toString();
           break;
         case "paragraphindent":
-          return this.node.paragraphIndent.toString();
+          return textNode.paragraphIndent.toString();
+          break;
+        case "textcase":
+          return textCaseDisplay[textNode.textCase as FixTextCase];
           break;
         default:
           return "No function";

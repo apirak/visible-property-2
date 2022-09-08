@@ -42,6 +42,11 @@ const getTextData = (ref: ReferenceNode) => {
         value: ref.getValue("lineheight"),
         api: "lineHeight",
       },
+      {
+        label: "Text Case",
+        value: ref.getValue("textcase"),
+        api: "textCase",
+      },
       { label: "Style", value: ref.getValue("textstyle"), api: "textStyle" },
       {
         label: "Description",

@@ -48,6 +48,7 @@ const mockupData = (): Help[] => {
         { label: "letterSpace", value: "12 or 12%" },
         { label: "lineHeight", value: "12 or 12%" },
         { label: "textStyle", value: "Body" },
+        { label: "textCase", value: "Uppercase" },
         { label: "textStyleDescription", value: "Description" },
       ],
     },

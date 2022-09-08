@@ -43,7 +43,7 @@ const Document = () => {
     const header = mockupData().map(({title, list}) => {
       return (
         <div>
-          <Text bold>{title}</Text>
+          <Text>{title}</Text>
           <VerticalSpace space='extraSmall' />
           {createTable(list)}
           <VerticalSpace space='medium' />
@@ -57,7 +57,7 @@ const Document = () => {
     <div>
       <Container space='medium'>
         <VerticalSpace space='small' />
-        <Text bold>Manualy add property</Text>
+        <Text>Manualy add property</Text>
         <VerticalSpace space='small' />
         <div style={styleTutorRow}>
           <div style={styleNumber}>1.</div>

@@ -51,12 +51,11 @@ describe("Rectangle Reference", () => {
   textStyle.lineHeight = lineHeight;
   textStyle.paragraphIndent = 8;
   textStyle.paragraphSpacing = 12;
-  // textStyle.textCase = TextCas
 
   const text1 = figma.createText();
   text1.fills = fills1;
   text1.name = "#typo";
-  // text1.textStyleId = textStyle.id;
+  text1.textCase = "ORIGINAL";
   text1.lineHeight = lineHeight;
   text1.letterSpacing = letterSpace;
   text1.resize(200, 100);
@@ -67,6 +66,7 @@ describe("Rectangle Reference", () => {
   text2.fills = fills1;
   text2.name = "#typo2";
   text2.lineHeight = lineHeightAuto;
+  text2.textCase = "UPPER";
   text2.letterSpacing = letterSpacePixel;
   text2.resize(200, 100);
   page.appendChild(text2);
@@ -113,5 +113,10 @@ describe("Rectangle Reference", () => {
 
   it("get letter space in pixel", () => {
     expect(ref2.getValue("letterSpace")).toBe("10");
+  });
+
+  it("get letter case", () => {
+    expect(ref.getValue("textCase")).toBe("As Typed");
+    expect(ref2.getValue("textCase")).toBe("Uppercase");
   });
 });
