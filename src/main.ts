@@ -96,7 +96,7 @@ const getStrokeData = (ref: ReferenceNode) => {
   const strokeColorName: string = ref.getValue("fillcolorname");
   if (strokeColorName !== "Not match") {
     strokeData.list.push({
-      label: "brand",
+      label: "Brand",
       value: strokeColorName,
       api: "strokeColorName",
     });
@@ -135,7 +135,7 @@ const getFillData = (ref: ReferenceNode) => {
   const fillColorName: string = ref.getValue("fillcolorname");
   if (fillColorName !== "Not match") {
     fillData.list.push({
-      label: "brand",
+      label: "Brand",
       value: fillColorName,
       api: "fillColorName",
     });
@@ -170,7 +170,7 @@ const preparePropertyForUI = (): {
     return {
       nodeId: nodeName ? `#${nodeName}` : selection[0].id,
       nodeType: selection[0].type,
-      refDescription: nodeName ? "reference by name" : "reference by ID",
+      refDescription: nodeName ? "Reference by Name" : "Reference by ID",
       properties: help,
     };
   }

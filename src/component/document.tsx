@@ -69,7 +69,7 @@ const Document = () => {
           <div style={styleNumber}>2.</div>
           <div><IconLayerText16 /></div>
           <div>#abc.fillRGB</div>
-          <div style={styleValue}>← Property</div>
+          <div style={styleValue}>← Add Property</div>
         </div>
         <div style={styleTutorRow}>
           <div style={styleNumber}>3.</div>
