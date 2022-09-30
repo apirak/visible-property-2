@@ -92,28 +92,28 @@ describe("Rectangle Reference", () => {
 
   it("get RGB", () => {
     expect(ref.getValue("fillRGB")).toBe(
-      "linear-gradient( 180deg,\nrgba(122, 28, 41, 0.48) 0%,\nrgba(186, 147, 112, 1) 50%,\nrgba(255, 239, 185, 1) 100% )"
+      "linear-gradient( 180deg,\nrgba(122, 28, 41, 0.48) 0%,\nrgb(186, 147, 112) 50%,\nrgb(255, 239, 185) 100% )"
     );
     expect(ref.getValue("strokeRGB")).toBe(
-      "linear-gradient( 180deg,\nrgba(122, 28, 41, 0.48) 0%,\nrgba(186, 147, 112, 1) 50%,\nrgba(255, 239, 185, 1) 100% )"
+      "linear-gradient( 180deg,\nrgba(122, 28, 41, 0.48) 0%,\nrgb(186, 147, 112) 50%,\nrgb(255, 239, 185) 100% )"
     );
   });
 
   it("get HSL", () => {
     expect(ref.getValue("fillHSL")).toBe(
-      "linear-gradient( 180deg,\nhsla(351, 63%, 29%, 0.48) 0%,\nhsla(28, 35%, 58%, 1) 50%,\nhsla(46, 100%, 86%, 1) 100% )"
+      "linear-gradient( 180deg,\nhsla(351, 63%, 29%, 0.48) 0%,\nhsl(28, 35%, 58%) 50%,\nhsl(46, 100%, 86%) 100% )"
     );
     expect(ref.getValue("strokeHSL")).toBe(
-      "linear-gradient( 180deg,\nhsla(351, 63%, 29%, 0.48) 0%,\nhsla(28, 35%, 58%, 1) 50%,\nhsla(46, 100%, 86%, 1) 100% )"
+      "linear-gradient( 180deg,\nhsla(351, 63%, 29%, 0.48) 0%,\nhsl(28, 35%, 58%) 50%,\nhsl(46, 100%, 86%) 100% )"
     );
   });
 
   it("get HSB", () => {
     expect(ref.getValue("fillHSB")).toBe(
-      "linear-gradient( 180deg,\nhsba(351, 77%, 48%, 0.48) 0%,\nhsba(28, 40%, 73%, 1) 50%,\nhsba(46, 27%, 100%, 1) 100% )"
+      "linear-gradient( 180deg,\nhsba(351, 77%, 48%, 0.48) 0%,\nhsb(28, 40%, 73%) 50%,\nhsb(46, 27%, 100%) 100% )"
     );
     expect(ref.getValue("strokeHSB")).toBe(
-      "linear-gradient( 180deg,\nhsba(351, 77%, 48%, 0.48) 0%,\nhsba(28, 40%, 73%, 1) 50%,\nhsba(46, 27%, 100%, 1) 100% )"
+      "linear-gradient( 180deg,\nhsba(351, 77%, 48%, 0.48) 0%,\nhsb(28, 40%, 73%) 50%,\nhsb(46, 27%, 100%) 100% )"
     );
   });
 });

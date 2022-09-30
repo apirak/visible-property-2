@@ -29,7 +29,7 @@ export class PropertyNode extends VisibleNode {
   async updateValue() {
     if (this.referenceNode && this.node.type == "TEXT") {
       let updateValue = this.referenceNode?.getValue(this.propertyName);
-      if(this.node?.characters !== updateValue){
+      if (this.node?.characters !== updateValue) {
         await loadFont(this.node).then(() => {
           this.node.characters = updateValue;
         });

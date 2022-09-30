@@ -83,17 +83,17 @@ describe("Rectangle Reference", () => {
   });
 
   it("get RGB", () => {
-    expect(ref.getValue("fillRGB")).toBe("rgba(242, 153, 74, 1)");
+    expect(ref.getValue("fillRGB")).toBe("rgb(242, 153, 74)");
     expect(ref.getValue("strokeRGB")).toBe("No stroke");
   });
 
   it("get HSL", () => {
-    expect(ref.getValue("fillHSL")).toBe("hsla(28, 87%, 62%, 1)");
+    expect(ref.getValue("fillHSL")).toBe("hsl(28, 87%, 62%)");
     expect(ref.getValue("strokeHSL")).toBe("No stroke");
   });
 
   it("get HSB", () => {
-    expect(ref.getValue("fillHSB")).toBe("hsba(28, 69%, 95%, 1)");
+    expect(ref.getValue("fillHSB")).toBe("hsb(28, 69%, 95%)");
     expect(ref.getValue("strokeHSB")).toBe("No stroke");
   });
 

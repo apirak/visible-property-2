@@ -51,17 +51,11 @@ export function colorToHSL(color: RGB, opacity: number | undefined): string {
   const a =
     opacity == 1 || opacity == undefined ? "1" : Number(opacity.toFixed(2));
 
-  return (
-    "hsla(" +
-    hue +
-    ", " +
-    Math.round(sat * 100) +
-    "%, " +
-    Math.round(lightness * 100) +
-    "%, " +
-    a +
-    ")"
-  );
+  return a == 1
+    ? `hsl(${hue}, ${Math.round(sat * 100)}%, ${Math.round(lightness * 100)}%)`
+    : `hsla(${hue}, ${Math.round(sat * 100)}%, ${Math.round(
+        lightness * 100
+      )}%, ${a})`;
 }
 
 export function colorToHSB(color: RGB, opacity: number | undefined): string {
@@ -72,17 +66,11 @@ export function colorToHSB(color: RGB, opacity: number | undefined): string {
   const a =
     opacity == 1 || opacity == undefined ? "1" : Number(opacity.toFixed(2));
 
-  return (
-    "hsba(" +
-    hue +
-    ", " +
-    Math.round(sat * 100) +
-    "%, " +
-    Math.round(brightness * 100) +
-    "%, " +
-    a +
-    ")"
-  );
+  return a == 1
+    ? `hsb(${hue}, ${Math.round(sat * 100)}%, ${Math.round(brightness * 100)}%)`
+    : `hsba(${hue}, ${Math.round(sat * 100)}%, ${Math.round(
+        brightness * 100
+      )}%, ${a})`;
 }
 
 const toFixedZero = (num: number): string => {
@@ -102,5 +90,7 @@ export function colorToRgb(color: RGB, opacity: number | undefined): string {
   const a =
     opacity == 1 || opacity == undefined ? "1" : Number(opacity.toFixed(2));
 
-  return "rgba(" + r + ", " + g + ", " + b + ", " + a + ")";
+  return a == 1
+    ? "rgb(" + r + ", " + g + ", " + b + ")"
+    : "rgba(" + r + ", " + g + ", " + b + ", " + a + ")";
 }
