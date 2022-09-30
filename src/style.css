@@ -1,18 +1,18 @@
 .buttonIcon {
-  background-color: #FFFFFF;
+  background-color: var(--figma-color-bg);
   border: 0px;
   border-radius: 4px;
 }
 
 .buttonIcon:hover {
-  background-color: #F5F5F5;
+  background-color: var(--figma-color-bg-hover);
 }
 
 .valueName {
   flex: none;
   width: 80px;
   flex-grow: 0;
-  color: rgba(0, 0, 0, 1);
+  color: var(--figma-color-text);
 }
 
 .valueSpan {
@@ -26,7 +26,7 @@
 
 .valueStyle {
   width: 100%;
-  color: rgba(0, 0, 0, 0.3);
+  color: var(--figma-color-text-disabled);
 }
 
 .headerStyle {
@@ -66,7 +66,7 @@
 }
 
 .selectedLayerStatus {
-  color: #B3B3B3
+  color: var(--figma-color-text-disabled);
 }
 
 .selectedIcon {
