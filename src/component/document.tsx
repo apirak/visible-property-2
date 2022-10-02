@@ -76,7 +76,7 @@ const Document = () => {
           <div>Run Plugin</div>
         </div>
         <VerticalSpace space='small' />
-        <text style={styleValue}>Learn more on <a href="https://www.youtube.com/watch?v=NoihOB1Z6qM">Youtube</a></text>
+        <text style={styleValue}>Learn more on <a href="https://www.youtube.com/watch?v=NoihOB1Z6qM" target="_blank">Youtube</a></text>
         <VerticalSpace space='medium' />
       </Container>
       <Divider />
