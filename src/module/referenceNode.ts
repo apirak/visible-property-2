@@ -359,10 +359,13 @@ export class ReferenceNode extends VisibleNode {
 
   getColorName(type: string): string {
     const paints = type == "stroke" ? this.node.strokes : this.node.fills;
+    const color =
+      type == "stroke" ? this.getHex("stroke") : this.getHex("fill");
+
     if (this.isSolidPaints(paints)) {
-      return colorName(colorToHex(paints[0].color, undefined));
+      return colorName(color);
     } else {
-      if (paints.length == 0) {
+      if (color.length == 0) {
         return "No " + type;
       }
       return "";
