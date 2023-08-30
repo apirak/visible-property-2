@@ -192,10 +192,17 @@ export class ReferenceNode extends VisibleNode {
 
   getStyle(type: string): string {
     let styleId: string = "";
+    let variableId: string = "";
     const cNode = this.node as ComponentNode;
 
     switch (type) {
       case "stroke":
+        if (
+          cNode.boundVariables !== undefined &&
+          cNode.boundVariables["strokes"] != undefined
+        ) {
+          variableId = cNode.boundVariables["strokes"][0].id;
+        }
         if (cNode.strokeStyleId !== undefined) {
           styleId = (this.node as ComponentNode).strokeStyleId.toString();
         } else {
@@ -203,6 +210,12 @@ export class ReferenceNode extends VisibleNode {
         }
         break;
       case "fill":
+        if (
+          cNode.boundVariables !== undefined &&
+          cNode.boundVariables["fills"] != undefined
+        ) {
+          variableId = cNode.boundVariables["fills"][0].id;
+        }
         if (cNode.fillStyleId !== undefined) {
           styleId = (this.node as ComponentNode).fillStyleId.toString();
         } else {
@@ -211,8 +224,18 @@ export class ReferenceNode extends VisibleNode {
         break;
       case "text":
         const tNode = this.node as TextNode;
+
         styleId = (this.node as TextNode).textStyleId.toString();
         break;
+    }
+
+    if (variableId) {
+      const variable = figma.variables.getVariableById(variableId);
+      if (variable != undefined) {
+        return variable.name;
+      } else {
+        return "can't read valiable";
+      }
     }
 
     if (styleId) {
