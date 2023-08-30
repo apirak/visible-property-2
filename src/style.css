@@ -30,8 +30,9 @@
 }
 
 .headerStyle {
-  padding: 4px 8px;
-  color: var(--color-black-30);
+  padding: 4px 14px;
+  color: var(--figma-color-text-disabled);
+  font-weight: bold;
 }
 
 .property {
@@ -62,7 +63,7 @@
 }
 
 .selectedLayer {
-  flex-grow: 1
+  flex-grow: 1;
 }
 
 .selectedLayerStatus {
@@ -75,4 +76,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.propertiesStyle {
+  padding: 4px 0px;
 }
