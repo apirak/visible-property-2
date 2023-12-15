@@ -252,7 +252,7 @@ export class ReferenceNode extends VisibleNode {
 
     if (this.isVariableAlias(valueByMode)) {
       const underlyingVariableName = this.resolveVariableName(valueByMode.id);
-      return `${variable.name} -> ${underlyingVariableName}`;
+      return `${variable.name} → ${underlyingVariableName}`;
     }
 
     return variable.name;
