@@ -191,62 +191,47 @@ export class ReferenceNode extends VisibleNode {
   }
 
   getStyle(type: string): string {
+    const cNode = this.node as ComponentNode;
     let styleId: string = "";
     let variableId: string = "";
-    const cNode = this.node as ComponentNode;
+    let boundVariables;
+    let styleType;
+    let noStyleMessage = `No ${type} style`;
 
     switch (type) {
       case "stroke":
-        if (
-          cNode.boundVariables !== undefined &&
-          cNode.boundVariables["strokes"] != undefined
-        ) {
-          variableId = cNode.boundVariables["strokes"][0].id;
-        }
-        if (cNode.strokeStyleId !== undefined) {
-          styleId = (this.node as ComponentNode).strokeStyleId.toString();
-        } else {
-          return "No stroke style";
-        }
+        boundVariables = cNode.boundVariables?.["strokes"];
+        styleType = cNode.strokeStyleId;
         break;
       case "fill":
-        if (
-          cNode.boundVariables !== undefined &&
-          cNode.boundVariables["fills"] != undefined
-        ) {
-          variableId = cNode.boundVariables["fills"][0].id;
-        }
-        if (cNode.fillStyleId !== undefined) {
-          styleId = (this.node as ComponentNode).fillStyleId.toString();
-        } else {
-          return "No fill style";
-        }
+        boundVariables = cNode.boundVariables?.["fills"];
+        styleType = cNode.fillStyleId;
         break;
       case "text":
-        const tNode = this.node as TextNode;
-
-        styleId = (this.node as TextNode).textStyleId.toString();
+        styleType = (this.node as TextNode).textStyleId;
         break;
+      default:
+        return noStyleMessage;
+    }
+
+    if (boundVariables) {
+      variableId = boundVariables[0]?.id;
     }
 
     if (variableId) {
       const variable = figma.variables.getVariableById(variableId);
-      if (variable != undefined) {
-        return variable.name;
-      } else {
-        return "can't read valiable";
-      }
+      return variable?.name || "can't read variable";
     }
 
-    if (styleId) {
+    if (styleType) {
+      styleId = styleType.toString();
       const style = figma.getStyleById(styleId);
-      if (style) {
-        return style.name.split(/ *\/ */).join("/");
-      } else {
-        return "Can't read style";
-      }
+      return style
+        ? style.name.split(/ *\/ */).join("/")
+        : `Can't read ${type} style`;
     }
-    return "No Style";
+
+    return noStyleMessage;
   }
 
   getStyleDescription(type: string): string {

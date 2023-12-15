@@ -60,6 +60,15 @@ describe("Rectangle has both fill and stroke", () => {
   page.appendChild(rect1);
   const ref = new ReferenceNode(<SceneNode>rect1, "0:0");
 
+  const rect2 = figma.createRectangle();
+  rect2.fills = fills1;
+  rect2.strokes = stroke1;
+
+  rect2.name = "#color";
+  rect2.resize(100, 200);
+  page.appendChild(rect2);
+  const ref2 = new ReferenceNode(<SceneNode>rect2, "0:0");
+
   it("create style", () => {
     expect(style1.id.length).toEqual(43);
   });
@@ -67,7 +76,7 @@ describe("Rectangle has both fill and stroke", () => {
   it("get style name", () => {
     expect(ref.getStyle("fill")).toBe("Fill style 1");
     expect(ref.getStyle("stroke")).toBe("Stroke style 2");
-    expect(ref.getStyle("abc")).toBe("No Style");
+    expect(ref.getStyle("abc")).toBe("No abc style");
   });
 
   it("get style HEX", () => {
@@ -78,5 +87,10 @@ describe("Rectangle has both fill and stroke", () => {
   it("get style HEX", () => {
     expect(ref.getStyleDescription("fill")).toBe("This is style 1");
     expect(ref.getStyleDescription("stroke")).toBe("This is style 2");
+  });
+
+  it("get No style for unstyle element", () => {
+    expect(ref2.getStyle("fill")).toBe("No fill style");
+    expect(ref2.getStyle("stroke")).toBe("No stroke style");
   });
 });
