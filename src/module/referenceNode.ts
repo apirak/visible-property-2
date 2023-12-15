@@ -216,11 +216,9 @@ export class ReferenceNode extends VisibleNode {
 
     if (boundVariables) {
       variableId = boundVariables[0]?.id;
-    }
-
-    if (variableId) {
-      const variable = figma.variables.getVariableById(variableId);
-      return variable?.name || "can't read variable";
+      if (variableId) {
+        return this.resolveVariableName(variableId);
+      }
     }
 
     if (styleType) {
@@ -232,6 +230,32 @@ export class ReferenceNode extends VisibleNode {
     }
 
     return noStyleMessage;
+  }
+
+  private isVariableAlias(obj: any): obj is VariableAlias {
+    return (
+      obj &&
+      typeof obj === "object" &&
+      obj.type === "VARIABLE_ALIAS" &&
+      typeof obj.id === "string"
+    );
+  }
+
+  private resolveVariableName(variableId: string): string {
+    const variable = figma.variables.getVariableById(variableId);
+    if (!variable) {
+      return "can't read variable";
+    }
+
+    const valueByMode =
+      variable.valuesByMode[Object.keys(variable.valuesByMode)[0]];
+
+    if (this.isVariableAlias(valueByMode)) {
+      const underlyingVariableName = this.resolveVariableName(valueByMode.id);
+      return `${variable.name} -> ${underlyingVariableName}`;
+    }
+
+    return variable.name;
   }
 
   getStyleDescription(type: string): string {
