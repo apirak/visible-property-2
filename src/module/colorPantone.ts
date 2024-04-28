@@ -10,7 +10,8 @@ function createColorComponent(): ComponentNode {
   component.paddingTop = 8;
   component.paddingLeft = 8;
   component.paddingRight = 8;
-  component.primaryAxisSizingMode = 'AUTO';
+  component.primaryAxisSizingMode = 'FIXED';
+  component.resize(250, 100);
   component.counterAxisSizingMode = 'AUTO';
   component.cornerRadius = 4;
   component.fills = [{ type: 'SOLID', color: { r: 1, g: 1, b: 1 } }];
@@ -35,7 +36,7 @@ function addRectangleToComponent(component: FrameNode | ComponentNode): void {
   component.appendChild(rect);
 }
 
-async function createPropertyFrame() {
+async function createPropertyFrame(): Promise<FrameNode> {
   const frame = figma.createFrame();
   frame.name = "Property";
   frame.layoutMode = "VERTICAL";
