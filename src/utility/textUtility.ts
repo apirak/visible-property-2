@@ -2,11 +2,12 @@ export async function addText(
   text: string,
   x: number,
   y: number,
-  name: string
+  name: string,
+  fontStyle: string = "Regular"
 ): Promise<TextNode> {
-  await figma.loadFontAsync({ family: "Roboto", style: "Regular" });
+  await figma.loadFontAsync({ family: "Roboto", style: fontStyle });
   const textNode = figma.createText();
-  textNode.fontName = { family: "Roboto", style: "Regular" };
+  textNode.fontName = { family: "Roboto", style: fontStyle };
   textNode.fontSize = 12;
   textNode.x = x;
   textNode.y = y;
