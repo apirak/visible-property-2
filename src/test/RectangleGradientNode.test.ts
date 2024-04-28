@@ -24,7 +24,7 @@ describe("Rectangle Reference", () => {
         a: 0.4791666269302368,
       },
       position: 0,
-      boundVariables: {}
+      boundVariables: {},
     },
     {
       color: {
@@ -34,7 +34,7 @@ describe("Rectangle Reference", () => {
         a: 1,
       },
       position: 0.5,
-      boundVariables: {}
+      boundVariables: {},
     },
     {
       color: {
@@ -44,7 +44,7 @@ describe("Rectangle Reference", () => {
         a: 1,
       },
       position: 1,
-      boundVariables: {}
+      boundVariables: {},
     },
   ];
 

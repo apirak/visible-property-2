@@ -22,14 +22,14 @@
     "test": "jest --watch"
   },
   "figma-plugin": {
+    "networkAccess": {
+      "allowedDomains": ["none"]
+    },
     "editorType": [
       "figma"
     ],
     "id": "1090193516013501637",
     "name": "Visible Property 2",
-    "networkAccess": {
-      "allowedDomains": ["https//api.example.com"]
-    },
     "menu": [
       {
         "name": "＋ Add Property",

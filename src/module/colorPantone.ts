@@ -10,20 +10,20 @@ function createColorComponent(): ComponentNode {
   component.paddingTop = 8;
   component.paddingLeft = 8;
   component.paddingRight = 8;
-  component.primaryAxisSizingMode = 'FIXED';
+  component.primaryAxisSizingMode = "FIXED";
   component.resize(250, 100);
-  component.counterAxisSizingMode = 'AUTO';
+  component.counterAxisSizingMode = "AUTO";
   component.cornerRadius = 4;
-  component.fills = [{ type: 'SOLID', color: { r: 1, g: 1, b: 1 } }];
+  component.fills = [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }];
   component.effects = [
     {
-      type: 'DROP_SHADOW',
+      type: "DROP_SHADOW",
       color: { r: 0, g: 0, b: 0, a: 0.25 },
       offset: { x: 0, y: 2 },
       radius: 8,
       visible: true,
-      blendMode: 'NORMAL'
-    }
+      blendMode: "NORMAL",
+    },
   ];
   return component;
 }
@@ -41,8 +41,8 @@ async function createPropertyFrame(): Promise<FrameNode> {
   frame.name = "Property";
   frame.layoutMode = "VERTICAL";
   frame.itemSpacing = 8;
-  frame.layoutSizingHorizontal = 'HUG';
-  frame.layoutSizingVertical = 'HUG';
+  frame.layoutSizingHorizontal = "HUG";
+  frame.layoutSizingVertical = "HUG";
   frame.fills = [];
 
   const name = addText("Style Name", 0, 0, "#gcolor.fillstyle", "Bold");
@@ -56,7 +56,7 @@ async function createPropertyFrame(): Promise<FrameNode> {
   return frame;
 }
 
-async function createPantone(){
+async function createPantone() {
   const colorComponent = createColorComponent();
 
   addRectangleToComponent(colorComponent);
@@ -67,6 +67,4 @@ async function createPantone(){
   return colorComponent;
 }
 
-export {
-  createPantone
-}
+export { createPantone };
