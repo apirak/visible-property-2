@@ -28,25 +28,28 @@ function readAllColorStyles(): PaintStyle[][] {
   return groupedCategoriesArray;
 }
 
-async function createColorInstance(mainComponent:ComponentNode, styles2D:PaintStyle[][]) {
+async function createColorInstance(mainComponent:ComponentNode, styles2D:PaintStyle[][], x:number, y:number) {
 
   const autoLayoutFrame = figma.createFrame();
   autoLayoutFrame.layoutMode = 'HORIZONTAL'; // or 'HORIZONTAL'
-  autoLayoutFrame.itemSpacing = 10; // Adjust the spacing as needed
-  autoLayoutFrame.paddingTop = 10; // Adjust padding as needed
-  autoLayoutFrame.paddingRight = 10;
-  autoLayoutFrame.paddingBottom = 10;
-  autoLayoutFrame.paddingLeft = 10;
+  autoLayoutFrame.itemSpacing = 32; // Adjust the spacing as needed
+  autoLayoutFrame.paddingTop = 32; // Adjust padding as needed
+  autoLayoutFrame.paddingRight = 32;
+  autoLayoutFrame.paddingBottom = 32;
+  autoLayoutFrame.paddingLeft = 32;
   autoLayoutFrame.primaryAxisSizingMode = 'AUTO';
   autoLayoutFrame.counterAxisSizingMode = 'AUTO';
+  autoLayoutFrame.x = x;
+  autoLayoutFrame.y = y;
 
   styles2D.forEach(styles => {
     const styleGroupFrame = figma.createFrame();
     styleGroupFrame.layoutMode = 'VERTICAL'; // or 'VERTICAL'
-    styleGroupFrame.itemSpacing = 10; // Adjust the spacing as needed
+    styleGroupFrame.itemSpacing = 16; // Adjust the spacing as needed
     styleGroupFrame.fills = []; // Set to empty array or any background if needed
     styleGroupFrame.primaryAxisSizingMode = 'AUTO';
     styleGroupFrame.counterAxisSizingMode = 'AUTO';
+    styleGroupFrame.clipsContent = false;
 
     styles.forEach(style => {
       const instance = mainComponent.createInstance();
@@ -74,7 +77,7 @@ export default async function () {
   const styles2D = readAllColorStyles();
   console.log(styles2D);
 
-  createColorInstance(colorComponent, styles2D);
+  createColorInstance(colorComponent, styles2D, styleLocationX, 0);
   // Add rectangle to the color component
   // const instance = colorComponent.createInstance();
   // instance.x = styleLocationX;
