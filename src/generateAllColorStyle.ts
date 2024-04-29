@@ -1,5 +1,5 @@
-import { updateAllTextProperty } from "./updateText";
-import { createPantone } from "./module/colorPantone";
+import { updateAllTextProperty } from './updateText';
+import { createPantone } from './module/colorPantone';
 
 function readAllColorStyles(): PaintStyle[][] {
   const styles = figma.getLocalPaintStyles();
@@ -11,11 +11,10 @@ function readAllColorStyles(): PaintStyle[][] {
   styles.forEach((style) => {
     if (
       style.paints.length > 0 &&
-      (style.paints[0].type === "SOLID" ||
-        style.paints[0].type === "GRADIENT_LINEAR")
+      (style.paints[0].type === 'SOLID' ||
+        style.paints[0].type === 'GRADIENT_LINEAR')
     ) {
-      console.log(`Name: ${style.name}`);
-      const [category, subCategory] = style.name.split("/");
+      const [category, subCategory] = style.name.split('/');
 
       // Initialize the category array if it doesn't exist
       if (!groupedCategories[category]) {
@@ -40,42 +39,64 @@ async function createColorInstance(
   y: number
 ) {
   const autoLayoutFrame = figma.createFrame();
-  autoLayoutFrame.layoutMode = "HORIZONTAL"; // or 'HORIZONTAL'
+  autoLayoutFrame.name = 'Color';
+  autoLayoutFrame.layoutMode = 'VERTICAL';
   autoLayoutFrame.itemSpacing = 32; // Adjust the spacing as needed
   autoLayoutFrame.paddingTop = 32; // Adjust padding as needed
   autoLayoutFrame.paddingRight = 32;
   autoLayoutFrame.paddingBottom = 32;
   autoLayoutFrame.paddingLeft = 32;
-  autoLayoutFrame.primaryAxisSizingMode = "AUTO";
-  autoLayoutFrame.counterAxisSizingMode = "AUTO";
+  autoLayoutFrame.resize(150 * 4 + 32 * 2, 300);
+  autoLayoutFrame.primaryAxisSizingMode = 'AUTO';
+  // autoLayoutFrame.counterAxisSizingMode = "AUTO";
   autoLayoutFrame.x = x;
   autoLayoutFrame.y = y;
 
-  styles2D.forEach((styles) => {
+  const whiteFill: SolidPaint = {
+    type: 'SOLID',
+    color: { r: 1, g: 1, b: 1 },
+    opacity: 0.5,
+  };
+  autoLayoutFrame.fills = [whiteFill];
+
+  styles2D.forEach(async (styles) => {
     const styleGroupFrame = figma.createFrame();
-    styleGroupFrame.layoutMode = "VERTICAL"; // or 'VERTICAL'
-    styleGroupFrame.itemSpacing = 16; // Adjust the spacing as needed
-    styleGroupFrame.fills = []; // Set to empty array or any background if needed
-    styleGroupFrame.primaryAxisSizingMode = "AUTO";
-    styleGroupFrame.counterAxisSizingMode = "AUTO";
-    styleGroupFrame.clipsContent = false;
+    styleGroupFrame.name = 'Pantone';
+    styleGroupFrame.fills = [];
+    // styleGroupFrame.itemSpacing = 16;
+    styleGroupFrame.layoutMode = 'HORIZONTAL';
+    styleGroupFrame.primaryAxisSizingMode = 'FIXED';
+    styleGroupFrame.layoutAlign = 'STRETCH';
+    styleGroupFrame.counterAxisSizingMode = 'AUTO';
+    styleGroupFrame.layoutWrap = 'WRAP';
 
     styles.forEach((style) => {
       const instance = mainComponent.createInstance();
 
       let rectangleNode = instance.children[0] as RectangleNode;
-      if (rectangleNode.type === "RECTANGLE") {
+      if (rectangleNode.type === 'RECTANGLE') {
         rectangleNode.fillStyleId = style.id;
       }
 
       styleGroupFrame.appendChild(instance);
     });
+
+    const [category, subCategory] = styles[0].name.split('/');
+    if (subCategory) {
+      await figma.loadFontAsync({ family: 'Roboto', style: 'Bold' });
+      const textNode = figma.createText();
+      textNode.fontName = { family: 'Roboto', style: 'Bold' };
+      textNode.fontSize = 32;
+      textNode.characters = category;
+      textNode.name = 'Category';
+      autoLayoutFrame.appendChild(textNode);
+    }
     autoLayoutFrame.appendChild(styleGroupFrame);
   });
 }
 
 export default async function () {
-  console.log("in generateAllColorStyle");
+  console.log('in generateAllColorStyle');
 
   const componentWidth = 250;
   const styleLocationX = componentWidth * 1.5;
@@ -87,17 +108,12 @@ export default async function () {
   console.log(styles2D);
 
   createColorInstance(colorComponent, styles2D, styleLocationX, 0);
-  // Add rectangle to the color component
-  // const instance = colorComponent.createInstance();
-  // instance.x = styleLocationX;
-  // instance.y = 0
 
-  // Update text properties and close plugin
   finalizePlugin();
 }
 
 function finalizePlugin() {
   updateAllTextProperty().then(() => {
-    figma.closePlugin("Generated 🎉");
+    figma.closePlugin('Generated 🎉');
   });
 }
