@@ -96,8 +96,6 @@ async function createColorInstance(
 }
 
 export default async function () {
-  console.log('in generateAllColorStyle');
-
   const componentWidth = 250;
   const styleLocationX = componentWidth * 1.5;
 
@@ -105,8 +103,6 @@ export default async function () {
   const colorComponent = await createPantone();
 
   const styles2D = readAllColorStyles();
-  console.log(styles2D);
-
   createColorInstance(colorComponent, styles2D, styleLocationX, 0);
 
   finalizePlugin();
