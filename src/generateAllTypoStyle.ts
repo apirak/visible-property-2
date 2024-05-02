@@ -1,5 +1,4 @@
 import { updateAllTextProperty } from './updateText';
-import { createPantone } from './module/colorPantone';
 import { createTypoWithPropertyMainComponent } from './module/typoRow';
 
 function createAutoLayoutframe(
@@ -9,7 +8,7 @@ function createAutoLayoutframe(
   const frame = figma.createFrame();
   Object.assign(frame, {
     name,
-    layoutMode: 'VERTICAL',
+    layoutMode: 'HORIZONTAL',
     itemSpacing: 32, // Adjust the spacing as needed
     paddingTop: 32, // Adjust padding as needed
     paddingRight: 32,
@@ -39,6 +38,7 @@ function createTypoGroupFrame(): FrameNode {
   frame.paddingLeft = 0;
   frame.itemSpacing = 4;
   frame.fills = [];
+  frame.layoutMode = 'HORIZONTAL';
   frame.primaryAxisSizingMode = 'AUTO';
   frame.layoutAlign = 'MIN';
   frame.counterAxisSizingMode = 'AUTO';
@@ -61,33 +61,24 @@ function fetchGroupedTextStyles(): TextStyle[][] {
   return Object.values(categories);
 }
 
-async function createTypoInstant(
-  mainComponent: ComponentNode
-  // styles2D: PaintStyle[][],
-  // frame: FrameNode
-) {
-  // styles2D.forEach(async (styles) => {
-  // const styleGroupFrame = createPantoneGroupFrame();
-  const instance = mainComponent.createInstance();
-  // });
-}
-
-async function createAllTextInstant(textStyles: TextStyle[][]) {
-  const typoFrame = createAutoLayoutframe('typo', { x: 150, y: 0 });
+async function createAllTextInstant(textStyles: TextStyle[][]): Promise<void> {
+  const typoFrame = createAutoLayoutframe('typo', { x: 200, y: 0 });
   const typoMainComponent: ComponentNode =
     await createTypoWithPropertyMainComponent();
 
-  textStyles.forEach(async (styles) => {
-    // const typoGroupFrame = createTypoGroupFrame();
-    styles.forEach(async (style) => {
-      await figma.loadFontAsync(style.fontName);
-      const instance = typoMainComponent.createInstance();
-      const referenceText = instance.children[0] as TextNode;
-      referenceText.characters = style.name;
-      referenceText.textStyleId = style.id;
-      typoFrame.appendChild(instance);
-    });
+  const allPromises = textStyles.map(async (styles) => {
+    return Promise.all(
+      styles.map(async (style) => {
+        await figma.loadFontAsync(style.fontName);
+        const instance = typoMainComponent.createInstance();
+        const referenceText = instance.children[0] as TextNode;
+        referenceText.characters = style.name;
+        referenceText.textStyleId = style.id;
+        typoFrame.appendChild(instance);
+      })
+    );
   });
+  await Promise.all(allPromises);
   figma.currentPage.appendChild(typoFrame);
 }
 
@@ -96,11 +87,8 @@ export default async function runPlugin() {
   const xPosition = componentWidth * 1.5;
 
   const textStyles = fetchGroupedTextStyles();
-  console.log(textStyles);
 
-  createAllTextInstant(textStyles).then(() => {
-    updateAllTextProperty().then(() => {
-      figma.closePlugin('Generated 🎉');
-    });
-  });
+  await createAllTextInstant(textStyles);
+  await updateAllTextProperty();
+  figma.closePlugin('Generated 🎉');
 }

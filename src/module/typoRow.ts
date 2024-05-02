@@ -8,10 +8,10 @@ function createTypoMainComponent(position: {
   component.name = 'Typo';
   component.layoutMode = 'VERTICAL';
   component.itemSpacing = 4;
-  component.paddingBottom = 4;
-  component.paddingTop = 4;
-  component.paddingLeft = 4;
-  component.paddingRight = 4;
+  component.paddingBottom = 8;
+  component.paddingTop = 8;
+  component.paddingLeft = 8;
+  component.paddingRight = 8;
   component.counterAxisSizingMode = 'FIXED';
   component.resize(150, 100);
   component.primaryAxisSizingMode = 'AUTO';
@@ -69,6 +69,14 @@ async function createPropertyMainComponent() {
   return property;
 }
 
+function createHorizontalLine(): RectangleNode {
+  const line = figma.createRectangle();
+  line.resize(25, 1); // Assuming typoMainComponent.width is accessible, otherwise set a fixed width
+  line.fills = [{ type: 'SOLID', color: { r: 0, g: 0, b: 0 }, opacity: 0.3 }]; // Black line
+  line.cornerRadius = 0; // Straight line
+  return line;
+}
+
 async function createTypoWithPropertyMainComponent(): Promise<ComponentNode> {
   const propertyMainComponent = await createPropertyMainComponent();
   const y = propertyMainComponent.height;
@@ -91,7 +99,12 @@ async function createTypoWithPropertyMainComponent(): Promise<ComponentNode> {
   textNode.fontSize = 32;
   textNode.characters = 'H1';
   textNode.name = '#typo';
+  textNode.resize(150, 50);
+  textNode.textAlignVertical = 'BOTTOM';
   typoMainComponent.appendChild(textNode);
+
+  const separator = createHorizontalLine();
+  typoMainComponent.appendChild(separator);
 
   properties.forEach((property) => {
     const propertyInstant = propertyMainComponent.createInstance();
