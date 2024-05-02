@@ -7,11 +7,11 @@ function createTypoMainComponent(position: {
   const component = figma.createComponent();
   component.name = 'Typo';
   component.layoutMode = 'VERTICAL';
-  component.itemSpacing = 0;
-  component.paddingBottom = 0;
-  component.paddingTop = 0;
-  component.paddingLeft = 0;
-  component.paddingRight = 0;
+  component.itemSpacing = 4;
+  component.paddingBottom = 4;
+  component.paddingTop = 4;
+  component.paddingLeft = 4;
+  component.paddingRight = 4;
   component.counterAxisSizingMode = 'FIXED';
   component.resize(150, 100);
   component.primaryAxisSizingMode = 'AUTO';
@@ -54,7 +54,7 @@ async function createPropertyMainComponent() {
   const property = figma.createComponent();
   property.name = 'Property';
   property.layoutMode = 'HORIZONTAL';
-  property.itemSpacing = 0;
+  property.itemSpacing = 4;
   property.paddingBottom = 0;
   property.paddingTop = 0;
   property.paddingLeft = 0;
@@ -75,8 +75,33 @@ async function createTypoWithPropertyMainComponent(): Promise<ComponentNode> {
 
   const typoMainComponent = await createTypoMainComponent({ x: 0, y: y + 16 });
 
-  const propertyInstant = propertyMainComponent.createInstance();
-  typoMainComponent.appendChild(propertyInstant);
+  const properties = [
+    { name: 'Text Case:', property: '#typo.textCase' },
+    { name: 'Font:', property: '#typo.font' },
+    { name: 'Weight:', property: '#typo.fontWeight' },
+    { name: 'Size:', property: '#typo.fontSize' },
+    { name: 'Indent:', property: '#typo.paragraphIndent' },
+    { name: 'Space:', property: '#typo.paragraphSpace' },
+    { name: 'Letter Space:', property: '#typo.letterSpace' },
+    { name: 'Line Height:', property: '#typo.lineHeight' },
+  ];
+
+  const textNode = figma.createText();
+  textNode.fontName = { family: 'Roboto', style: 'Regular' };
+  textNode.fontSize = 32;
+  textNode.characters = 'H1';
+  textNode.name = '#typo';
+  typoMainComponent.appendChild(textNode);
+
+  properties.forEach((property) => {
+    const propertyInstant = propertyMainComponent.createInstance();
+    const propertyName = propertyInstant.children[0] as TextNode;
+    propertyName.characters = property.name;
+    const propertyValue = propertyInstant.children[1] as TextNode;
+    propertyValue.name = property.property;
+    propertyValue.characters = '-';
+    typoMainComponent.appendChild(propertyInstant);
+  });
 
   return typoMainComponent;
 }

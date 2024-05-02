@@ -32,12 +32,16 @@ function createAutoLayoutframe(
 
 function createTypoGroupFrame(): FrameNode {
   const frame = figma.createFrame();
+  frame.name = 'TypoGroup';
+  frame.paddingTop = 0;
+  frame.paddingRight = 0;
+  frame.paddingBottom = 0;
+  frame.paddingLeft = 0;
+  frame.itemSpacing = 4;
   frame.fills = [];
-  frame.layoutMode = 'HORIZONTAL';
-  frame.primaryAxisSizingMode = 'FIXED';
-  frame.layoutAlign = 'STRETCH';
+  frame.primaryAxisSizingMode = 'AUTO';
+  frame.layoutAlign = 'MIN';
   frame.counterAxisSizingMode = 'AUTO';
-  frame.layoutWrap = 'WRAP';
   return frame;
 }
 
@@ -70,18 +74,21 @@ async function createTypoInstant(
 
 async function createAllTextInstant(textStyles: TextStyle[][]) {
   const typoFrame = createAutoLayoutframe('typo', { x: 150, y: 0 });
-  const typoMainComponent = await createTypoWithPropertyMainComponent();
+  const typoMainComponent: ComponentNode =
+    await createTypoWithPropertyMainComponent();
 
   textStyles.forEach(async (styles) => {
-    const typoGroupFrame = createTypoGroupFrame();
-    styles.forEach((style) => {
+    // const typoGroupFrame = createTypoGroupFrame();
+    styles.forEach(async (style) => {
+      await figma.loadFontAsync(style.fontName);
       const instance = typoMainComponent.createInstance();
-      // const rectangleNode = instance.children[0] as RectangleNode;
-      // rectangleNode.fillStyleId = style.id;
-      typoGroupFrame.appendChild(instance);
+      const referenceText = instance.children[0] as TextNode;
+      referenceText.characters = style.name;
+      referenceText.textStyleId = style.id;
+      typoFrame.appendChild(instance);
     });
-    figma.currentPage.appendChild(typoFrame);
   });
+  figma.currentPage.appendChild(typoFrame);
 }
 
 export default async function runPlugin() {
@@ -92,11 +99,8 @@ export default async function runPlugin() {
   console.log(textStyles);
 
   createAllTextInstant(textStyles).then(() => {
-    finalizePlugin();
+    updateAllTextProperty().then(() => {
+      figma.closePlugin('Generated 🎉');
+    });
   });
-}
-
-// Handles the finalizing actions for the plugin
-function finalizePlugin() {
-  updateAllTextProperty().then(() => figma.closePlugin('Generated 🎉'));
 }
