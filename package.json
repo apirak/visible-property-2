@@ -23,7 +23,9 @@
   },
   "figma-plugin": {
     "networkAccess": {
-      "allowedDomains": ["none"]
+      "allowedDomains": [
+        "none"
+      ]
     },
     "editorType": [
       "figma"
@@ -38,8 +40,12 @@
       },
       "-",
       {
-        "name": "Generate All Color Styles",
+        "name": "Generate Color from Styles",
         "main": "src/generateAllColorStyle.ts"
+      },
+      {
+        "name": "Generate Typo from Styles",
+        "main": "src/generateAllTypoStyle.ts"
       },
       {
         "name": "Run Update",
