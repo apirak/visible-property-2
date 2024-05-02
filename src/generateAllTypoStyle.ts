@@ -71,7 +71,8 @@ async function createAllTextInstant(textStyles: TextStyle[][]): Promise<void> {
       styles.map(async (style) => {
         await figma.loadFontAsync(style.fontName);
         const instance = typoMainComponent.createInstance();
-        const referenceText = instance.children[0] as TextNode;
+        const textFrame = instance.children[0] as FrameNode;
+        const referenceText = textFrame.children[0] as TextNode;
         referenceText.characters = style.name;
         referenceText.textStyleId = style.id;
         typoFrame.appendChild(instance);

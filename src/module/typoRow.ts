@@ -83,6 +83,37 @@ async function createTypoWithPropertyMainComponent(): Promise<ComponentNode> {
 
   const typoMainComponent = await createTypoMainComponent({ x: 0, y: y + 16 });
 
+  const textFrame = figma.createFrame();
+  textFrame.layoutMode = 'VERTICAL';
+  textFrame.primaryAxisAlignItems = 'CENTER'; // Center align vertically
+  textFrame.counterAxisAlignItems = 'CENTER'; // Center align horizontally
+  textFrame.resize(150, 50); // Set size to match textNode
+  textFrame.fills = []; // No background fill
+  textFrame.primaryAxisSizingMode = 'FIXED';
+  textFrame.layoutAlign = 'STRETCH';
+
+  const textNode = figma.createText();
+  textNode.fontName = { family: 'Roboto', style: 'Regular' };
+  textNode.fontSize = 32;
+  textNode.characters = 'H1';
+  textNode.name = '#typo';
+  textNode.textAlignHorizontal = 'CENTER';
+  textNode.textAlignVertical = 'CENTER';
+  textFrame.appendChild(textNode);
+
+  typoMainComponent.appendChild(textFrame);
+
+  // Create an auto layout frame for properties
+  const propertiesFrame = figma.createFrame();
+  propertiesFrame.layoutMode = 'VERTICAL';
+  propertiesFrame.paddingTop = 8;
+  propertiesFrame.paddingLeft = 4;
+  propertiesFrame.paddingRight = 4;
+  propertiesFrame.paddingBottom = 4;
+  propertiesFrame.itemSpacing = 4;
+  propertiesFrame.fills = []; // No background fill
+  propertiesFrame.layoutAlign = 'STRETCH';
+
   const properties = [
     { name: 'Text Case:', property: '#typo.textCase' },
     { name: 'Font:', property: '#typo.font' },
@@ -94,18 +125,6 @@ async function createTypoWithPropertyMainComponent(): Promise<ComponentNode> {
     { name: 'Line Height:', property: '#typo.lineHeight' },
   ];
 
-  const textNode = figma.createText();
-  textNode.fontName = { family: 'Roboto', style: 'Regular' };
-  textNode.fontSize = 32;
-  textNode.characters = 'H1';
-  textNode.name = '#typo';
-  textNode.resize(150, 50);
-  textNode.textAlignVertical = 'BOTTOM';
-  typoMainComponent.appendChild(textNode);
-
-  const separator = createHorizontalLine();
-  typoMainComponent.appendChild(separator);
-
   properties.forEach((property) => {
     const propertyInstant = propertyMainComponent.createInstance();
     const propertyName = propertyInstant.children[0] as TextNode;
@@ -113,8 +132,10 @@ async function createTypoWithPropertyMainComponent(): Promise<ComponentNode> {
     const propertyValue = propertyInstant.children[1] as TextNode;
     propertyValue.name = property.property;
     propertyValue.characters = '-';
-    typoMainComponent.appendChild(propertyInstant);
+    propertiesFrame.appendChild(propertyInstant);
   });
+
+  typoMainComponent.appendChild(propertiesFrame);
 
   return typoMainComponent;
 }
