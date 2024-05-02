@@ -88,7 +88,9 @@ async function createTypoWithPropertyMainComponent(): Promise<ComponentNode> {
   textFrame.primaryAxisAlignItems = 'CENTER'; // Center align vertically
   textFrame.counterAxisAlignItems = 'CENTER'; // Center align horizontally
   textFrame.resize(150, 50); // Set size to match textNode
-  textFrame.fills = []; // No background fill
+  textFrame.fills = [
+    { type: 'SOLID', color: { r: 0, g: 0, b: 0 }, opacity: 0.05 },
+  ]; // No background fill
   textFrame.primaryAxisSizingMode = 'FIXED';
   textFrame.layoutAlign = 'STRETCH';
 
