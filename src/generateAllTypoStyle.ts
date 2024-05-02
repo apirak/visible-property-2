@@ -1,27 +1,6 @@
 import { updateAllTextProperty } from './updateText';
 import { createPantone } from './module/colorPantone';
-
-function fetchGroupedColorStyles(): PaintStyle[][] {
-  const localStyles = figma.getLocalPaintStyles();
-
-  // Initialize an empty object to hold categories of paint styles
-  const categories: { [category: string]: PaintStyle[] } = {};
-
-  // Iterate through each style and group by category
-  localStyles.forEach((style) => {
-    if (
-      style.paints.length > 0 &&
-      (style.paints[0].type === 'SOLID' ||
-        style.paints[0].type === 'GRADIENT_LINEAR')
-    ) {
-      const [category, subCategory] = style.name.split('/');
-      categories[category] = categories[category] || [];
-      categories[category].push(style);
-    }
-  });
-
-  return Object.values(categories);
-}
+import { createTypoWithPropertyMainComponent } from './module/typoRow';
 
 function createAutoLayoutframe(
   name: string,
@@ -51,7 +30,7 @@ function createAutoLayoutframe(
   return frame;
 }
 
-function createPantoneGroupFrame(): FrameNode {
+function createTypoGroupFrame(): FrameNode {
   const frame = figma.createFrame();
   frame.fills = [];
   frame.layoutMode = 'HORIZONTAL';
@@ -62,33 +41,46 @@ function createPantoneGroupFrame(): FrameNode {
   return frame;
 }
 
-async function createColorInstance(
-  mainComponent: ComponentNode,
-  styles2D: PaintStyle[][],
-  frame: FrameNode
+function fetchGroupedTextStyles(): TextStyle[][] {
+  const localStyles = figma.getLocalTextStyles();
+
+  // Initialize an empty object to hold categories of text styles
+  const categories: { [category: string]: TextStyle[] } = {};
+
+  // Iterate through each style and group by category
+  localStyles.forEach((style) => {
+    const [category, subCategory] = style.name.split('/');
+    categories[category] = categories[category] || [];
+    categories[category].push(style);
+  });
+
+  return Object.values(categories);
+}
+
+async function createTypoInstant(
+  mainComponent: ComponentNode
+  // styles2D: PaintStyle[][],
+  // frame: FrameNode
 ) {
-  styles2D.forEach(async (styles) => {
-    const styleGroupFrame = createPantoneGroupFrame();
-    const [category, subCategory] = styles[0].name.split('/');
+  // styles2D.forEach(async (styles) => {
+  // const styleGroupFrame = createPantoneGroupFrame();
+  const instance = mainComponent.createInstance();
+  // });
+}
 
+async function createAllTextInstant(textStyles: TextStyle[][]) {
+  const typoFrame = createAutoLayoutframe('typo', { x: 150, y: 0 });
+  const typoMainComponent = await createTypoWithPropertyMainComponent();
+
+  textStyles.forEach(async (styles) => {
+    const typoGroupFrame = createTypoGroupFrame();
     styles.forEach((style) => {
-      const instance = mainComponent.createInstance();
-
-      let rectangleNode = instance.children[0] as RectangleNode;
-      rectangleNode.fillStyleId = style.id;
-      styleGroupFrame.appendChild(instance);
+      const instance = typoMainComponent.createInstance();
+      // const rectangleNode = instance.children[0] as RectangleNode;
+      // rectangleNode.fillStyleId = style.id;
+      typoGroupFrame.appendChild(instance);
     });
-
-    if (subCategory) {
-      await figma.loadFontAsync({ family: 'Roboto', style: 'Bold' });
-      const textNode = figma.createText();
-      textNode.fontName = { family: 'Roboto', style: 'Bold' };
-      textNode.fontSize = 32;
-      textNode.characters = category;
-      textNode.name = 'Category';
-      frame.appendChild(textNode);
-    }
-    frame.appendChild(styleGroupFrame);
+    figma.currentPage.appendChild(typoFrame);
   });
 }
 
@@ -96,13 +88,12 @@ export default async function runPlugin() {
   const componentWidth = 250;
   const xPosition = componentWidth * 1.5;
 
-  const colorComponent = await createPantone();
-  const colorStyles = fetchGroupedColorStyles();
-  const frame = createAutoLayoutframe('Color', { x: xPosition, y: 0 });
+  const textStyles = fetchGroupedTextStyles();
+  console.log(textStyles);
 
-  createColorInstance(colorComponent, colorStyles, frame);
-
-  finalizePlugin();
+  createAllTextInstant(textStyles).then(() => {
+    finalizePlugin();
+  });
 }
 
 // Handles the finalizing actions for the plugin
