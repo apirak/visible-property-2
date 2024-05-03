@@ -69,14 +69,6 @@ async function createPropertyMainComponent() {
   return property;
 }
 
-function createHorizontalLine(): RectangleNode {
-  const line = figma.createRectangle();
-  line.resize(25, 1); // Assuming typoMainComponent.width is accessible, otherwise set a fixed width
-  line.fills = [{ type: 'SOLID', color: { r: 0, g: 0, b: 0 }, opacity: 0.3 }]; // Black line
-  line.cornerRadius = 0; // Straight line
-  return line;
-}
-
 async function createTypoWithPropertyMainComponent(): Promise<ComponentNode> {
   const propertyMainComponent = await createPropertyMainComponent();
   const y = propertyMainComponent.height;
