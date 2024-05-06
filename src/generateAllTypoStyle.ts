@@ -29,22 +29,6 @@ function createAutoLayoutframe(
   return frame;
 }
 
-function createTypoGroupFrame(): FrameNode {
-  const frame = figma.createFrame();
-  frame.name = 'TypoGroup';
-  frame.paddingTop = 0;
-  frame.paddingRight = 0;
-  frame.paddingBottom = 0;
-  frame.paddingLeft = 0;
-  frame.itemSpacing = 4;
-  frame.fills = [];
-  frame.layoutMode = 'HORIZONTAL';
-  frame.primaryAxisSizingMode = 'AUTO';
-  frame.layoutAlign = 'MIN';
-  frame.counterAxisSizingMode = 'AUTO';
-  return frame;
-}
-
 function fetchGroupedTextStyles(): TextStyle[][] {
   const localStyles = figma.getLocalTextStyles();
 
@@ -84,11 +68,7 @@ async function createAllTextInstant(textStyles: TextStyle[][]): Promise<void> {
 }
 
 export default async function runPlugin() {
-  const componentWidth = 250;
-  const xPosition = componentWidth * 1.5;
-
   const textStyles = fetchGroupedTextStyles();
-
   await createAllTextInstant(textStyles);
   await updateAllTextProperty();
   figma.closePlugin('Generated 🎉');
