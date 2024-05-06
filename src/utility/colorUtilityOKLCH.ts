@@ -1,27 +1,38 @@
-import Color from 'colorjs.io';
+import { converter } from 'culori';
+
+function truncateToTwoDecimals(num: number): number {
+  return Math.floor(num * 100) / 100;
+}
 
 function formatNumber(num: number): string {
+  let num2 = truncateToTwoDecimals(num);
   // Check if the number is an integer
-  if (num % 1 === 0) {
-    return num.toString(); // Convert the whole number to a string
+  if (num2 % 1 === 0) {
+    return num2.toString(); // Convert the whole number to a string
   } else {
     return num.toFixed(2); // Format the number to two decimal places and it's already a string
   }
 }
 
-export function colorToOKLCH(color: RGB, opacity: number | undefined): string {
-  let c = new Color('sRGB', [color.r, color.g, color.b], opacity);
+export function colorToOKLCH(color: RGB, opacity: number = 1): string {
+  let oklch = converter('oklch');
+  let oklchColor = oklch(`rgb(${color.r}, ${color.g}, ${color.b})`);
 
-  let cl = formatNumber(c.oklch.l);
-  let cc = formatNumber(c.oklch.c);
-  let chue = '0';
-  if (!Number.isNaN(c.oklch.hue)) {
-    chue = formatNumber(c.oklch.hue);
-  }
+  if (oklchColor) {
+    let cl = formatNumber(oklchColor.l * 100);
+    let cc = formatNumber(oklchColor.c * 100);
+    let chue = '0';
 
-  if (opacity == 1 || opacity == undefined) {
-    return `oklch(${cl}%, ${cc}, ${chue})`;
+    if (oklchColor.h !== undefined && !Number.isNaN(oklchColor.h)) {
+      chue = formatNumber(oklchColor.h);
+    }
+
+    if (opacity === undefined || opacity === 1) {
+      return `oklch(${cl}%, ${cc}, ${chue})`;
+    } else {
+      return `oklch(${cl}%, ${cc}, ${chue} / ${opacity * 100}%)`;
+    }
   } else {
-    return `oklch(${cl}%, ${cc}, ${chue} / ${opacity * 100}%)`;
+    return 'oklch(0%, 0, 0)';
   }
 }
