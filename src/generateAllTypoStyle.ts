@@ -1,5 +1,5 @@
-import { updateAllTextProperty } from './updateText';
-import { createTypoWithPropertyMainComponent } from './module/typoRow';
+import { updateAllTextProperty } from "./updateText";
+import { createTypoWithPropertyMainComponent } from "./module/typoRow";
 
 function createAutoLayoutframe(
   name: string,
@@ -8,7 +8,7 @@ function createAutoLayoutframe(
   const frame = figma.createFrame();
   Object.assign(frame, {
     name,
-    layoutMode: 'HORIZONTAL',
+    layoutMode: "HORIZONTAL",
     itemSpacing: 32, // Adjust the spacing as needed
     paddingTop: 32, // Adjust padding as needed
     paddingRight: 32,
@@ -18,10 +18,10 @@ function createAutoLayoutframe(
     y: position.y,
   });
   frame.resize(150 * 4 + 32 * 2, 300);
-  frame.primaryAxisSizingMode = 'AUTO';
+  frame.primaryAxisSizingMode = "AUTO";
 
   const whiteFill: SolidPaint = {
-    type: 'SOLID',
+    type: "SOLID",
     color: { r: 1, g: 1, b: 1 },
     opacity: 0.5,
   };
@@ -37,7 +37,7 @@ function fetchGroupedTextStyles(): TextStyle[][] {
 
   // Iterate through each style and group by category
   localStyles.forEach((style) => {
-    const [category, subCategory] = style.name.split('/');
+    const [category, subCategory] = style.name.split("/");
     categories[category] = categories[category] || [];
     categories[category].push(style);
   });
@@ -46,7 +46,7 @@ function fetchGroupedTextStyles(): TextStyle[][] {
 }
 
 async function createAllTextInstant(textStyles: TextStyle[][]): Promise<void> {
-  const typoFrame = createAutoLayoutframe('typo', { x: 200, y: 0 });
+  const typoFrame = createAutoLayoutframe("typo", { x: 200, y: 0 });
   const typoMainComponent: ComponentNode =
     await createTypoWithPropertyMainComponent();
 
@@ -71,5 +71,5 @@ export default async function runPlugin() {
   const textStyles = fetchGroupedTextStyles();
   await createAllTextInstant(textStyles);
   await updateAllTextProperty();
-  figma.closePlugin('Generated 🎉');
+  figma.closePlugin("Generated 🎉");
 }
