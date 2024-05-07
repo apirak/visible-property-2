@@ -2,7 +2,7 @@ import { colorToOKLCH } from '../utility/colorUtilityOKLCH';
 
 describe('convert RGB to OKLCH', () => {
   it('convert red color', () => {
-    const rgb: RGB = { r: 255, g: 0, b: 0 }; // Red color
+    const rgb = { r: 255, g: 0, b: 0 }; // Red color
     const result = colorToOKLCH(rgb, undefined);
     expect(result).toBe('oklch(62.80%, 25.77, 29.23)');
   });

@@ -1,3 +1,4 @@
+// import { useMode, modeOklch } from 'culori/fn';
 import { converter } from 'culori';
 
 function truncateToTwoDecimals(num: number): number {
@@ -16,6 +17,8 @@ function formatNumber(num: number): string {
 
 export function colorToOKLCH(color: RGB, opacity: number = 1): string {
   let oklch = converter('oklch');
+
+  // const oklch = useMode(modeOklch);
   let oklchColor = oklch(`rgb(${color.r}, ${color.g}, ${color.b})`);
 
   if (oklchColor) {

@@ -22,7 +22,8 @@
   "scripts": {
     "build": "build-figma-plugin --typecheck --minify",
     "watch": "prettier --loglevel error --write '{src, test}/**/*.{ts, css}' && build-figma-plugin --typecheck --watch",
-    "test": "jest --watch"
+    "test": "jest --watch",
+    "test-all": "jest"
   },
   "figma-plugin": {
     "networkAccess": {
