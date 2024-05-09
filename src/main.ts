@@ -82,6 +82,11 @@ const getStrokeData = (ref: ReferenceNode) => {
         api: "strokeHSB",
       },
       {
+        label: "OKLCH",
+        value: ref.getValue("strokeoklch"),
+        api: "strokeOKLCH",
+      },
+      {
         label: "Style",
         value: ref.getValue("strokestyle"),
         api: "strokeStyle",
@@ -124,6 +129,7 @@ const getFillData = (ref: ReferenceNode) => {
         value: ref.getValue("fillhsb"),
         api: "fillHSB",
       },
+      { label: "OKLCH", value: ref.getValue("filloklch"), api: "fillOKLCH" },
       { label: "Style", value: ref.getValue("fillstyle"), api: "fillstyle" },
       {
         label: "Description",

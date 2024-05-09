@@ -16,11 +16,16 @@ function formatNumber(num: number): string {
 
 export function colorToOKLCH(color: RGB, opacity: number = 1): string {
   let oklch = converter('oklch');
-  let oklchColor = oklch(`rgb(${color.r}, ${color.g}, ${color.b})`);
+  let color255 = {
+    r: color.r * 256,
+    g: color.g * 256,
+    b: color.b * 256,
+  };
+  let oklchColor = oklch(`rgb(${color255.r}, ${color255.g}, ${color255.b})`);
 
   if (oklchColor) {
     let cl = formatNumber(oklchColor.l * 100);
-    let cc = formatNumber(oklchColor.c * 100);
+    let cc = formatNumber(oklchColor.c);
     let chue = '0';
 
     if (oklchColor.h !== undefined && !Number.isNaN(oklchColor.h)) {

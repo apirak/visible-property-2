@@ -3,19 +3,19 @@ export type HSBColor = { h: number; s: number; b: number };
 
 export const colorNumberToHex = (color: number): string => {
   const hex = Math.round(color * 255).toString(16);
-  return hex.length == 1 ? "0" + hex : hex;
+  return hex.length == 1 ? '0' + hex : hex;
 };
 
 export function rgbToHex(r: number, g: number, b: number): string {
-  return "#" + colorNumberToHex(r) + colorNumberToHex(g) + colorNumberToHex(b);
+  return '#' + colorNumberToHex(r) + colorNumberToHex(g) + colorNumberToHex(b);
 }
 
 export function colorToHex(color: RGB, opacity: number | undefined): string {
   const a =
     opacity == 1 || opacity == undefined
-      ? ""
-      : " " + Number((opacity * 100).toFixed(0)) + "%";
-  return rgbToHex(color["r"], color["g"], color["b"]) + a;
+      ? ''
+      : ' ' + Number((opacity * 100).toFixed(0)) + '%';
+  return rgbToHex(color['r'], color['g'], color['b']) + a;
 }
 
 export function rgbToHSB(r: number, g: number, b: number) {
@@ -36,11 +36,11 @@ export function rgbToHSL(r: number, g: number, b: number) {
 }
 
 export function colorToHSLObject(color: RGB): HSLColor {
-  return rgbToHSL(color["r"], color["g"], color["b"]);
+  return rgbToHSL(color['r'], color['g'], color['b']);
 }
 
 export function colorToHSBObject(color: RGB): HSBColor {
-  return rgbToHSB(color["r"], color["g"], color["b"]);
+  return rgbToHSB(color['r'], color['g'], color['b']);
 }
 
 export function colorToHSL(color: RGB, opacity: number | undefined): string {
@@ -49,7 +49,7 @@ export function colorToHSL(color: RGB, opacity: number | undefined): string {
   const sat = Number(hsl.s.toFixed(2));
   const lightness = Number(hsl.l.toFixed(2));
   const a =
-    opacity == 1 || opacity == undefined ? "1" : Number(opacity.toFixed(2));
+    opacity == 1 || opacity == undefined ? '1' : Number(opacity.toFixed(2));
 
   return a == 1
     ? `hsl(${hue}, ${Math.round(sat * 100)}%, ${Math.round(lightness * 100)}%)`
@@ -64,7 +64,7 @@ export function colorToHSB(color: RGB, opacity: number | undefined): string {
   const sat = Number(hsb.s.toFixed(2));
   const brightness = Number(hsb.b.toFixed(2));
   const a =
-    opacity == 1 || opacity == undefined ? "1" : Number(opacity.toFixed(2));
+    opacity == 1 || opacity == undefined ? '1' : Number(opacity.toFixed(2));
 
   return a == 1
     ? `hsb(${hue}, ${Math.round(sat * 100)}%, ${Math.round(brightness * 100)}%)`
@@ -78,19 +78,19 @@ const toFixedZero = (num: number): string => {
     return (num - 1).toString();
   }
   const numString = num.toString();
-  const indexOfDot = numString.indexOf(".");
+  const indexOfDot = numString.indexOf('.');
   const fixedNumber = numString.slice(0, indexOfDot);
-  return fixedNumber != "" ? fixedNumber : "0";
+  return fixedNumber != '' ? fixedNumber : '0';
 };
 
 export function colorToRgb(color: RGB, opacity: number | undefined): string {
-  const r = color.r ? toFixedZero(color.r * 256) : "0";
-  const g = color.g ? toFixedZero(color.g * 256) : "0";
-  const b = color.b ? toFixedZero(color.b * 256) : "0";
+  const r = color.r ? toFixedZero(color.r * 256) : '0';
+  const g = color.g ? toFixedZero(color.g * 256) : '0';
+  const b = color.b ? toFixedZero(color.b * 256) : '0';
   const a =
-    opacity == 1 || opacity == undefined ? "1" : Number(opacity.toFixed(2));
+    opacity == 1 || opacity == undefined ? '1' : Number(opacity.toFixed(2));
 
   return a == 1
-    ? "rgb(" + r + ", " + g + ", " + b + ")"
-    : "rgba(" + r + ", " + g + ", " + b + ", " + a + ")";
+    ? 'rgb(' + r + ', ' + g + ', ' + b + ')'
+    : 'rgba(' + r + ', ' + g + ', ' + b + ', ' + a + ')';
 }

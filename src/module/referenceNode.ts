@@ -1,21 +1,22 @@
-import { VisibleNode } from "./visibleNode";
+import { VisibleNode } from './visibleNode';
 import {
   colorToHex,
   colorToHSL,
   colorToRgb,
   colorToHSB,
-} from "../utility/colorUtility";
-import { colorName } from "../utility/colorName";
-import { gradientString } from "../utility/gradientUtility";
+} from '../utility/colorUtility';
+import { colorToOKLCH } from '../utility/colorUtilityOKLCH';
+import { colorName } from '../utility/colorName';
+import { gradientString } from '../utility/gradientUtility';
 
 // Plugin-api TextCase is not uptodate 6 Sep 2022
 type FixTextCase =
-  | "ORIGINAL"
-  | "UPPER"
-  | "LOWER"
-  | "TITLE"
-  | "SMALL_CAPS"
-  | "SMALL_CAPS_FORCED";
+  | 'ORIGINAL'
+  | 'UPPER'
+  | 'LOWER'
+  | 'TITLE'
+  | 'SMALL_CAPS'
+  | 'SMALL_CAPS_FORCED';
 
 export interface ReferenceNode extends VisibleNode {
   getFill(): string;
@@ -26,7 +27,7 @@ export type Space = { unit: string; value: number };
 
 export class ReferenceNode extends VisibleNode {
   isSolidPaints(
-    fills: readonly Paint[] | PluginAPI["mixed"]
+    fills: readonly Paint[] | PluginAPI['mixed']
   ): fills is SolidPaint[] {
     if ((fills as Paint[]) != undefined) {
       if ((fills as Paint[]).length != 0) {
@@ -41,88 +42,94 @@ export class ReferenceNode extends VisibleNode {
   getValue(name: string): string {
     const lowerCaseName: string = name.toLowerCase();
     const textFunction = new Set<string>([
-      "font",
-      "fontweight",
-      "fontsize",
-      "paragraphindent",
-      "paragraphspace",
-      "textcase",
+      'font',
+      'fontweight',
+      'fontsize',
+      'paragraphindent',
+      'paragraphspace',
+      'textcase',
     ]);
     if (textFunction.has(lowerCaseName)) {
       return this.getText(lowerCaseName);
     }
 
     switch (lowerCaseName) {
-      case "fill":
-        return this.getHex("fill");
+      case 'fill':
+        return this.getHex('fill');
         break;
-      case "stroke":
-        return this.getHex("stroke");
+      case 'stroke':
+        return this.getHex('stroke');
         break;
-      case "fillrgb":
-        return this.getRGB("fill");
+      case 'fillrgb':
+        return this.getRGB('fill');
         break;
-      case "strokergb":
-        return this.getRGB("stroke");
+      case 'strokergb':
+        return this.getRGB('stroke');
         break;
-      case "strokehsl":
-        return this.getHSL("stroke");
+      case 'fillhsl':
+        return this.getHSL('fill');
         break;
-      case "strokehsb":
-        return this.getHSB("stroke");
+      case 'strokehsl':
+        return this.getHSL('stroke');
         break;
-      case "fillhsl":
-        return this.getHSL("fill");
+      case 'fillhsb':
+        return this.getHSB('fill');
         break;
-      case "fillhsb":
-        return this.getHSB("fill");
+      case 'strokehsb':
+        return this.getHSB('stroke');
         break;
-      case "fillstyle":
-        return this.getStyle("fill");
+      case 'filloklch':
+        return this.getOKLCH('fill');
         break;
-      case "strokestyle":
-        return this.getStyle("stroke");
+      case 'strokeoklch':
+        return this.getOKLCH('stroke');
         break;
-      case "textstyle":
-        return this.getStyle("text");
+      case 'fillstyle':
+        return this.getStyle('fill');
         break;
-      case "fillstyledescription":
-        return this.getStyleDescription("fill");
+      case 'strokestyle':
+        return this.getStyle('stroke');
         break;
-      case "strokestyledescription":
-        return this.getStyleDescription("stroke");
+      case 'textstyle':
+        return this.getStyle('text');
         break;
-      case "fillopacity":
-        return this.getOpacity("fill");
+      case 'fillstyledescription':
+        return this.getStyleDescription('fill');
         break;
-      case "strokeopacity":
-        return this.getOpacity("stroke");
+      case 'strokestyledescription':
+        return this.getStyleDescription('stroke');
         break;
-      case "textstyledescription":
-        return this.getStyleDescription("text");
+      case 'fillopacity':
+        return this.getOpacity('fill');
         break;
-      case "description":
+      case 'strokeopacity':
+        return this.getOpacity('stroke');
+        break;
+      case 'textstyledescription':
+        return this.getStyleDescription('text');
+        break;
+      case 'description':
         return this.getDescription();
         break;
-      case "width":
+      case 'width':
         return this.getWidth();
         break;
-      case "height":
+      case 'height':
         return this.getHeight();
         break;
-      case "letterspace":
-        return this.getTextSpace("letterspace");
+      case 'letterspace':
+        return this.getTextSpace('letterspace');
         break;
-      case "lineheight":
-        return this.getTextSpace("lineheight");
+      case 'lineheight':
+        return this.getTextSpace('lineheight');
         break;
-      case "fillcolorname":
-        return this.getColorName("fill");
+      case 'fillcolorname':
+        return this.getColorName('fill');
         break;
-      case "strokecolorname":
-        return this.getColorName("stroke");
+      case 'strokecolorname':
+        return this.getColorName('stroke');
         break;
-      case "name":
+      case 'name':
         return this.getLayerName();
         break;
       default:
@@ -140,7 +147,7 @@ export class ReferenceNode extends VisibleNode {
   }
 
   isText(): boolean {
-    return this.node.type == "TEXT" ? true : false;
+    return this.node.type == 'TEXT' ? true : false;
   }
 
   getPaints(
@@ -148,14 +155,14 @@ export class ReferenceNode extends VisibleNode {
     getColor: Function,
     getAlphaColor?: Function
   ): string {
-    const paints = type == "stroke" ? this.node.strokes : this.node.fills;
+    const paints = type == 'stroke' ? this.node.strokes : this.node.fills;
     if (this.isSolidPaints(paints)) {
       return getColor(paints[0].color, paints[0].opacity);
     } else {
       if (
         paints !== undefined &&
         paints.length != 0 &&
-        paints[0].type == "GRADIENT_LINEAR"
+        paints[0].type == 'GRADIENT_LINEAR'
       ) {
         return gradientString(paints[0], getColor, getAlphaColor);
       } else {
@@ -180,34 +187,38 @@ export class ReferenceNode extends VisibleNode {
     return this.getPaints(type, colorToHSB);
   }
 
+  getOKLCH(type: string): string {
+    return this.getPaints(type, colorToOKLCH);
+  }
+
   getOpacity(type: string): string {
-    const paints = type == "stroke" ? this.node.strokes : this.node.fills;
+    const paints = type == 'stroke' ? this.node.strokes : this.node.fills;
     const opacity = paints[0].opacity;
     if (this.isSolidPaints(paints) && opacity != 1 && opacity) {
-      return Number((opacity * 100).toFixed(0)) + "%";
+      return Number((opacity * 100).toFixed(0)) + '%';
     } else {
-      return "100%";
+      return '100%';
     }
   }
 
   getStyle(type: string): string {
     const cNode = this.node as ComponentNode;
-    let styleId: string = "";
-    let variableId: string = "";
+    let styleId: string = '';
+    let variableId: string = '';
     let boundVariables;
     let styleType;
     let noStyleMessage = `No ${type} style`;
 
     switch (type) {
-      case "stroke":
-        boundVariables = cNode.boundVariables?.["strokes"];
+      case 'stroke':
+        boundVariables = cNode.boundVariables?.['strokes'];
         styleType = cNode.strokeStyleId;
         break;
-      case "fill":
-        boundVariables = cNode.boundVariables?.["fills"];
+      case 'fill':
+        boundVariables = cNode.boundVariables?.['fills'];
         styleType = cNode.fillStyleId;
         break;
-      case "text":
+      case 'text':
         styleType = (this.node as TextNode).textStyleId;
         break;
       default:
@@ -225,7 +236,7 @@ export class ReferenceNode extends VisibleNode {
       styleId = styleType.toString();
       const style = figma.getStyleById(styleId);
       return style
-        ? style.name.split(/ *\/ */).join("/")
+        ? style.name.split(/ *\/ */).join('/')
         : `Can't read ${type} style`;
     }
 
@@ -235,9 +246,9 @@ export class ReferenceNode extends VisibleNode {
   private isVariableAlias(obj: any): obj is VariableAlias {
     return (
       obj &&
-      typeof obj === "object" &&
-      obj.type === "VARIABLE_ALIAS" &&
-      typeof obj.id === "string"
+      typeof obj === 'object' &&
+      obj.type === 'VARIABLE_ALIAS' &&
+      typeof obj.id === 'string'
     );
   }
 
@@ -259,25 +270,25 @@ export class ReferenceNode extends VisibleNode {
   }
 
   getStyleDescription(type: string): string {
-    let styleId: string = "";
+    let styleId: string = '';
     const cNode = this.node as ComponentNode;
 
     switch (type) {
-      case "stroke":
+      case 'stroke':
         if (cNode.strokeStyleId !== undefined) {
           styleId = cNode.strokeStyleId.toString();
         } else {
-          return "No stroke style";
+          return 'No stroke style';
         }
         break;
-      case "fill":
+      case 'fill':
         if (cNode.fillStyleId !== undefined) {
           styleId = cNode.fillStyleId.toString();
         } else {
-          return "No fill style";
+          return 'No fill style';
         }
         break;
-      case "text":
+      case 'text':
         styleId = (this.node as TextNode).textStyleId.toString();
         break;
     }
@@ -288,23 +299,23 @@ export class ReferenceNode extends VisibleNode {
         if (style.description) {
           return style.description;
         } else {
-          return "No description";
+          return 'No description';
         }
       } else {
         return "Can't read style";
       }
     }
-    return "No Style";
+    return 'No Style';
   }
 
   getTextSpace(type: string): string {
-    if (this.node.type == "TEXT") {
-      let space: Space = { unit: "", value: 0 };
+    if (this.node.type == 'TEXT') {
+      let space: Space = { unit: '', value: 0 };
       switch (type) {
-        case "lineheight":
+        case 'lineheight':
           space = this.node.lineHeight;
           break;
-        case "letterspace":
+        case 'letterspace':
           space = this.node.letterSpacing;
           break;
         default:
@@ -312,64 +323,64 @@ export class ReferenceNode extends VisibleNode {
           break;
       }
 
-      if (space.unit == "AUTO") {
-        return "auto";
+      if (space.unit == 'AUTO') {
+        return 'auto';
       }
 
-      if (space.unit == "PERCENT") {
-        return "" + parseFloat(space.value.toFixed(2)) + "%";
+      if (space.unit == 'PERCENT') {
+        return '' + parseFloat(space.value.toFixed(2)) + '%';
       } else {
-        return "" + parseFloat(space.value.toFixed(2));
+        return '' + parseFloat(space.value.toFixed(2));
       }
     } else {
-      return "Not a text";
+      return 'Not a text';
     }
   }
 
   getText(type: string): string {
     const textCaseDisplay = {
-      ORIGINAL: "As Typed",
-      UPPER: "Uppercase",
-      LOWER: "Lowercase",
-      TITLE: "Title case",
-      SMALL_CAPS: "Small caps",
-      SMALL_CAPS_FORCED: "Small caps forced",
+      ORIGINAL: 'As Typed',
+      UPPER: 'Uppercase',
+      LOWER: 'Lowercase',
+      TITLE: 'Title case',
+      SMALL_CAPS: 'Small caps',
+      SMALL_CAPS_FORCED: 'Small caps forced',
     };
-    if (this.node.type == "TEXT") {
+    if (this.node.type == 'TEXT') {
       const textNode = this.node as TextNode;
       switch (type) {
-        case "font":
+        case 'font':
           return (textNode.fontName as FontName).family;
           break;
-        case "fontweight":
+        case 'fontweight':
           return (textNode.fontName as FontName).style;
           break;
-        case "fontsize":
+        case 'fontsize':
           return textNode.fontSize.toString();
           break;
-        case "paragraphspace":
+        case 'paragraphspace':
           return textNode.paragraphSpacing.toString();
           break;
-        case "paragraphindent":
+        case 'paragraphindent':
           return textNode.paragraphIndent.toString();
           break;
-        case "textcase":
+        case 'textcase':
           return textCaseDisplay[textNode.textCase as FixTextCase];
           break;
         default:
-          return "No function";
+          return 'No function';
           break;
       }
     } else {
-      return "Not a text";
+      return 'Not a text';
     }
   }
 
   getDescription(): string {
-    if (this.node.type == "COMPONENT") {
+    if (this.node.type == 'COMPONENT') {
       return this.node.description;
     } else {
-      return "";
+      return '';
     }
   }
 
@@ -377,7 +388,7 @@ export class ReferenceNode extends VisibleNode {
     if (this.node.width != undefined) {
       return String(this.node.width);
     } else {
-      return "";
+      return '';
     }
   }
 
@@ -385,22 +396,22 @@ export class ReferenceNode extends VisibleNode {
     if (this.node.height != undefined) {
       return String(this.node.height);
     } else {
-      return "";
+      return '';
     }
   }
 
   getColorName(type: string): string {
-    const paints = type == "stroke" ? this.node.strokes : this.node.fills;
+    const paints = type == 'stroke' ? this.node.strokes : this.node.fills;
     const color =
-      type == "stroke" ? this.getHex("stroke") : this.getHex("fill");
+      type == 'stroke' ? this.getHex('stroke') : this.getHex('fill');
 
     if (this.isSolidPaints(paints)) {
       return colorName(color);
     } else {
       if (color.length == 0) {
-        return "No " + type;
+        return 'No ' + type;
       }
-      return "";
+      return '';
     }
   }
 
