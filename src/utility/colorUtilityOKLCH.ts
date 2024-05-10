@@ -17,9 +17,9 @@ function formatNumber(num: number, digits = 2): string {
 export function colorToOKLCH(color: RGB, opacity: number = 1): string {
   let oklch = converter('oklch');
   let color255 = {
-    r: color.r * 256,
-    g: color.g * 256,
-    b: color.b * 256,
+    r: color.r * 255,
+    g: color.g * 255,
+    b: color.b * 255,
   };
   let oklchColor = oklch(`rgb(${color255.r}, ${color255.g}, ${color255.b})`);
 
