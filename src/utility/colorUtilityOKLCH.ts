@@ -4,7 +4,7 @@ function truncateToTwoDecimals(num: number): number {
   return Math.floor(num * 100) / 100;
 }
 
-function formatNumber(num: number): string {
+function formatNumber(num: number, digits = 2): string {
   let num2 = truncateToTwoDecimals(num);
   // Check if the number is an integer
   if (num2 % 1 === 0) {
@@ -24,12 +24,12 @@ export function colorToOKLCH(color: RGB, opacity: number = 1): string {
   let oklchColor = oklch(`rgb(${color255.r}, ${color255.g}, ${color255.b})`);
 
   if (oklchColor) {
-    let cl = formatNumber(oklchColor.l * 100);
-    let cc = formatNumber(oklchColor.c);
+    let cl = formatNumber(oklchColor.l * 100, 1);
+    let cc = formatNumber(oklchColor.c, 3);
     let chue = '0';
 
     if (oklchColor.h !== undefined && !Number.isNaN(oklchColor.h)) {
-      chue = formatNumber(oklchColor.h);
+      chue = formatNumber(oklchColor.h, 1);
     }
 
     if (opacity === undefined || opacity === 1) {
