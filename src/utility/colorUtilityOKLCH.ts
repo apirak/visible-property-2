@@ -10,7 +10,7 @@ function formatNumber(num: number, digits = 2): string {
   if (num2 % 1 === 0) {
     return num2.toString(); // Convert the whole number to a string
   } else {
-    return num.toFixed(2); // Format the number to two decimal places and it's already a string
+    return num.toFixed(digits); // Format the number to two decimal places and it's already a string
   }
 }
 
