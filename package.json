@@ -2,8 +2,6 @@
   "dependencies": {
     "@create-figma-plugin/ui": "^3.2.0",
     "@create-figma-plugin/utilities": "^3.2.0",
-    "colorjs.io": "^0.5.0",
-    "culori": "^4.0.1",
     "preact": "^10.7.2"
   },
   "devDependencies": {
@@ -11,7 +9,6 @@
     "@create-figma-plugin/build": "^3.2.0",
     "@create-figma-plugin/tsconfig": "^3.2.0",
     "@figma/plugin-typings": "^1.51.0",
-    "@types/culori": "^2.1.0",
     "@types/jest": "^27.5.1",
     "figma-api-stub": "^0.0.53",
     "jest": "^28.1.0",
