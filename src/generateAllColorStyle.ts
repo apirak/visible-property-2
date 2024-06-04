@@ -1,5 +1,5 @@
-import { updateAllTextProperty } from "./updateText";
-import { createPantone } from "./module/colorPantone";
+import { updateAllTextProperty } from './updateText';
+import { createPantone } from './module/colorPantone';
 
 function fetchGroupedColorStyles(): PaintStyle[][] {
   const localStyles = figma.getLocalPaintStyles();
@@ -11,10 +11,10 @@ function fetchGroupedColorStyles(): PaintStyle[][] {
   localStyles.forEach((style) => {
     if (
       style.paints.length > 0 &&
-      (style.paints[0].type === "SOLID" ||
-        style.paints[0].type === "GRADIENT_LINEAR")
+      (style.paints[0].type === 'SOLID' ||
+        style.paints[0].type === 'GRADIENT_LINEAR')
     ) {
-      const [category, subCategory] = style.name.split("/");
+      const [category, subCategory] = style.name.split('/');
       categories[category] = categories[category] || [];
       categories[category].push(style);
     }
@@ -25,12 +25,13 @@ function fetchGroupedColorStyles(): PaintStyle[][] {
 
 function createAutoLayoutframe(
   name: string,
-  position: { x: number; y: number }
+  position: { x: number; y: number },
+  componentWidth: number = 150
 ): FrameNode {
   const frame = figma.createFrame();
   Object.assign(frame, {
     name,
-    layoutMode: "VERTICAL",
+    layoutMode: 'VERTICAL',
     itemSpacing: 32, // Adjust the spacing as needed
     paddingTop: 32, // Adjust padding as needed
     paddingRight: 32,
@@ -39,11 +40,15 @@ function createAutoLayoutframe(
     x: position.x,
     y: position.y,
   });
-  frame.resize(150 * 4 + 32 * 2, 300);
-  frame.primaryAxisSizingMode = "AUTO";
+  const pantone_per_row = 4;
+  frame.resize(
+    componentWidth * pantone_per_row + 16 * (pantone_per_row - 1) + 32 * 2,
+    300
+  );
+  frame.primaryAxisSizingMode = 'AUTO';
 
   const whiteFill: SolidPaint = {
-    type: "SOLID",
+    type: 'SOLID',
     color: { r: 1, g: 1, b: 1 },
     opacity: 0.5,
   };
@@ -54,11 +59,13 @@ function createAutoLayoutframe(
 function createPantoneGroupFrame(): FrameNode {
   const frame = figma.createFrame();
   frame.fills = [];
-  frame.layoutMode = "HORIZONTAL";
-  frame.primaryAxisSizingMode = "FIXED";
-  frame.layoutAlign = "STRETCH";
-  frame.counterAxisSizingMode = "AUTO";
-  frame.layoutWrap = "WRAP";
+  frame.layoutMode = 'HORIZONTAL';
+  frame.primaryAxisSizingMode = 'FIXED';
+  frame.layoutAlign = 'STRETCH';
+  frame.counterAxisSizingMode = 'AUTO';
+  frame.itemSpacing = 16;
+  frame.counterAxisSpacing = 16;
+  frame.layoutWrap = 'WRAP';
   return frame;
 }
 
@@ -69,7 +76,7 @@ async function createColorInstance(
 ) {
   styles2D.forEach(async (styles) => {
     const styleGroupFrame = createPantoneGroupFrame();
-    const [category, subCategory] = styles[0].name.split("/");
+    const [category, subCategory] = styles[0].name.split('/');
 
     styles.forEach((style) => {
       const instance = mainComponent.createInstance();
@@ -80,12 +87,12 @@ async function createColorInstance(
     });
 
     if (subCategory) {
-      await figma.loadFontAsync({ family: "Roboto", style: "Bold" });
+      await figma.loadFontAsync({ family: 'Roboto', style: 'Bold' });
       const textNode = figma.createText();
-      textNode.fontName = { family: "Roboto", style: "Bold" };
+      textNode.fontName = { family: 'Roboto', style: 'Bold' };
       textNode.fontSize = 32;
       textNode.characters = category;
-      textNode.name = "Category";
+      textNode.name = 'Category';
       frame.appendChild(textNode);
     }
     frame.appendChild(styleGroupFrame);
@@ -93,12 +100,16 @@ async function createColorInstance(
 }
 
 export default async function runPlugin() {
-  const componentWidth = 250;
+  const componentWidth = 150;
   const xPosition = componentWidth * 1.5;
 
-  const colorComponent = await createPantone();
+  const colorComponent = await createPantone(componentWidth);
   const colorStyles = fetchGroupedColorStyles();
-  const frame = createAutoLayoutframe("Color", { x: xPosition, y: 0 });
+  const frame = createAutoLayoutframe(
+    'Color',
+    { x: xPosition, y: 0 },
+    componentWidth
+  );
 
   createColorInstance(colorComponent, colorStyles, frame);
 
@@ -107,5 +118,5 @@ export default async function runPlugin() {
 
 // Handles the finalizing actions for the plugin
 function finalizePlugin() {
-  updateAllTextProperty().then(() => figma.closePlugin("Generated 🎉"));
+  updateAllTextProperty().then(() => figma.closePlugin('Generated 🎉'));
 }
