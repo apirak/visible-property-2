@@ -40,11 +40,11 @@
       },
       "-",
       {
-        "name": "Generate Color from Styles",
+        "name": "Generate All Color styles",
         "main": "src/generateAllColorStyle.ts"
       },
       {
-        "name": "Generate Typo from Styles",
+        "name": "Generate All Text styles",
         "main": "src/generateAllTypoStyle.ts"
       },
       {
